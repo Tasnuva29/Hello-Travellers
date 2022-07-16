@@ -1,10 +1,6 @@
-﻿* {
-    font-family: 'Noto Sans', sans-serif;
-}
-
-.index-carousal-img {
+﻿.index-carousal-img {
     object-fit: cover;
-    width: 100vw;
+    width: max(100%, 100vw);
     height: 100vh;
 }
 
@@ -23,6 +19,7 @@
 }
 
 .index-post-header {
+    text-align: left;
     font-style: normal;
     font-weight: 800;
 }
@@ -31,5 +28,4 @@
     text-align: right;
     font-style: normal;
     font-weight: 500;
-
 }
