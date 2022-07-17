@@ -2,30 +2,51 @@
 @{
     ViewBag.Title = "Index";
 }
-
 <div class="container-lg container-md">
     <div class="row">
-        <div class="col-lg-3 col-md-4" id="profile-info">
+        <div class="col-lg-3 col-md-4 border" id="profile-info">
             <div class="card rounded shadow">
-                <img src="https://themoney.co/wp-content/uploads/2022/01/How-many-cars-does-Chris-Evans-have-scaled.jpg" class="card-img-top" alt="...">
+                <img src="https://themoney.co/wp-content/uploads/2022/01/How-many-cars-does-Chris-Evans-have-scaled.jpg"
+                     class="card-img-top"
+                     alt="..." />
                 <div class="card-body">
                     <h5 class="card-title text-center">User Name</h5>
-                    <p class="card-text text-wrap">Basically about me.Some quick example text to build on the card title and make up the bulk of the card's content</p>
+                    <p class="card-text text-wrap">
+                        Basically about me.Some quick example text to build on the card
+                        title and make up the bulk of the card's content
+                    </p>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item"><i class="bi bi-person-circle" style="margin-right:5px; color:#a79bfd"></i>Chris Evans</li>
-                        <li class="list-group-item"><i class="bi bi-envelope-fill" style="margin-right:5px; color:#a79bfd"></i><a href="mailto:tasnuvabinterahmansrishti@gmail.com" style="outline : none;">srishti@gmail.com</a></li>
-                        <li class="list-group-item"><i class="bi bi-telephone-fill" style="margin-right:5px; color:#a79bfd"></i>Phone Number</li>
-                        <li class="list-group-item"><i class="bi bi-info-circle" style="margin-right:5px; color:#a79bfd"></i>Gender</li>
+                        <li class="list-group-item">
+                            <i class="bi bi-person-circle"
+                               style="margin-right: 5px; color: #a79bfd"></i>Chris Evans
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-envelope-fill"
+                               style="margin-right: 5px; color: #a79bfd"></i><a href="mailto:tasnuvabinterahmansrishti@gmail.com"
+                                                                                style="outline: none">srishti@gmail.com</a>
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-telephone-fill"
+                               style="margin-right: 5px; color: #a79bfd"></i>Phone Number
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-info-circle"
+                               style="margin-right: 5px; color: #a79bfd"></i>Gender
+                        </li>
                     </ul>
-                    <a href="#" class="btn d-block text-center" style="background-color: #d13e59;color:white;">Edit Profile</a>
+                    <a href="#"
+                       class="btn btn-primary text-center d-block"
+                       data-bs-toggle="modal"
+                       data-bs-target="#editProfileModal">Edit Profile</a>
                 </div>
             </div>
         </div>
-        <div class="col-lg-8 col-md-8" id="profile-content">
+        <div class="col-lg-8 col-md-8 border" id="profile-content">
             <div class="container border-1 shadow-sm" id="profile-content-info">
                 <div class="row p-2">
                     <div class="col text-center border-dark">
-                        <div class="card text-dark bg-light shadow-sm border-0 profile-content-count" style="max-width: 18rem;">
+                        <div class="card text-dark bg-light shadow-sm border-0 profile-content-count"
+                             style="max-width: 18rem">
                             <div class="card-body">
                                 <h5 class="card-title">Posts</h5>
                                 <p class="card-text">2</p>
@@ -34,7 +55,8 @@
                     </div>
 
                     <div class="col text-center">
-                        <div class="card text-dark bg-light shadow-sm border-0" style="max-width: 18rem;">
+                        <div class="card text-dark bg-light shadow-sm border-0"
+                             style="max-width: 18rem">
                             <div class="card-body">
                                 <h5 class="card-title">Search</h5>
                                 <p class="card-text">2</p>
@@ -42,20 +64,127 @@
                         </div>
                     </div>
 
-
                     <div class="col text-center">
-                        <div class="card text-dark bg-light shadow-sm border-0" style="max-width: 18rem;">
+                        <div class="card text-dark bg-light shadow-sm border-0"
+                             style="max-width: 18rem">
                             <div class="card-body">
                                 <h5 class="card-title">Stories</h5>
                                 <p class="card-text">2</p>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<!--Modal Start-->
+<!-- Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header border-0 shadow-sm">
+                <h5 class="modal-title" id="exampleModalLabel">Edit Profile</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!--Tabs-->
+            <nav>
+                <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                    <button class="nav-link active" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</button>
+                    <button class="nav-link" id="nav-settings-tab" data-bs-toggle="tab" data-bs-target="#nav-settings" type="button" role="tab" aria-controls="nav-settings" aria-selected="false">Settings</button>
+                </div>
+            </nav>
+            <!--Tab end-->
+            <div class="modal-body">
+                <div class="tab-content" id="nav-tabContent">
+                    <!--Profile Content Start-->
+                    <div class="tab-pane fade show active" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                        <div class="container">
+                            <!--image change-->
+                            <div class="row">
+                                <div class="col">
+                                    <img class="img-fluid shadow" src="https://themoney.co/wp-content/uploads/2022/01/How-many-cars-does-Chris-Evans-have-scaled.jpg">
+                                </div>
+                            </div>
+                            <!--info change-->
+                            <div class="row mt-3 border-0 shadow-sm">
+                                <div class="mb-2">
+                                    <label for="inputUserName" class="form-label">User Name</label>
+                                    <input type="text" class="form-control p-2" id="inputUserName" placeholder="tasnuva binte rahman">
+                                </div>
+                                <div class="mb-2">
+                                    <label for="inputPhoneNum" class="form-label">Phone Number</label>
+                                    <input type="text" class="form-control p-2" id="inputPhoneNum" placeholder="01765432890">
+                                </div>
+                                <div class="mb-2">
+                                    <label for="inputUserEmail" class="form-label">Email address</label>
+                                    <input type="text" class="form-control p-2" id="inputUserEmail" placeholder="name@example.com">
+                                </div>
+                                <div class="mb-2">
+                                    <label for="inputUserAbout" class="form-label">About</label>
+                                    <textarea name="textarea" class="form-control p-2" id="inputUserAbout" maxlength="250">srishti</textarea>
+                                    <span id="char_count"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Profile Content End-->
+                    <!--Settings Start-->
+                    <div class="tab-pane fade" id="nav-settings" role="tabpanel" aria-labelledby="nav-settings-tab">
+                        <div class="container">
+                            <label for="inputOldPassword" class="form-label">Old Password</label>
+                            <div class="input-group mb-3">
+                                <input type="password" class="form-control p-2" id="inputOldPassword">
+                                <i class="input-group-text bi bi-eye-slash" id="togglePassword1" onclick="showPassword(this.id, 'inputOldPassword')"></i>
+                            </div>
+                            <label for="inputNewPassword" class="form-label">New Password</label>
+                            <div class="input-group mb-2">
+                                <input type="password" class="form-control p-2" id="inputNewPassword">
+                                <i class="input-group-text bi bi-eye-slash" id="togglePassword2" onclick="showPassword(this.id, 'inputNewPassword')"></i>
+                            </div>
+                            <label for="inputConfirmPassword" class="form-label">Confirm Password</label>
+                            <div class="input-group mb-2 border-0 shadow-sm">
+                                <input type="password" class="form-control p-2" id="inputConfirmPassword">
+                                <i class="input-group-text bi bi-eye-slash" id="togglePassword3" onclick="showPassword(this.id, 'inputConfirmPassword')"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Settings End-->
+
+                </div>
+            </div>
+
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Modal End-->
+
+<script>
+    let textArea = document.getElementById("inputUserAbout");
+    let showChar = document.getElementById("char_count");
+
+    //keydown for key press
+    textArea.addEventListener("keydown", countChar);
+    function countChar() {
+        let numOfEnteredChar = textArea.value.length;
+        console.log(textArea.value + " " + numOfEnteredChar);
+        showChar.innerHTML = numOfEnteredChar + "/250";
+    }
+    function showPassword(iconID, inputFieldID) {
+        if (document.getElementById(iconID).className === "input-group-text bi bi-eye-slash") {
+            document.getElementById(iconID).className = "input-group-text bi bi-eye";
+            document.getElementById(inputFieldID).type = "text";
+        }
+        else {
+            document.getElementById(iconID).className = "input-group-text bi bi-eye-slash";
+            document.getElementById(inputFieldID).type = "password";
+        }
+    }
+</script>
 
