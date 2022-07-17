@@ -1,7 +1,32 @@
-﻿@{
-    ViewBag.Title = "About";
-}
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+﻿<!DOCTYPE html>
 
-<p>Use this area to provide additional information.</p>
+<head>
+    
+</head>
+
+<body>
+    <div class="signup_container">
+        <form action="" method="POST" class="signup-email">
+            <h1 class="signup-text text-center py-3">Sign Up</h1>
+
+            <div class="input-group">
+                <input type="text" placeholder="Username" name="username" required>
+            </div>
+            <div class="input-group">
+                <input type="email" placeholder="Email" name="email" required>
+            </div>
+            <div class="input-group">
+                <input type="password" placeholder="Password" name="password" required>
+            </div>
+            <div class="input-group">
+                <input type="password" placeholder="Confirm Password" name="confirmpassword" required>
+            </div>
+            <div class="input-group">
+                <button name="submit" class="SignupBtn">Sign Up</button>
+            </div>
+            <p class="signup-register-text text-center">Have an account? <a href="Login.php">Login Here</a></p>
+
+
+        </form>
+    </div>
+</body>
