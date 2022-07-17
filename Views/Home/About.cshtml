@@ -1,54 +1,51 @@
-﻿<!DOCTYPE html>
+﻿<style>
+    body {
+        width: 100%;
+        height: 100%;
+        background-color: #f5f5dc;
+    }
+</style>
+<div class="signup-container">
+    <form action="" method="POST" class="signup-email">
+        <h1 class="signup-text text-center py-3">Sign Up</h1>
 
-<head>
-    
-</head>
+        <div class="signup-input-group">
+            <input type="text" placeholder="Name" name="name" required>
+        </div>
 
-<body>
-    <div class="signup-container">
-        <form action="" method="POST" class="signup-email">
-            <h1 class="signup-text text-center py-3">Sign Up</h1>
+        <div class="signup-input-group">
+            <input type="text" placeholder="Username" name="username" required>
+        </div>
+        <div class="signup-input-group">
+            <input type="email" placeholder="Email" name="email" required>
+        </div>
+        <div class="signup-input-group">
+            <input type="password" placeholder="Password" name="password" required>
+        </div>
+        <div class="signup-input-group">
+            <input type="password" placeholder="Confirm Password" name="confirmpassword" required>
+        </div>
 
-            <div class="input-group">
-                <input type="text" placeholder="Name" name="name" required>
-            </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" required>
+            <label class="form-check-label" for="flexRadioDefault1">
+                Male
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" required>
+            <label class="form-check-label" for="flexRadioDefault2">
+                Female
+            </label>
+        </div>
 
-            <div class="input-group">
-                <input type="text" placeholder="Username" name="username" required>
-            </div>
-            <div class="input-group">
-                <input type="email" placeholder="Email" name="email" required>
-            </div>
-            <div class="input-group">
-                <input type="password" placeholder="Password" name="password" required>
-            </div>
-            <div class="input-group">
-                <input type="password" placeholder="Confirm Password" name="confirmpassword" required>
-            </div>
-
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" required>
-                <label class="form-check-label" for="flexRadioDefault1">
-                    Male
-                </label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" required>
-                <label class="form-check-label" for="flexRadioDefault2">
-                    Female
-                </label>
-            </div>
-
-            <div class="input-group">
-                <button name="submit" class="SignupBtn">Sign Up</button>
-            </div>
-            <p class="signup-register-text text-center">Have an account? <a href="/Home/Contact">Login Here</a></p>
-
-
-        </form>
+        <div class="signup-input-group">
+            <button name="submit" class="SignupBtn">Sign Up</button>
+        </div>
+        <p class="signup-register-text text-center">Have an account? <a href="/Home/Contact">Login Here</a></p>
 
 
-    
+    </form>
 
-    </div>
-</body>
+
+</div>

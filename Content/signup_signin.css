@@ -1,9 +1,3 @@
-body {
-    width: 100%;
-    height: 100%;
-    background-color: #f5f5dc;
-}
-
 .signup-container {
     width: 400px;
     height: auto;
@@ -14,28 +8,27 @@ body {
     padding: 20px;
 }
 
-.input-group input {
+.signup-input-group input {
     width: 100%;
     height: 100%;
     padding: 15px 20px;
-    font-size: 1.5 rem;
     border-radius: 30px;
     outline: none;
     border: 2px solid #e7e7e7;
 }
 
-.input-group {
+.signup-input-group {
     width: 100%;
     height: 50px;
     margin-bottom: 25px;
     margin-top: 30px;
 }
 
-    .input-group input:focus {
+    .signup-input-group input:focus {
         border-color: #3498db;
     }
 
-    .input-group .SignupBtn {
+    .signup-input-group .SignupBtn {
         width: 100%;
         height: 30px;
         text-align: center;
@@ -45,7 +38,7 @@ body {
         color: white;
     }
 
-        .input-group .SignupBtn:hover {
+        .signup-input-group .SignupBtn:hover {
             transform: translateY(-5px);
             background: #6c5ce7;
         }
@@ -62,7 +55,7 @@ body {
     padding: 20px;
 }
 
-.input-group .SigninBtn {
+.signup-input-group .SigninBtn {
     width: 100%;
     height: 30px;
     text-align: center;
@@ -72,7 +65,7 @@ body {
     color: white;
 }
 
-    .input-group .SigninBtn:hover {
+    .signup-input-group .SigninBtn:hover {
         transform: translateY(-5px);
         background: #6c5ce7;
     }

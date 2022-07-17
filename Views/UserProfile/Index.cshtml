@@ -2,6 +2,18 @@
 @{
     ViewBag.Title = "Index";
 }
+
+<style>
+    .hq-input {
+        outline: none;
+        border-radius: 30px;
+        border: 2px solid #e7e7e7;
+    }
+    .hq-input:focus {
+        outline: none;
+        border-color: #3498db;
+    }
+</style>
 <div class="container-lg container-md">
     <div class="row">
         <div class="col-lg-3 col-md-4 border" id="profile-info">
@@ -112,19 +124,19 @@
                             <div class="row mt-3 border-0 shadow-sm">
                                 <div class="mb-2">
                                     <label for="inputUserName" class="form-label">User Name</label>
-                                    <input type="text" class="form-control p-2" id="inputUserName" placeholder="tasnuva binte rahman">
+                                    <input type="text" class="form-control p-2 hq-input" id="inputUserName" placeholder="tasnuva binte rahman">
                                 </div>
                                 <div class="mb-2">
                                     <label for="inputPhoneNum" class="form-label">Phone Number</label>
-                                    <input type="text" class="form-control p-2" id="inputPhoneNum" placeholder="01765432890">
+                                    <input type="text" class="form-control p-2 hq-input" id="inputPhoneNum" placeholder="01765432890">
                                 </div>
                                 <div class="mb-2">
                                     <label for="inputUserEmail" class="form-label">Email address</label>
-                                    <input type="text" class="form-control p-2" id="inputUserEmail" placeholder="name@example.com">
+                                    <input type="text" class="form-control p-2 hq-input" id="inputUserEmail" placeholder="name@example.com">
                                 </div>
                                 <div class="mb-2">
                                     <label for="inputUserAbout" class="form-label">About</label>
-                                    <textarea name="textarea" class="form-control p-2" id="inputUserAbout" maxlength="250">srishti</textarea>
+                                    <textarea name="textarea" class="form-control p-2 hq-input" id="inputUserAbout" maxlength="250">srishti</textarea>
                                     <span id="char_count"></span>
                                 </div>
                             </div>
@@ -136,17 +148,17 @@
                         <div class="container">
                             <label for="inputOldPassword" class="form-label">Old Password</label>
                             <div class="input-group mb-3">
-                                <input type="password" class="form-control p-2" id="inputOldPassword">
+                                <input type="password" class="form-control p-2 hq-input" id="inputOldPassword">
                                 <i class="input-group-text bi bi-eye-slash" id="togglePassword1" onclick="showPassword(this.id, 'inputOldPassword')"></i>
                             </div>
                             <label for="inputNewPassword" class="form-label">New Password</label>
                             <div class="input-group mb-2">
-                                <input type="password" class="form-control p-2" id="inputNewPassword">
+                                <input type="password" class="form-control p-2 hq-input" id="inputNewPassword">
                                 <i class="input-group-text bi bi-eye-slash" id="togglePassword2" onclick="showPassword(this.id, 'inputNewPassword')"></i>
                             </div>
                             <label for="inputConfirmPassword" class="form-label">Confirm Password</label>
                             <div class="input-group mb-2 border-0 shadow-sm">
-                                <input type="password" class="form-control p-2" id="inputConfirmPassword">
+                                <input type="password" class="form-control p-2 hq-input" id="inputConfirmPassword">
                                 <i class="input-group-text bi bi-eye-slash" id="togglePassword3" onclick="showPassword(this.id, 'inputConfirmPassword')"></i>
                             </div>
                         </div>
