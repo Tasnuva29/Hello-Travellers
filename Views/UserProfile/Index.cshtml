@@ -9,14 +9,44 @@
         border-radius: 30px;
         border: 2px solid #e7e7e7;
     }
-    .hq-input:focus {
-        outline: none;
-        border-color: #3498db;
+
+        .hq-input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+    .input-group-text {
+        border-radius: 30px;
+    }
+
+    .post-card {
+        border-radius: 25px;
+        min-height: 300px;
+    }
+
+        /*.post-card .card-header {
+           // background-color: none;
+        }*/
+
+            .post-card .card-header .post-card-img img {
+               
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+            }
+
+    .preview {
+        overflow: hidden;
+        width: 160px;
+        height: 160px;
+        margin: 10px;
+        border: 1px solid grey;
     }
 </style>
-<div class="container-lg container-md">
+<div class="container-lg container-md mt-2">
     <div class="row">
-        <div class="col-lg-3 col-md-4 border" id="profile-info">
+        <!--Profile Card Start-->
+        <div class="col-lg-3 col-md-4" id="profile-info">
             <div class="card rounded shadow">
                 <img src="https://themoney.co/wp-content/uploads/2022/01/How-many-cars-does-Chris-Evans-have-scaled.jpg"
                      class="card-img-top"
@@ -49,11 +79,13 @@
                     <a href="#"
                        class="btn btn-primary text-center d-block"
                        data-bs-toggle="modal"
-                       data-bs-target="#editProfileModal">Edit Profile</a>
+                       data-bs-target="#cropModal">Edit Profile</a>
                 </div>
             </div>
         </div>
-        <div class="col-lg-8 col-md-8 border" id="profile-content">
+        <!--Profile Card End-->
+        <!--Profile Content Start-->
+        <div class="col-lg-8 col-md-8" id="profile-content">
             <div class="container border-1 shadow-sm" id="profile-content-info">
                 <div class="row p-2">
                     <div class="col text-center border-dark">
@@ -87,17 +119,64 @@
                     </div>
                 </div>
             </div>
+            <!--Post Content-->
+            <div class="container-fluid mt-3">
+                <div class="row">
+                    <div class="card post-card border-0 shadow mb-2">
+                        <div class="card-header border-0 shadow-sm">
+                            <div class="hstack gap-3">
+                                <div class="post-card-img">
+                                    <img src="https://themoney.co/wp-content/uploads/2022/01/How-many-cars-does-Chris-Evans-have-scaled.jpg" alt="profileImage">
+                                </div>
+                                <div class= "vstack">
+                                   <div>
+                                       User Name
+                                   </div>
+                                    <div>
+                                        <small>Post Time</small>
+                                    </div>
+                                </div>
+                             </div>   
+
+                            </div>
+                            <div class="card-body">
+                                Lorem ipsum dolor sit amet consectetur, adipisicing elit. Provident labore, assumenda sequi placeat laborum molestiae deserunt in eaque aliquam nisi nam harum quis, adipisci, cum velit nemo temporibus et iste?
+                            </div>
+                            <div class="card-footer">
+                                <small class="text-muted">Last updated 3 mins ago</small>
+                            </div>
+                        </div>
+                </div>
+            </div>
+
+            <div class="container-fluid mt-3">
+                <div class="row">
+                    <div class="card post-card border-0 shadow-sm">
+                        <div class="card-header border-0 shadow-sm">
+                            Another Post
+                        </div>
+                        <div class="card-body">
+                            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Provident labore, assumenda sequi placeat laborum molestiae deserunt in eaque aliquam nisi nam harum quis, adipisci, cum velit nemo temporibus et iste?
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Last updated 3 mins ago</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Post content-->
         </div>
+        <!--Profile Content End-->
     </div>
 </div>
 
-<!--Modal Start-->
+<!--Profile Modal Start-->
 <!-- Modal -->
-<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header border-0 shadow-sm">
-                <h5 class="modal-title" id="exampleModalLabel">Edit Profile</h5>
+                <h5 class="modal-title" id="editProfileModal">Edit Profile</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
@@ -175,12 +254,41 @@
         </div>
     </div>
 </div>
-<!--Modal End-->
+
+<!--Profile Modal End-->
+<!--Crop Modal-->
+<div class="modal fade" id="cropModal" tabindex="-1" role="dialog" aria-labelledby="cropModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header border-0 shadow-sm">
+                <h5 class="modal-title">Crop Image</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="img-container">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <img src="https://themoney.co/wp-content/uploads/2022/01/How-many-cars-does-Chris-Evans-have-scaled.jpg" class="img-fluid" id="inputImage" />
+                        </div>
+                        <div class="col-md-4">
+                            <div class="preview"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="crop" class="btn btn-primary">Crop</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Crop Modal End-->
 
 <script>
+    //---textArea character count---//
     let textArea = document.getElementById("inputUserAbout");
     let showChar = document.getElementById("char_count");
-
     //keydown for key press
     textArea.addEventListener("keydown", countChar);
     function countChar() {
@@ -188,6 +296,7 @@
         console.log(textArea.value + " " + numOfEnteredChar);
         showChar.innerHTML = numOfEnteredChar + "/250";
     }
+    //--password toggle--//
     function showPassword(iconID, inputFieldID) {
         if (document.getElementById(iconID).className === "input-group-text bi bi-eye-slash") {
             document.getElementById(iconID).className = "input-group-text bi bi-eye";
@@ -198,5 +307,7 @@
             document.getElementById(inputFieldID).type = "password";
         }
     }
+        //--crop image--//
+
 </script>
 
