@@ -34,6 +34,7 @@
           <Property Name="CreatorUsername" Type="varchar" MaxLength="32" />
           <Property Name="CreationTime" Type="datetime" />
           <Property Name="ForumID" Type="int" />
+          <Property Name="Title" Type="varchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="React">
           <Key>
@@ -386,6 +387,7 @@
           <NavigationProperty Name="Subforum" Relationship="HTModel.fk_forumID" FromRole="Post" ToRole="Subforum" />
           <NavigationProperty Name="Reacts" Relationship="HTModel.fk_postID" FromRole="Post" ToRole="React" />
           <NavigationProperty Name="Replies" Relationship="HTModel.fk_replyPostID" FromRole="Post" ToRole="Reply" />
+          <Property Name="Title" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="React">
           <Key>
@@ -606,6 +608,7 @@
           <EntitySetMapping Name="Posts">
             <EntityTypeMapping TypeName="HTModel.Post">
               <MappingFragment StoreEntitySet="Post">
+                <ScalarProperty Name="Title" ColumnName="Title" />
                 <ScalarProperty Name="ForumID" ColumnName="ForumID" />
                 <ScalarProperty Name="CreationTime" ColumnName="CreationTime" />
                 <ScalarProperty Name="CreatorUsername" ColumnName="CreatorUsername" />

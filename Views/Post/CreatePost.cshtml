@@ -1,0 +1,22 @@
+﻿<div class="container my-5">
+    <form action="CreatePost" method="post">
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text" for="forumSelection">Options</label>
+            </div>
+            <select name="ForumID" class="custom-select" id="forumSelection">
+                @foreach (var subforum in ViewBag.Subforums)
+                {
+                    <option value=@subforum.ForumID>@subforum.ForumName</option>
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <input class="form-control" type="text" placeholder="Title" name="Title" />
+        </div>
+        <div class="mb-3">
+            <textarea class="form-control" rows="6" name="Content" placeholder="Write here..."></textarea>
+        </div>
+        <button class="btn-primary form-control" type="submit" name="submit">Submit</button>
+    </form>
+</div>
