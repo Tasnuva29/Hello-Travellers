@@ -17,32 +17,30 @@
         <!--Profile Card Start-->
         <div class="col-lg-3 col-md-4" id="profile-info">
             <div class="card rounded shadow">
-                <img src="https://themoney.co/wp-content/uploads/2022/01/How-many-cars-does-Chris-Evans-have-scaled.jpg"
+                <img src="~/Images/default.jpg"
                      class="card-img-top"
                      alt="..." />
                 <div class="card-body">
-                    <h5 class="card-title text-center">User Name</h5>
+                    <h5 class="card-title text-center"> @ViewBag.user.Username</h5>
                     <p class="card-text text-wrap">
-                        Basically about me.Some quick example text to build on the card
-                        title and make up the bulk of the card's content
+                       @ViewBag.user.About
                     </p>
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
+                        <li class="list-group-item username">
                             <i class="bi bi-person-circle"
-                               style="margin-right: 5px; color: #4abdac"></i>Chris Evans
+                               style="margin-right: 5px; color: #4abdac"></i>@ViewBag.user.Name
                         </li>
-                        <li class="list-group-item">
+                        <li class="list-group-item email">
                             <i class="bi bi-envelope-fill"
-                               style="margin-right: 5px; color: #4abdac"></i><a href="mailto:tasnuvabinterahmansrishti@gmail.com"
-                                                                                style="outline: none">srishti@gmail.com</a>
+                               style="margin-right: 5px; color: #4abdac"></i><a href="mailto:'@ViewBag.user.Email'">@ViewBag.user.Email</a>
                         </li>
-                        <li class="list-group-item">
+                        <li class="list-group-item phoneNum">
                             <i class="bi bi-telephone-fill"
-                               style="margin-right: 5px; color: #4abdac"></i>Phone Number
+                               style="margin-right: 5px; color: #4abdac"></i>@ViewBag.user.PhoneNumber
                         </li>
-                        <li class="list-group-item">
+                        <li class="list-group-item gender">
                             <i class="bi bi-info-circle"
-                               style="margin-right: 5px; color: #4abdac"></i>Gender
+                               style="margin-right: 5px; color: #4abdac"></i>@ViewBag.user.Gender
                         </li>
                     </ul>
                     <a href="#"
@@ -102,7 +100,7 @@
 </div>
 
 <!--Edit Profile Modal-->
-@Html.Partial("EditProfile");
+@Html.Partial("EditProfile",(Hello_Travellers.Models.User)@ViewBag.user);
 <!--Edit Profile Modal-->
 
 <!--Crop Modal-->
@@ -117,7 +115,7 @@
                 <div class="img-container">
                     <div class="row">
                         <div class="col-md-8">
-                            <img src="https://themoney.co/wp-content/uploads/2022/01/How-many-cars-does-Chris-Evans-have-scaled.jpg" class="img-fluid" id="inputImage" />
+                            <img src="~/Images/default.jpg" class="img-fluid" id="inputImage" />
                         </div>
                         <div class="col-md-4">
                             <div class="preview"></div>
