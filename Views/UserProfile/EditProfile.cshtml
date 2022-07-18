@@ -17,87 +17,88 @@
 
 <!--Profile Modal Start-->
 <!-- Modal -->
-<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModal" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header border-0 shadow-sm">
-                <h5 class="modal-title" id="editProfileModal">Edit Profile</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-
-            <!--Tabs-->
-            <nav>
-                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                    <button class="nav-link active" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</button>
-                    <button class="nav-link" id="nav-settings-tab" data-bs-toggle="tab" data-bs-target="#nav-settings" type="button" role="tab" aria-controls="nav-settings" aria-selected="false">Settings</button>
+<form action="EditProfile" method="POST">
+    <div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModal" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-0 shadow-sm">
+                    <h5 class="modal-title" id="editProfileModal">Edit Profile</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-            </nav>
-            <!--Tab end-->
-            <div class="modal-body">
-                <div class="tab-content" id="nav-tabContent">
-                    <!--Profile Content Start-->
-                    <div class="tab-pane fade show active" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                        <div class="container">
-                            <!--image change-->
-                            <div class="row">
-                                <div class="col">
-                                    <img class="img-fluid shadow" src="https://themoney.co/wp-content/uploads/2022/01/How-many-cars-does-Chris-Evans-have-scaled.jpg">
+
+                <!--Tabs-->
+                <nav>
+                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                        <button class="nav-link active" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</button>
+                        <button class="nav-link" id="nav-settings-tab" data-bs-toggle="tab" data-bs-target="#nav-settings" type="button" role="tab" aria-controls="nav-settings" aria-selected="false">Settings</button>
+                    </div>
+                </nav>
+                <!--Tab end-->
+                <div class="modal-body">
+                    <div class="tab-content" id="nav-tabContent">
+                        <!--Profile Content Start-->
+                        <div class="tab-pane fade show active" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                            <div class="container">
+                                <!--image change-->
+                                <div class="row">
+                                    <div class="col">
+                                        <img class="img-fluid shadow" src="~/Images/default.jpg" name="DisplayPictureName">
+                                    </div>
                                 </div>
-                            </div>
-                            <!--info change-->
-                            <div class="row mt-3 border-0 shadow-sm">
-                                <div class="mb-2">
-                                    <label for="inputUserName" class="form-label">User Name</label>
-                                    <input type="text" class="form-control p-2 hq-input" id="inputUserName" placeholder="tasnuva binte rahman">
-                                </div>
-                                <div class="mb-2">
-                                    <label for="inputPhoneNum" class="form-label">Phone Number</label>
-                                    <input type="text" class="form-control p-2 hq-input" id="inputPhoneNum" placeholder="01765432890">
-                                </div>
-                                <div class="mb-2">
-                                    <label for="inputUserEmail" class="form-label">Email address</label>
-                                    <input type="text" class="form-control p-2 hq-input" id="inputUserEmail" placeholder="name@example.com">
-                                </div>
-                                <div class="mb-2">
-                                    <label for="inputUserAbout" class="form-label">About</label>
-                                    <textarea name="textarea" class="form-control p-2 hq-input" id="inputUserAbout" maxlength="250">srishti</textarea>
-                                    <span id="char_count"></span>
+                                <!--info change-->
+                                <div class="row mt-3 border-0 shadow-sm">
+                                    <div class="mb-2">
+                                        <label for="inputName" class="form-label ms-2">Name</label>
+                                        <input type="text" class="form-control p-2 hq-input" id="inputName" placeholder="your name" name="Name" value="@ViewBag.user.Name">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="inputPhoneNum" class="form-label ms-2">Phone Number</label>
+                                        <input type="text" class="form-control p-2 hq-input" id="inputPhoneNum" placeholder="01765432890" name="PhoneNumber" value = "@ViewBag.user.PhoneNumber">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="inputUserEmail" class="form-label ms-2">Email address</label>
+                                        <input type="text" class="form-control p-2 hq-input" id="inputUserEmail" placeholder="name@example.com" name="Email" value = "@ViewBag.user.Email">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label for="inputUserAbout" class="form-label ms-2">About</label>
+                                        <textarea name="textarea" class="form-control p-2 hq-input" id="inputUserAbout" maxlength="250" name = "About">@ViewBag.user.About</textarea>
+                                        <span id="char_count"></span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!--Profile Content End-->
-                    <!--Settings Start-->
-                    <div class="tab-pane fade" id="nav-settings" role="tabpanel" aria-labelledby="nav-settings-tab">
-                        <div class="container">
-                            <label for="inputOldPassword" class="form-label">Old Password</label>
-                            <div class="input-group mb-3">
-                                <input type="password" class="form-control p-2 hq-input" id="inputOldPassword">
-                                <i class="input-group-text bi bi-eye-slash" id="togglePassword1" onclick="showPassword(this.id, 'inputOldPassword')"></i>
-                            </div>
-                            <label for="inputNewPassword" class="form-label">New Password</label>
-                            <div class="input-group mb-2">
-                                <input type="password" class="form-control p-2 hq-input" id="inputNewPassword">
-                                <i class="input-group-text bi bi-eye-slash" id="togglePassword2" onclick="showPassword(this.id, 'inputNewPassword')"></i>
-                            </div>
-                            <label for="inputConfirmPassword" class="form-label">Confirm Password</label>
-                            <div class="input-group mb-2 border-0 shadow-sm">
-                                <input type="password" class="form-control p-2 hq-input" id="inputConfirmPassword">
-                                <i class="input-group-text bi bi-eye-slash" id="togglePassword3" onclick="showPassword(this.id, 'inputConfirmPassword')"></i>
+                        <!--Profile Content End-->
+                        <!--Settings Start-->
+                        <div class="tab-pane fade" id="nav-settings" role="tabpanel" aria-labelledby="nav-settings-tab">
+                            <div class="container">
+                                <label for="inputOldPassword" class="form-label ms-2">Old Password</label>
+                                <div class="input-group mb-3">
+                                    <input type="password" class="form-control p-2 hq-input" id="inputOldPassword">
+                                    <i class="input-group-text bi bi-eye-slash" id="togglePassword1" onclick="showPassword(this.id, 'inputOldPassword')"></i>
+                                </div>
+                                <label for="inputNewPassword" class="form-label ms-2">New Password</label>
+                                <div class="input-group mb-2">
+                                    <input type="password" class="form-control p-2 hq-input" id="inputNewPassword">
+                                    <i class="input-group-text bi bi-eye-slash" id="togglePassword2" onclick="showPassword(this.id, 'inputNewPassword')"></i>
+                                </div>
+                                <label for="inputConfirmPassword" class="form-label ms-2">Confirm Password</label>
+                                <div class="input-group mb-2 border-0 shadow-sm">
+                                    <input type="password" class="form-control p-2 hq-input" id="inputConfirmPassword">
+                                    <i class="input-group-text bi bi-eye-slash" id="togglePassword3" onclick="showPassword(this.id, 'inputConfirmPassword')"></i>
+                                </div>
                             </div>
                         </div>
+                        <!--Settings End-->
+
                     </div>
-                    <!--Settings End-->
-
                 </div>
-            </div>
 
-            <div class="modal-footer border-0">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <div class="modal-footer border-0">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" name="submit" data-bs-dismiss="modal" >Save changes</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-
-<!--Profile Modal End-->
+</form>
+    <!--Profile Modal End-->
