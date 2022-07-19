@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hello_Travellers.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,7 +11,11 @@ namespace Hello_Travellers.Controllers
     {
         public ActionResult Index()
         {
+            Entities db = new Entities();
+            ViewBag.Posts = db.Posts.ToList();
+            ViewBag.MediaItems = db.MediaItems.ToList();
             return View();
+            
         }
 
         public ActionResult About()

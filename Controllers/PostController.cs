@@ -23,8 +23,7 @@ namespace Hello_Travellers.Controllers
         public ActionResult CreatePost(Post post)
         {
             ViewBag.Subforums = db.Subforums.ToList();
-            var currentUsername = "bthor";
-            post.CreatorUsername = currentUsername;
+            post.CreatorUsername = (string)Session["Username"];
             db.Posts.Add(post);
             try
             {
