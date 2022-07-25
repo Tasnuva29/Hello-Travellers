@@ -1,0 +1,682 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="HTModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="MediaItem">
+          <Key>
+            <PropertyRef Name="MediaID" />
+          </Key>
+          <Property Name="MediaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="32" />
+          <Property Name="CreationTime" Type="datetime" />
+          <Property Name="UploaderUsername" Type="varchar" MaxLength="32" />
+          <Property Name="PostID" Type="int" />
+        </EntityType>
+        <EntityType Name="Messages">
+          <Key>
+            <PropertyRef Name="MessageID" />
+          </Key>
+          <Property Name="MessageID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Content" Type="varchar" MaxLength="256" />
+          <Property Name="SenderUsername" Type="varchar" MaxLength="32" />
+          <Property Name="ReceiverUsername" Type="varchar" MaxLength="32" />
+          <Property Name="SentTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="PostID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Content" Type="varchar" MaxLength="1024" />
+          <Property Name="CreatorUsername" Type="varchar" MaxLength="32" />
+          <Property Name="CreationTime" Type="datetime" />
+          <Property Name="ForumID" Type="int" />
+          <Property Name="Title" Type="varchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="React">
+          <Key>
+            <PropertyRef Name="PostID" />
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="ReactStatus" Type="int" />
+          <Property Name="PostID" Type="int" Nullable="false" />
+          <Property Name="Username" Type="varchar" MaxLength="32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Reply">
+          <Key>
+            <PropertyRef Name="ReplyID" />
+          </Key>
+          <Property Name="ReplyID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Content" Type="varchar" MaxLength="1024" />
+          <Property Name="PostID" Type="int" />
+          <Property Name="CreatorUsername" Type="varchar" MaxLength="32" />
+          <Property Name="CreationTime" Type="datetime" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="ReportID" />
+          </Key>
+          <Property Name="ReportID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Context" Type="varchar" MaxLength="32" />
+          <Property Name="ContextID" Type="varchar" MaxLength="32" />
+          <Property Name="Reason" Type="varchar" MaxLength="256" />
+          <Property Name="ReporterUsername" Type="varchar" MaxLength="32" />
+        </EntityType>
+        <EntityType Name="Subforum">
+          <Key>
+            <PropertyRef Name="ForumID" />
+          </Key>
+          <Property Name="ForumID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ForumName" Type="varchar" MaxLength="32" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="Username" Type="varchar" MaxLength="32" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="32" />
+          <Property Name="Email" Type="varchar" MaxLength="32" />
+          <Property Name="PhoneNumber" Type="varchar" MaxLength="32" />
+          <Property Name="Gender" Type="varchar" MaxLength="8" />
+          <Property Name="Password" Type="varchar" MaxLength="32" />
+          <Property Name="About" Type="varchar" MaxLength="256" />
+          <Property Name="DisplayPictureName" Type="varchar" MaxLength="256" />
+        </EntityType>
+        <Association Name="fk_creatorUsername">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Post" Type="Self.Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="CreatorUsername" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_forumID">
+          <End Role="Subforum" Type="Self.Subforum" Multiplicity="0..1" />
+          <End Role="Post" Type="Self.Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subforum">
+              <PropertyRef Name="ForumID" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="ForumID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_miPostID">
+          <End Role="Post" Type="Self.Post" Multiplicity="0..1" />
+          <End Role="MediaItem" Type="Self.MediaItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="MediaItem">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_miUploaderUsername">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="MediaItem" Type="Self.MediaItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="MediaItem">
+              <PropertyRef Name="UploaderUsername" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_postID">
+          <End Role="Post" Type="Self.Post" Multiplicity="1" />
+          <End Role="React" Type="Self.React" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="React">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_receiverUsername">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Messages" Type="Self.Messages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Messages">
+              <PropertyRef Name="ReceiverUsername" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_replyCreatorUsername">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Reply" Type="Self.Reply" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Reply">
+              <PropertyRef Name="CreatorUsername" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_replyPostID">
+          <End Role="Post" Type="Self.Post" Multiplicity="0..1" />
+          <End Role="Reply" Type="Self.Reply" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="Reply">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_ReporterUsername">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Report" Type="Self.Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="ReporterUsername" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_senderUsername">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Messages" Type="Self.Messages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Messages">
+              <PropertyRef Name="SenderUsername" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_username">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="React" Type="Self.React" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="React">
+              <PropertyRef Name="Username" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="HTModelStoreContainer">
+          <EntitySet Name="MediaItem" EntityType="Self.MediaItem" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Messages" EntityType="Self.Messages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="React" EntityType="Self.React" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reply" EntityType="Self.Reply" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Report" EntityType="Self.Report" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Subforum" EntityType="Self.Subforum" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_creatorUsername" Association="Self.fk_creatorUsername">
+            <End Role="User" EntitySet="User" />
+            <End Role="Post" EntitySet="Post" />
+          </AssociationSet>
+          <AssociationSet Name="fk_forumID" Association="Self.fk_forumID">
+            <End Role="Subforum" EntitySet="Subforum" />
+            <End Role="Post" EntitySet="Post" />
+          </AssociationSet>
+          <AssociationSet Name="fk_miPostID" Association="Self.fk_miPostID">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="MediaItem" EntitySet="MediaItem" />
+          </AssociationSet>
+          <AssociationSet Name="fk_miUploaderUsername" Association="Self.fk_miUploaderUsername">
+            <End Role="User" EntitySet="User" />
+            <End Role="MediaItem" EntitySet="MediaItem" />
+          </AssociationSet>
+          <AssociationSet Name="fk_postID" Association="Self.fk_postID">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="React" EntitySet="React" />
+          </AssociationSet>
+          <AssociationSet Name="fk_receiverUsername" Association="Self.fk_receiverUsername">
+            <End Role="User" EntitySet="User" />
+            <End Role="Messages" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="fk_replyCreatorUsername" Association="Self.fk_replyCreatorUsername">
+            <End Role="User" EntitySet="User" />
+            <End Role="Reply" EntitySet="Reply" />
+          </AssociationSet>
+          <AssociationSet Name="fk_replyPostID" Association="Self.fk_replyPostID">
+            <End Role="Post" EntitySet="Post" />
+            <End Role="Reply" EntitySet="Reply" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ReporterUsername" Association="Self.fk_ReporterUsername">
+            <End Role="User" EntitySet="User" />
+            <End Role="Report" EntitySet="Report" />
+          </AssociationSet>
+          <AssociationSet Name="fk_senderUsername" Association="Self.fk_senderUsername">
+            <End Role="User" EntitySet="User" />
+            <End Role="Messages" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="fk_username" Association="Self.fk_username">
+            <End Role="User" EntitySet="User" />
+            <End Role="React" EntitySet="React" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="HTModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="Username" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="Name" MaxLength="32" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="Email" MaxLength="32" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="PhoneNumber" MaxLength="32" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="Gender" MaxLength="8" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="Password" MaxLength="32" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="About" MaxLength="256" FixedLength="false" Unicode="false" Type="String" />
+          <Property Name="DisplayPictureName" MaxLength="256" FixedLength="false" Unicode="false" Type="String" />
+          <NavigationProperty Name="MediaItems" Relationship="HTModel.fk_miUploaderUsername" FromRole="User" ToRole="MediaItem" />
+          <NavigationProperty Name="ReceivedMessages" Relationship="HTModel.fk_receiverUsername" FromRole="User" ToRole="Message" />
+          <NavigationProperty Name="SentMessages" Relationship="HTModel.fk_senderUsername" FromRole="User" ToRole="Message" />
+          <NavigationProperty Name="Posts" Relationship="HTModel.fk_creatorUsername" FromRole="User" ToRole="Post" />
+          <NavigationProperty Name="Reacts" Relationship="HTModel.fk_username" FromRole="User" ToRole="React" />
+          <NavigationProperty Name="Replies" Relationship="HTModel.fk_replyCreatorUsername" FromRole="User" ToRole="Reply" />
+          <NavigationProperty Name="Reports" Relationship="HTModel.fk_ReporterUsername" FromRole="User" ToRole="Report" />
+          </EntityType>
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="MediaItems" EntityType="HTModel.MediaItem" />
+          <EntitySet Name="Messages" EntityType="HTModel.Message" />
+          <EntitySet Name="Posts" EntityType="HTModel.Post" />
+          <EntitySet Name="Reacts" EntityType="HTModel.React" />
+          <EntitySet Name="Replies" EntityType="HTModel.Reply" />
+          <EntitySet Name="Reports" EntityType="HTModel.Report" />
+          <EntitySet Name="Subforums" EntityType="HTModel.Subforum" />
+          <AssociationSet Name="fk_miPostID" Association="HTModel.fk_miPostID">
+            <End Role="Post" EntitySet="Posts" />
+            <End Role="MediaItem" EntitySet="MediaItems" />
+          </AssociationSet>
+          <AssociationSet Name="fk_miUploaderUsername" Association="HTModel.fk_miUploaderUsername">
+            <End Role="User" EntitySet="Users" />
+            <End Role="MediaItem" EntitySet="MediaItems" />
+          </AssociationSet>
+          <AssociationSet Name="fk_receiverUsername" Association="HTModel.fk_receiverUsername">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Message" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="fk_senderUsername" Association="HTModel.fk_senderUsername">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Message" EntitySet="Messages" />
+          </AssociationSet>
+          <AssociationSet Name="fk_creatorUsername" Association="HTModel.fk_creatorUsername">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Post" EntitySet="Posts" />
+          </AssociationSet>
+          <AssociationSet Name="fk_forumID" Association="HTModel.fk_forumID">
+            <End Role="Subforum" EntitySet="Subforums" />
+            <End Role="Post" EntitySet="Posts" />
+          </AssociationSet>
+          <AssociationSet Name="fk_postID" Association="HTModel.fk_postID">
+            <End Role="Post" EntitySet="Posts" />
+            <End Role="React" EntitySet="Reacts" />
+          </AssociationSet>
+          <AssociationSet Name="fk_replyPostID" Association="HTModel.fk_replyPostID">
+            <End Role="Post" EntitySet="Posts" />
+            <End Role="Reply" EntitySet="Replies" />
+          </AssociationSet>
+          <AssociationSet Name="fk_username" Association="HTModel.fk_username">
+            <End Role="User" EntitySet="Users" />
+            <End Role="React" EntitySet="Reacts" />
+          </AssociationSet>
+          <AssociationSet Name="fk_replyCreatorUsername" Association="HTModel.fk_replyCreatorUsername">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Reply" EntitySet="Replies" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ReporterUsername" Association="HTModel.fk_ReporterUsername">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Report" EntitySet="Reports" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="MediaItem">
+          <Key>
+            <PropertyRef Name="MediaID" />
+          </Key>
+          <Property Name="MediaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="CreationTime" Type="DateTime" Precision="3" />
+          <Property Name="UploaderUsername" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="PostID" Type="Int32" />
+          <NavigationProperty Name="Post" Relationship="HTModel.fk_miPostID" FromRole="MediaItem" ToRole="Post" />
+          <NavigationProperty Name="User" Relationship="HTModel.fk_miUploaderUsername" FromRole="MediaItem" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Message">
+          <Key>
+            <PropertyRef Name="MessageID" />
+          </Key>
+          <Property Name="MessageID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Content" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="SenderUsername" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="ReceiverUsername" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="SentTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Receiver" Relationship="HTModel.fk_receiverUsername" FromRole="Message" ToRole="User" />
+          <NavigationProperty Name="Sender" Relationship="HTModel.fk_senderUsername" FromRole="Message" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="PostID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Content" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <Property Name="CreatorUsername" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="CreationTime" Type="DateTime" Precision="3" />
+          <Property Name="ForumID" Type="Int32" />
+          <NavigationProperty Name="MediaItems" Relationship="HTModel.fk_miPostID" FromRole="Post" ToRole="MediaItem" />
+          <NavigationProperty Name="User" Relationship="HTModel.fk_creatorUsername" FromRole="Post" ToRole="User" />
+          <NavigationProperty Name="Subforum" Relationship="HTModel.fk_forumID" FromRole="Post" ToRole="Subforum" />
+          <NavigationProperty Name="Reacts" Relationship="HTModel.fk_postID" FromRole="Post" ToRole="React" />
+          <NavigationProperty Name="Replies" Relationship="HTModel.fk_replyPostID" FromRole="Post" ToRole="Reply" />
+          <Property Name="Title" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="React">
+          <Key>
+            <PropertyRef Name="PostID" />
+            <PropertyRef Name="Username" />
+          </Key>
+          <Property Name="ReactStatus" Type="Int32" />
+          <Property Name="PostID" Type="Int32" Nullable="false" />
+          <Property Name="Username" Type="String" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Post" Relationship="HTModel.fk_postID" FromRole="React" ToRole="Post" />
+          <NavigationProperty Name="User" Relationship="HTModel.fk_username" FromRole="React" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Reply">
+          <Key>
+            <PropertyRef Name="ReplyID" />
+          </Key>
+          <Property Name="ReplyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Content" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <Property Name="PostID" Type="Int32" />
+          <Property Name="CreatorUsername" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="CreationTime" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Post" Relationship="HTModel.fk_replyPostID" FromRole="Reply" ToRole="Post" />
+          <NavigationProperty Name="User" Relationship="HTModel.fk_replyCreatorUsername" FromRole="Reply" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Report">
+          <Key>
+            <PropertyRef Name="ReportID" />
+          </Key>
+          <Property Name="ReportID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Context" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="ContextID" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="Reason" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="ReporterUsername" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="User" Relationship="HTModel.fk_ReporterUsername" FromRole="Report" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Subforum">
+          <Key>
+            <PropertyRef Name="ForumID" />
+          </Key>
+          <Property Name="ForumID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ForumName" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Posts" Relationship="HTModel.fk_forumID" FromRole="Subforum" ToRole="Post" />
+        </EntityType>
+        <Association Name="fk_miPostID">
+          <End Type="HTModel.Post" Role="Post" Multiplicity="0..1" />
+          <End Type="HTModel.MediaItem" Role="MediaItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="MediaItem">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_miUploaderUsername">
+          <End Type="HTModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="HTModel.MediaItem" Role="MediaItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="MediaItem">
+              <PropertyRef Name="UploaderUsername" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_receiverUsername">
+          <End Type="HTModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="HTModel.Message" Role="Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Message">
+              <PropertyRef Name="ReceiverUsername" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_senderUsername">
+          <End Type="HTModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="HTModel.Message" Role="Message" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Message">
+              <PropertyRef Name="SenderUsername" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_creatorUsername">
+          <End Type="HTModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="HTModel.Post" Role="Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="CreatorUsername" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_forumID">
+          <End Type="HTModel.Subforum" Role="Subforum" Multiplicity="0..1" />
+          <End Type="HTModel.Post" Role="Post" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subforum">
+              <PropertyRef Name="ForumID" />
+            </Principal>
+            <Dependent Role="Post">
+              <PropertyRef Name="ForumID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_postID">
+          <End Type="HTModel.Post" Role="Post" Multiplicity="1" />
+          <End Type="HTModel.React" Role="React" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="React">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_replyPostID">
+          <End Type="HTModel.Post" Role="Post" Multiplicity="0..1" />
+          <End Type="HTModel.Reply" Role="Reply" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Post">
+              <PropertyRef Name="PostID" />
+            </Principal>
+            <Dependent Role="Reply">
+              <PropertyRef Name="PostID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_username">
+          <End Type="HTModel.User" Role="User" Multiplicity="1" />
+          <End Type="HTModel.React" Role="React" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="React">
+              <PropertyRef Name="Username" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_replyCreatorUsername">
+          <End Type="HTModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="HTModel.Reply" Role="Reply" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Reply">
+              <PropertyRef Name="CreatorUsername" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_ReporterUsername">
+          <End Type="HTModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="HTModel.Report" Role="Report" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Report">
+              <PropertyRef Name="ReporterUsername" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="HTModelStoreContainer" CdmEntityContainer="Entities">
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="HTModel.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="About" ColumnName="About" />
+                <ScalarProperty Name="DisplayPictureName" ColumnName="DisplayPictureName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MediaItems">
+            <EntityTypeMapping TypeName="HTModel.MediaItem">
+              <MappingFragment StoreEntitySet="MediaItem">
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="UploaderUsername" ColumnName="UploaderUsername" />
+                <ScalarProperty Name="CreationTime" ColumnName="CreationTime" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="MediaID" ColumnName="MediaID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Messages">
+            <EntityTypeMapping TypeName="HTModel.Message">
+              <MappingFragment StoreEntitySet="Messages">
+                <ScalarProperty Name="SentTime" ColumnName="SentTime" />
+                <ScalarProperty Name="ReceiverUsername" ColumnName="ReceiverUsername" />
+                <ScalarProperty Name="SenderUsername" ColumnName="SenderUsername" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="MessageID" ColumnName="MessageID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Posts">
+            <EntityTypeMapping TypeName="HTModel.Post">
+              <MappingFragment StoreEntitySet="Post">
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="ForumID" ColumnName="ForumID" />
+                <ScalarProperty Name="CreationTime" ColumnName="CreationTime" />
+                <ScalarProperty Name="CreatorUsername" ColumnName="CreatorUsername" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reacts">
+            <EntityTypeMapping TypeName="HTModel.React">
+              <MappingFragment StoreEntitySet="React">
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="ReactStatus" ColumnName="ReactStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Replies">
+            <EntityTypeMapping TypeName="HTModel.Reply">
+              <MappingFragment StoreEntitySet="Reply">
+                <ScalarProperty Name="CreationTime" ColumnName="CreationTime" />
+                <ScalarProperty Name="CreatorUsername" ColumnName="CreatorUsername" />
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="ReplyID" ColumnName="ReplyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reports">
+            <EntityTypeMapping TypeName="HTModel.Report">
+              <MappingFragment StoreEntitySet="Report">
+                <ScalarProperty Name="ReporterUsername" ColumnName="ReporterUsername" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="ContextID" ColumnName="ContextID" />
+                <ScalarProperty Name="Context" ColumnName="Context" />
+                <ScalarProperty Name="ReportID" ColumnName="ReportID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Subforums">
+            <EntityTypeMapping TypeName="HTModel.Subforum">
+              <MappingFragment StoreEntitySet="Subforum">
+                <ScalarProperty Name="ForumName" ColumnName="ForumName" />
+                <ScalarProperty Name="ForumID" ColumnName="ForumID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

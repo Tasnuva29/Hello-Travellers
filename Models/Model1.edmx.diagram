@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="13a63048dc9a4c5994e552ea23d0d5a1" Name="Diagram1">
+        <EntityTypeShape EntityType="HTModel.User" PointX="0.75" PointY="6.625" Width="1.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="HTModel.MediaItem" Width="1.5" PointX="3" PointY="7.375" />
+        <EntityTypeShape EntityType="HTModel.Message" Width="1.5" PointX="0.75" PointY="12.375" />
+        <EntityTypeShape EntityType="HTModel.Post" Width="1.5" PointX="6" PointY="7.125" />
+        <EntityTypeShape EntityType="HTModel.React" Width="1.5" PointX="6" PointY="4" />
+        <EntityTypeShape EntityType="HTModel.Reply" Width="1.5" PointX="8.25" PointY="7.375" />
+        <EntityTypeShape EntityType="HTModel.Report" Width="1.5" PointX="2.5" PointY="4.75" />
+        <EntityTypeShape EntityType="HTModel.Subforum" Width="1.5" PointX="4.25" PointY="4.75" />
+        <AssociationConnector Association="HTModel.fk_miPostID" />
+        <AssociationConnector Association="HTModel.fk_miUploaderUsername" />
+        <AssociationConnector Association="HTModel.fk_receiverUsername" />
+        <AssociationConnector Association="HTModel.fk_senderUsername" />
+        <AssociationConnector Association="HTModel.fk_creatorUsername" />
+        <AssociationConnector Association="HTModel.fk_forumID" />
+        <AssociationConnector Association="HTModel.fk_postID" />
+        <AssociationConnector Association="HTModel.fk_replyPostID" />
+        <AssociationConnector Association="HTModel.fk_username" />
+        <AssociationConnector Association="HTModel.fk_replyCreatorUsername" />
+        <AssociationConnector Association="HTModel.fk_ReporterUsername" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
