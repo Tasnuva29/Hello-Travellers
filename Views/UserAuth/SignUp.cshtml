@@ -10,20 +10,27 @@
         <h1 class="signup-text text-center py-3">Sign Up</h1>
 
         <div class="signup-input-group">
-            <input type="text" placeholder="Name" name="Name" required>
+            <input type="text" placeholder="Name" pattern="[A-Za-z ]*" title="only A-z,a-z,Space is allowed" name="Name" required>
         </div>
 
         <div class="signup-input-group">
-            <input type="text" placeholder="Username" name="Username" required>
+            <input type="text" placeholder="Username" pattern="[A-Za-z0-9]*" title="only A-z,a-z,0-9 is allowed" name="Username" required>
         </div>
         <div class="signup-input-group">
             <input type="email" placeholder="Email" name="Email" required>
+
+
         </div>
         <div class="signup-input-group">
-            <input type="password" placeholder="Password" name="Password" required>
+            <input type="password" placeholder="Password" name="Password" id="myInput1" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" required>
+            <i class="input-group-text bi bi-eye-slash" id="togglePassword1" onclick="showPass()"></i>
+            @*@<input type="checkbox" onclick="myFunction()">Show Password*@
+
+
         </div>
         <div class="signup-input-group">
-            <input type="password" placeholder="Confirm Password" name="ConfirmPassword" required>
+            <input type="password" placeholder="Confirm Password" name="ConfirmPassword" id="myInput2" required>
+            <i class="input-group-text bi bi-eye-slash" id="togglePassword2" onclick="showConPass()"></i>
         </div>
 
 
@@ -44,12 +51,43 @@
             </div>
         </div>
         <div class="signup-input-group">
-            <button type="submit" name="submit" class="SignupBtn">Sign Up</button>
+            <button type="submit" name="submit" value="next" class="SignupBtn">Sign Up</button>
         </div>
-        <p class="signup-register-text text-center">Have an account? <a href="/Home/Contact">Login Here</a></p>
+        <p class="signup-register-text text-center">Have an account? <a href="/UserAuth/SendEmail">Login Here</a></p>
+
 
 
     </form>
-
-
 </div>
+<script>
+    function showPass() {
+        var x = document.getElementById("myInput1");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+
+    function showConPass() {
+        var x = document.getElementById("myInput2");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
+    }
+
+
+
+</script>
+
+@if (ViewBag.Message != null)
+{
+     <script>
+          type = "text/javascript" & gt;
+    window.onload = function() {
+        alert("@ViewBag.Message");
+    };
+  
+}

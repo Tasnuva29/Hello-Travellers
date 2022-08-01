@@ -9,6 +9,7 @@ namespace Hello_Travellers.Controllers
 {
     public class UserProfileController : Controller
     {
+        Entities db = new Entities();
         // GET: UserProfile
         public ActionResult Index()
         {
@@ -35,5 +36,22 @@ namespace Hello_Travellers.Controllers
             }
             return PartialView(user);
         }
+
+        public ActionResult messages()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult messages(string messages,User user, Message message)
+        {
+           
+            
+            var username = db.Users.Where(temp => temp.Username == user.Username);
+
+            Message add = new Message { Content = messages,Sender = (User)username};
+            return View();
+        }
+
+
     }
 }

@@ -43,5 +43,37 @@ namespace Hello_Travellers.Controllers
             }
             return View();
         }
+
+        [HttpGet]
+        public ActionResult Forum(int forumID)
+        {
+
+            var fetch = db.Posts.Where(m => m.ForumID == forumID).ToList();
+            //var fetch = db.Posts.ToList();
+            return View(fetch);
+        }
+
+        public ActionResult TravelPlans(String submit)
+        {
+
+            string s = ViewBag.submit;
+            var fetch = db.Posts.ToList();
+            return View(fetch);
+        }
+
+       
+ public ActionResult ShortStories(String submit)
+        {
+
+            string s = ViewBag.submit;
+            var fetch = db.Posts.ToList();
+            return View(fetch);
+        }
+
+
+
+
+
+
     }
 }

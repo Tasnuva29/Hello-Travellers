@@ -1,60 +1,4 @@
-﻿<div id="indexCarousel" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-indicators">
-
-        <button type="button" data-bs-target="#indexCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-        <button type="button" data-bs-target="#indexCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-        <button type="button" data-bs-target="#indexCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
-    </div>
-    <div class="carousel-inner">
-        <div class="carousel-item index-carousal-fitter active">
-            <img src=@Url.Content("~/Images/MediaContent/" + ViewBag.MediaItems[0].MediaID + "." + ViewBag.MediaItems[0].Type) class="index-carousal-img" alt="...">
-            <div class="index-carousal-content">
-                <h1 class="index-post-header">@ViewBag.Posts[0].Title</h1>
-                <p class="index-post-writer">@String.Format("by {0}", ViewBag.Posts[0].CreatorUsername)</p>
-            </div>
-        </div>
-        @for (int i = 1; i < ViewBag.MediaItems.Count; ++i)
-        {
-            <div class="carousel-item index-carousal-fitter">
-                <img src=@Url.Content("~/Images/MediaContent/" + ViewBag.MediaItems[i].MediaID + "." + ViewBag.MediaItems[i].Type) class="index-carousal-img" alt="...">
-                <div class="index-carousal-content">
-                    <h1 class="index-post-header">@ViewBag.Posts[i].Title</h1>
-                    <p class="index-post-writer">@String.Format("by {0}", ViewBag.Posts[i].CreatorUsername)</p>
-                </div>
-            </div>
-        }
-        @*<div class="carousel-item index-carousal-fitter active">
-                <img src="~/Images/img1.jpg" class="index-carousal-img" alt="...">
-                <div class="index-carousal-content">
-                    <h1 class="index-post-header">A journey to Space</h1>
-                    <p class="index-post-writer">by Kite L.</p>
-                </div>
-            </div>
-            <div class="carousel-item index-carousal-fitter">
-                <img src="~/Images/img1.png" class="index-carousal-img" alt="...">
-                <div class="index-carousal-content">
-                    <h1 class="index-post-header">A journey to Space (Part 2)</h1>
-                    <p class="index-post-writer">by Kite L.</p>
-
-                </div>
-            </div>
-            <div class="carousel-item index-carousal-fitter">
-                <img src="~/Images/img2.jpg" class="index-carousal-img" alt="...">
-                <div class="index-carousal-content">
-                    <h1 class="index-post-header">Visit the land of the Vikings!</h1>
-                    <p class="index-post-writer">by Thor Bjornsson</p>
-                </div>
-            </div>*@
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#indexCarousel" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#indexCarousel" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-    </button>
-</div>
+﻿
 
 <div class="container-fluid my-5">
     <div class="btn-toolbar my-5" role="toolbar">
@@ -63,40 +7,46 @@
             <button type="button" class="btn btn-secondary">Most Upvoted</button>
             <button type="button" class="btn btn-secondary">Most Commented</button>
         </div>
-        <div class="btn-group mx-2" role="group" aria-label="Forum Group">
-            <button type="button" class="btn btn-secondary">Experiences</button>
-            <button type="button" class="btn btn-secondary">Travel Plans</button>
-            <button type="button" class="btn btn-secondary">Short Stories</button>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-12 col-md-4">
-            <div class="card mx-2">
-                <img class="card-img-top" src="~/Images/img1.jpg" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+       
+            <form>
+                @using (Html.BeginForm("Forum", "Post", FormMethod.Post))
+                {
+                    <div class="btn-group mx-2" role="group" aria-label="Forum Group">
+                        <button type="button" class="btn btn-secondary" name="submit" value="Experiences" onclick="@("window.location.href='"+Url.Content("~/Post/Forum?forumID=1")+"'"); ">Experiences</button>
+                        <button type="button" class="btn btn-secondary" name="submit" value="Travel Plans" onclick="@("window.location.href='"+Url.Content("~/Post/Forum?forumID=2")+"'");">Travel Plans</button>
+                        <button type="button" class="btn btn-secondary" name="submit" value="Short Stories" onclick="@("window.location.href='"+Url.Content("~/Post/Forum?forumID=3")+"'");">Short Stories</button>
+                    </div>
+                }
+                </form>
+        
+        <div class="row">
+            <div class="col-sm-12 col-md-4">
+                <div class="card mx-2">
+                    <img class="card-img-top" src="~/Images/img1.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-sm-12 col-md-4">
-            <div class="card mx-2">
-                <img class="card-img-top" src="~/Images/img1.jpg" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <div class="col-sm-12 col-md-4">
+                <div class="card mx-2">
+                    <img class="card-img-top" src="~/Images/img1.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-sm-12 col-md-4">
-            <div class="card mx-2">
-                <img class="card-img-top" src="~/Images/img1.jpg" alt="Card image cap">
-                <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <div class="col-sm-12 col-md-4">
+                <div class="card mx-2">
+                    <img class="card-img-top" src="~/Images/img1.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">Card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
                 </div>
             </div>
-        </div>
 
+        </div>
     </div>
-</div>

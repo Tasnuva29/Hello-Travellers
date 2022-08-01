@@ -11,6 +11,7 @@ namespace Hello_Travellers.Controllers
     {
         public ActionResult Index()
         {
+          
             Entities db = new Entities();
             ViewBag.Posts = db.Posts.ToList();
             ViewBag.MediaItems = db.MediaItems.ToList();
