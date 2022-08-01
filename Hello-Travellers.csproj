@@ -278,6 +278,7 @@
     <Content Include="Views\Post\Forum.cshtml" />
     <Content Include="Views\Post\TravelPlans.cshtml" />
     <Content Include="Views\Post\ShortStories.cshtml" />
+    <Content Include="Views\Post\ViewPost.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\UserProfile\EditProfile.cshtml" />

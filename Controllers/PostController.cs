@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity.Validation;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -10,37 +11,59 @@ namespace Hello_Travellers.Controllers
 {
     public class PostController : Controller
     {
-        Entities db = new Entities();
 
         // GET: UserProfile
         public ActionResult CreatePost()
         {
+            Entities db = new Entities();
             ViewBag.Subforums = db.Subforums.ToList();
+            db.Dispose();
             return View();
         }
 
         [HttpPost]
-        public ActionResult CreatePost(Post post)
+        public ActionResult CreatePost(Post post, IEnumerable<HttpPostedFileBase> postedImages)
         {
-            ViewBag.Subforums = db.Subforums.ToList();
-            post.CreatorUsername = (string)Session["Username"];
-            db.Posts.Add(post);
-            try
+            string path = Server.MapPath("~/Images/MediaContent/");
+            if (!Directory.Exists(path))
             {
-                db.SaveChanges();
-                Response.Redirect("~/Home/Index");
+                Directory.CreateDirectory(path);
             }
-            catch (DbEntityValidationException ex)
+            
+
+            using (Entities db = new Entities()) 
             {
-                foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                post.CreatorUsername = (string)Session["Username"];
+                post.CreationTime = DateTime.Now;
+                db.Posts.Add(post);
+                db.SaveChanges();
+
+                if (postedImages != null)
                 {
-                    foreach (var validationError in entityValidationErrors.ValidationErrors)
+                    foreach (var image in postedImages)
                     {
-                        Response.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                        MediaItem mediaItem = new MediaItem();
+                        mediaItem.PostID = post.PostID;
+                        mediaItem.UploaderUsername = post.CreatorUsername;
+                        mediaItem.CreationTime = post.CreationTime;
+                        mediaItem.Type = Path.GetExtension(image.FileName);
+                        db.MediaItems.Add(mediaItem);
+                        db.SaveChanges();
+                        var fileName = mediaItem.MediaID + mediaItem.Type;
+                        image.SaveAs(path + fileName);
                     }
                 }
 
+
+
+                ViewBag.Subforums = db.Subforums.ToList();
             }
+
+            return View();
+        }
+
+        public ActionResult ViewPost()
+        {
             return View();
         }
 
