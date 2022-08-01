@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
@@ -29,9 +30,8 @@ namespace Hello_Travellers.Controllers
             {
                 Directory.CreateDirectory(path);
             }
-            
 
-            using (Entities db = new Entities()) 
+            using (Entities db = new Entities())
             {
                 post.CreatorUsername = (string)Session["Username"];
                 post.CreationTime = DateTime.Now;
@@ -53,17 +53,37 @@ namespace Hello_Travellers.Controllers
                         image.SaveAs(path + fileName);
                     }
                 }
-
-
-
                 ViewBag.Subforums = db.Subforums.ToList();
             }
-
             return View();
         }
 
-        public ActionResult ViewPost()
+        [HttpGet]
+        public ActionResult ViewPost(int PostID)
         {
+            TempData["PostID"] = PostID;
+            Entities db = new Entities();
+            ViewBag.Replies = db.Replies
+                .Where(temp => temp.PostID == PostID)
+                .Include(temp => temp.User)
+                .ToList();
+            db.Dispose();
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ViewPost(Reply reply)
+        {
+            reply.CreatorUsername = (string)Session["Username"];
+            reply.CreationTime = DateTime.Now;
+
+            reply.PostID = (int)TempData["PostID"];
+            Entities db = new Entities();
+            db.Replies.Add(reply);
+            db.SaveChanges();
+            
+            db.Dispose();
+
             return View();
         }
     }

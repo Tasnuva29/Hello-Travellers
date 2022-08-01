@@ -17,15 +17,27 @@
         aspect-ratio: 1/1;
         width: 100%;
     }
+
+    .post-view-height {
+        height: 94vh;
+    }
+
+    .pt-2 {
+        padding-top: 2rem;
+    }
+
+    .bg-grey {
+        background-color: whitesmoke;
+    }
 </style>
-<div class="container-fluid p-5">
+<div class="container-fluid">
     <div class="row">
-        <div class="col-md-9 col-sm-12 overflow-auto">
+        <div class="col-md-9 col-sm-12 post-view-height overflow-auto p-3">
             <img class="post-img rounded" src="~/Images/img1.jpg" />
             <p class="text-center fs-1 fw-bold font-monospace">Lorem ipsum dolor</p>
             <p class="text-start font-monospace">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ornare laoreet euismod. Aliquam vulputate mattis neque, vel vehicula metus. Donec nec augue aliquet, cursus purus scelerisque, finibus purus. In sed hendrerit neque. Nam quis eros scelerisque urna eleifend pellentesque. Duis interdum semper metus sodales consectetur. Integer sit amet convallis libero. Vestibulum at euismod massa, ac auctor eros.
-                
+
                 Nullam rhoncus dapibus urna eget luctus. Nam sagittis purus lectus, quis condimentum dolor rhoncus sit amet. Nulla ex est, viverra et euismod eget, dignissim sed erat. Aliquam dictum purus at placerat pulvinar. Donec vel quam vulputate, aliquet urna nec, convallis erat. Ut sit amet vestibulum ipsum. Sed diam orci, efficitur nec metus sit amet, mattis ornare purus.
 
                 Maecenas lorem enim, luctus ac turpis at, mattis maximus nibh. Nunc imperdiet lorem eget turpis imperdiet blandit. Etiam tristique, velit finibus fringilla maximus, arcu lorem dapibus lacus, nec vulputate eros ligula blandit odio. Mauris dapibus velit velit, sit amet malesuada elit euismod sit amet. Cras tempus risus non massa iaculis, et lobortis erat ultrices. Donec eget egestas elit. Vestibulum vel laoreet lectus.
@@ -36,17 +48,28 @@
 
             </p>
         </div>
-        <div class="col-md-3 col-sm-12 overflow-auto">
+        <div class="col-md-3 col-sm-12 overflow-auto position-sticky">
             <div class="container-fluid">
-                <div class="row">
-                    <div class="col-2 p-0 m-0">
-                        <img class="rounded-circle post-img-profile" src="~/Images/img1.jpg" />
-                    </div>
-                    <div class="col-10">
-                        <span class="fw-bold">Kazi Toufique Elahi</span>
-                        <div class="fw-normal">Lorem Ipsum Epic Bruh</div>
+                <div class="row my-3">
+                    <div class="col-11 p-0">
+                        <form action="~/Post/ViewPost" method="post" class="p-0">
+                            <textarea class="form-control my-1" rows="3" placeholder="Comment something..." name="Content"></textarea>
+                            <input type="submit" class="btn-primary form-control" value="Comment" />
+                        </form>
                     </div>
                 </div>
+                @foreach (var comment in ViewBag.Replies)
+                {
+                    <div class="row my-3">
+                        <div class="col-2 p-0 m-0">
+                            <img class="rounded-circle post-img-profile" src=@Url.Content("~/Images/ProfilePicture/") />
+                        </div>
+                        <div class="col-9 mx-1 rounded bg-grey">
+                            <span class="fw-bold">@comment.CreatorUsername</span>
+                            <div class="fw-normal">@comment.Content</div>
+                        </div>
+                    </div>
+                }
             </div>
         </div>
     </div>
