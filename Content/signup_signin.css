@@ -8,7 +8,7 @@
     padding: 20px;
 }
 
-.signup-input-group input {
+.input-group input {
     width: 100%;
     height: 100%;
     padding: 15px 20px;
@@ -17,14 +17,14 @@
     border: 2px solid #e7e7e7;
 }
 
-.signup-input-group {
+.input-group {
     width: 100%;
     height: 50px;
     margin-bottom: 25px;
     margin-top: 30px;
 }
 
-    .signup-input-group input:focus {
+    .input-group input:focus {
         border-color: #3498db;
     }
 
@@ -69,3 +69,4 @@
         transform: translateY(-5px);
         background: #6c5ce7;
     }
+

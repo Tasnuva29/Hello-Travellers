@@ -45,6 +45,9 @@
                             @Html.ActionLink("Create Post", "CreatePost", "Post", new { area = "" }, new { @class = "nav-link" })
                         </li>
                         <li class="nav-item">
+                            @Html.ActionLink("My Profile", "Index", "UserProfile", new { area = "" }, new { @class = "nav-link" })
+                        </li>
+                        <li class="nav-item">
                             @Html.ActionLink("Sign Out", "SignOut", "UserAuth", new { area = "" }, new { @class = "nav-link" })
                         </li>
                     }
