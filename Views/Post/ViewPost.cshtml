@@ -1,3 +1,4 @@
+
 <style>
     .post-img {
         width: 100%;
@@ -33,40 +34,67 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-9 col-sm-12 post-view-height overflow-auto p-3">
-            <img class="post-img rounded" src="~/Images/img1.jpg" />
-            <p class="text-center fs-1 fw-bold font-monospace">Lorem ipsum dolor</p>
-            <p class="text-start font-monospace">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ornare laoreet euismod. Aliquam vulputate mattis neque, vel vehicula metus. Donec nec augue aliquet, cursus purus scelerisque, finibus purus. In sed hendrerit neque. Nam quis eros scelerisque urna eleifend pellentesque. Duis interdum semper metus sodales consectetur. Integer sit amet convallis libero. Vestibulum at euismod massa, ac auctor eros.
+            <p class="text-center fs-1 fw-bold font-monospace">@ViewBag.Post.Title</p>
+            <p class="text-center fw-bold font-monospace">Written By @ViewBag.Writer.Name, Posted on @ViewBag.Post.CreationTime</p>
+            @if (ViewBag.Media.Length > 0)
+            {
+                <div id="indexCarousel" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        @for (int i = 0; i < ViewBag.Media.Length; ++i)
+                        {
+                            <button type="button" id=@String.Format("slideBtn{0}", i) data-bs-target="#indexCarousel" data-bs-slide-to=@String.Format("{0}", i) aria-label=@String.Format("Slide {0}", i + 1)></button>
+                        }
+                    </div>
+                    <div class="carousel-inner">
+                        @for (int i = 0; i < ViewBag.Media.Length; ++i)
+                        {
+                            <div id=@String.Format("slideInner{0}", i) class="carousel-item index-carousal-fitter">
+                                <img src=@Url.Content("~/Images/MediaContent/" + ViewBag.Media[i].MediaID + "." + ViewBag.Media[i].Type) class="post-img rounded index-carousal-img" alt="...">
+                            </div>
+                        }
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#indexCarousel" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#indexCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            }
 
-                Nullam rhoncus dapibus urna eget luctus. Nam sagittis purus lectus, quis condimentum dolor rhoncus sit amet. Nulla ex est, viverra et euismod eget, dignissim sed erat. Aliquam dictum purus at placerat pulvinar. Donec vel quam vulputate, aliquet urna nec, convallis erat. Ut sit amet vestibulum ipsum. Sed diam orci, efficitur nec metus sit amet, mattis ornare purus.
-
-                Maecenas lorem enim, luctus ac turpis at, mattis maximus nibh. Nunc imperdiet lorem eget turpis imperdiet blandit. Etiam tristique, velit finibus fringilla maximus, arcu lorem dapibus lacus, nec vulputate eros ligula blandit odio. Mauris dapibus velit velit, sit amet malesuada elit euismod sit amet. Cras tempus risus non massa iaculis, et lobortis erat ultrices. Donec eget egestas elit. Vestibulum vel laoreet lectus.
-
-                Ut dapibus diam sit amet auctor laoreet. Praesent ultrices pulvinar porttitor. Fusce placerat dui odio, ut fermentum ante accumsan eu. Mauris convallis eu leo vitae pharetra. Cras id blandit tortor. Curabitur tortor neque, placerat quis nunc imperdiet, suscipit pellentesque neque. Phasellus a leo eget mi condimentum scelerisque. Mauris et interdum sapien. Quisque non magna ex. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Nulla interdum metus nec nisi aliquam ullamcorper. Fusce eleifend ipsum vitae molestie pellentesque. Quisque nulla lacus, cursus vel placerat vel, tempus eget neque. Fusce pellentesque in ipsum pharetra imperdiet.
-
-                Quisque ornare lorem et imperdiet faucibus. Donec in tellus erat. Mauris hendrerit laoreet ante sit amet semper. Nulla bibendum, nibh at scelerisque porttitor, nibh justo lacinia lacus, lobortis tincidunt arcu elit id tellus. Nunc bibendum diam id gravida imperdiet. Suspendisse aliquet auctor tellus eget congue. Vestibulum porttitor, libero eget luctus ultrices, ligula enim congue augue, in mollis nulla justo non mauris. Sed commodo magna a ornare luctus. Nunc ipsum sapien, sollicitudin sit amet ante vel, vulputate dignissim mauris. Aenean eu ante quis turpis lacinia hendrerit non et nisl. Quisque luctus nunc turpis, quis consectetur lacus tincidunt sit amet. Suspendisse efficitur auctor posuere. Fusce id ornare mi. Morbi tellus tellus, tristique vitae sollicitudin congue, lobortis non lectus.
-
+            <p class="text-start font-monospace my-3">
+                @ViewBag.Post.Content
             </p>
         </div>
         <div class="col-md-3 col-sm-12 overflow-auto position-sticky">
             <div class="container-fluid">
                 <div class="row my-3">
                     <div class="col-11 p-0">
-                        <form action="~/Post/ViewPost" method="post" class="p-0">
-                            <textarea class="form-control my-1" rows="3" placeholder="Comment something..." name="Content"></textarea>
-                            <input type="submit" class="btn-primary form-control" value="Comment" />
-                        </form>
+                        @if (Session["Username"] != null)
+                        {
+                            <form action="~/Post/ViewPost" method="post" class="p-0">
+                                <textarea class="form-control my-1" rows="3" placeholder="Comment something..." name="Content"></textarea>
+                                <input type="submit" class="btn-primary form-control" value="Comment" />
+                            </form>
+                        } else
+                        {
+                        <div class="p-0 container-fluid">
+                            <p class="text-center">Login to comment!</p>
+                        </div>
+                        }
                     </div>
                 </div>
-                @foreach (var comment in ViewBag.Replies)
+                @for (int i = 0; i < ViewBag.Replies.Length; ++i)
                 {
                     <div class="row my-3">
                         <div class="col-2 p-0 m-0">
-                            <img class="rounded-circle post-img-profile" src=@Url.Content("~/Images/ProfilePicture/") />
+                            <img class="rounded-circle post-img-profile" src=@Url.Content("~/Images/ProfilePicture/" + ViewBag.Users[i].DisplayPictureName) />
                         </div>
                         <div class="col-9 mx-1 rounded bg-grey">
-                            <span class="fw-bold">@comment.CreatorUsername</span>
-                            <div class="fw-normal">@comment.Content</div>
+                            <span class="fw-bold">@ViewBag.Users[i].Name</span>
+                            <div class="fw-normal">@ViewBag.Replies[i].Content</div>
                         </div>
                     </div>
                 }
@@ -74,3 +102,15 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    var slideButton0 = document.getElementById("slideBtn0");
+    if (slideButton0 != null) {
+        slideButton0.setAttribute("class", "active");
+        slideButton0.setAttribute("aria-current", "true");
+    }
+
+    var slideInner0 = document.getElementById("slideInner0");
+    if (slideInner0 != null) {
+        slideInner0.setAttribute("class", "carousel-item index-carousal-fitter active post-img rounded");
+    }
+</script>

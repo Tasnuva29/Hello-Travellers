@@ -16,6 +16,11 @@ namespace Hello_Travellers.Controllers
         // GET: UserProfile
         public ActionResult CreatePost()
         {
+            if (Session["Username"] == null)
+            {
+                Response.Redirect("~/UserAuth/Login");
+                return null;
+            }
             Entities db = new Entities();
             ViewBag.Subforums = db.Subforums.ToList();
             db.Dispose();
@@ -25,6 +30,12 @@ namespace Hello_Travellers.Controllers
         [HttpPost]
         public ActionResult CreatePost(Post post, IEnumerable<HttpPostedFileBase> postedImages)
         {
+            if (Session["Username"] == null)
+            {
+                Response.Redirect("~/UserAuth/Login");
+                return null;
+            }
+
             string path = Server.MapPath("~/Images/MediaContent/");
             if (!Directory.Exists(path))
             {
@@ -63,27 +74,60 @@ namespace Hello_Travellers.Controllers
         {
             TempData["PostID"] = PostID;
             Entities db = new Entities();
-            ViewBag.Replies = db.Replies
+            var replies = db.Replies
                 .Where(temp => temp.PostID == PostID)
-                .Include(temp => temp.User)
-                .ToList();
-            db.Dispose();
+                .ToArray();
+            var users = new User[replies.Length];
+            for(int i = 0; i < replies.Length; i++)
+            {
+                var currentUsername = replies[i].CreatorUsername;
+                users[i] = db.Users.Where(t => t.Username == currentUsername).Single();
+            }
+            var post = db.Posts.Where(t => t.PostID == PostID).Single();
+            var writer = db.Users.Where(t => t.Username == post.CreatorUsername).Single();
+            var media = db.MediaItems.Where(t => t.PostID == post.PostID).ToArray();
+            ViewBag.Replies = replies;
+            ViewBag.Users = users;
+            ViewBag.Post = post;
+            ViewBag.Media = media;
+            ViewBag.Writer = writer;
             return View();
         }
 
         [HttpPost]
         public ActionResult ViewPost(Reply reply)
         {
+            if (Session["Username"] == null)
+            {
+                Response.Redirect("~/UserAuth/Login");
+                return null;
+            }
+
             reply.CreatorUsername = (string)Session["Username"];
             reply.CreationTime = DateTime.Now;
-
             reply.PostID = (int)TempData["PostID"];
+            
             Entities db = new Entities();
             db.Replies.Add(reply);
             db.SaveChanges();
-            
-            db.Dispose();
-
+            var replies = db.Replies
+                .Where(temp => temp.PostID == reply.PostID)
+                .ToArray();
+            var users = new User[replies.Length];
+            for (int i = 0; i < replies.Length; i++)
+            {
+                var currentUsername = replies[i].CreatorUsername;
+                users[i] = db.Users.Where(t => t.Username == currentUsername).Single();
+            }
+            var post = db.Posts.Where(t => t.PostID == reply.PostID).Single();
+            var writer = db.Users.Where(t => t.Username == post.CreatorUsername).Single();
+            var media = db.MediaItems.Where(t => t.PostID == post.PostID).ToArray();
+            ViewBag.Replies = replies;
+            ViewBag.Users = users;
+            ViewBag.Post = post;
+            ViewBag.Media = media;
+            ViewBag.Writer = writer;
+            TempData["PostID"] = reply.PostID;
             return View();
         }
     }
