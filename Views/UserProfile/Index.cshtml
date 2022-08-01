@@ -11,6 +11,30 @@
         margin: 10px;
         border: 1px solid grey;
     }
+
+    .countNavs:active {
+        background-color: #4abdac;
+        color: white;
+    }
+
+    .post-card {
+        border-radius: 10px;
+        min-height: 300px;
+    }
+
+
+        .post-card .card-header .post-card-img img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+    .post-card-footer i {
+        color: #4abdac;
+    }
+    .commentLink {
+        text-decoration: none;
+    }
 </style>
 <div class="container-lg container-md mt-2">
     <div class="row">
@@ -22,8 +46,8 @@
                      alt="..." />
                 <div class="card-body">
                     <h5 class="card-title text-center"> @ViewBag.user.Username</h5>
-                    <p class="card-text text-wrap">
-                       @ViewBag.user.About
+                    <p class="card-text text-center text-wrap">
+                        @ViewBag.user.About
                     </p>
                     <ul class="list-group list-group-flush">
                         <li class="list-group-item username">
@@ -43,63 +67,116 @@
                                style="margin-right: 5px; color: #4abdac"></i>@ViewBag.user.Gender
                         </li>
                     </ul>
-                    <a href="#"
+                    <a href="~/UserProfile/EditProfile"
                        class="btn text-center d-block"
-                       style="background-color: #4abdac; color:white;"
-                       data-bs-toggle="modal"
-                       data-bs-target="#editProfileModal">Edit Profile</a>
+                       style="background-color: #4abdac; color:white;">Edit Profile</a>
                 </div>
             </div>
         </div>
         <!--Profile Card End-->
         <!--Profile Content Start-->
-        <div class="col-lg-8 col-md-8" id="profile-content">
-            <div class="container border-1 shadow-sm" id="profile-content-info">
-                <div class="row p-2">
-                    <div class="col text-center border-dark">
-                        <div class="card text-dark bg-light shadow-sm border-0 profile-content-count"
-                             style="max-width: 18rem">
-                            <div class="card-body">
-                                <h5 class="card-title">Posts</h5>
-                                <p class="card-text">2</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col text-center">
-                        <div class="card text-dark bg-light shadow-sm border-0"
-                             style="max-width: 18rem">
-                            <div class="card-body">
-                                <h5 class="card-title">Search</h5>
-                                <p class="card-text">2</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col text-center">
-                        <div class="card text-dark bg-light shadow-sm border-0"
-                             style="max-width: 18rem">
-                            <div class="card-body">
-                                <h5 class="card-title">Stories</h5>
-                                <p class="card-text">2</p>
-                            </div>
-                        </div>
+        <div class="col-lg-8 col-md-7" id="profile-content">
+            <!-- <div class="container border-1 shadow-sm" id="profile-content-info">
+        <div class="row p-2">
+            <div class="col text-center border-dark">
+                <div class="card text-dark bg-light shadow-sm border-0 profile-content-count"
+                     style="max-width: 18rem">
+                    <div class="card-body">
+                        <h5 class="card-title">Posts</h5>
+                        <p class="card-text">2</p>
                     </div>
                 </div>
             </div>
 
+            <div class="col text-center">
+                <div class="card text-dark bg-light shadow-sm border-0"
+                     style="max-width: 18rem">
+                    <div class="card-body">
+                        <h5 class="card-title">Search</h5>
+                        <p class="card-text">2</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col text-center">
+                <div class="card text-dark bg-light shadow-sm border-0"
+                     style="max-width: 18rem">
+                    <div class="card-body">
+                        <h5 class="card-title">Stories</h5>
+                        <p class="card-text">2</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="nav nav-pills nav-fill">
+        <a class="nav-link active countNavs" aria-current="page" href="~/UserProfile/EditProfile">
+            <h4 class="m-0">Posts</h4>
+            <small>counts</small>
+        </a>
+        <a class="nav-link" aria-current="page">
+            <h4 class="m-0">Posts</h4>
+            <small>counts</small>
+        </a>
+        <a class="nav-link" aria-current="page">
+            <h4 class="m-0">Posts</h4>
+            <small>counts</small>
+        </a>
+    </nav>
+         -->
+            <!--Load Posts-->
+
+            @for (int i = 0; i < ViewBag.posts.Length; i++)
+            {
+                <!--Post Content-->
+                <div class="container-fluid mt-3">
+                    <div class="row">
+                        <div class="card post-card border-0 shadow mb-2">
+                            <div class="card-header shadow-sm">
+                                <div class="hstack gap-3">
+                                    <div class="post-card-img">
+                                        <img src="~/Images/img1.jpg" alt="profileImage">
+                                    </div>
+                                    <div class="vstack">
+                                        <div>
+                                            @ViewBag.posts[i].Title
+                                        </div>
+                                        <div>
+                                            <small> @ViewBag.posts[i].CreatorUsername  @ViewBag.posts[i].CreationTime</small>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="card-body">
+                                <img src=@Url.Content("~/Images/MediaContent/" + ViewBag.mediaItems[i].MediaID + ViewBag.mediaItems[i].Type) class="card-img-top" />
+                                @ViewBag.posts[i].Content
+                            </div>
+                            <div class="card-footer border-0">
+                                <div class="hstack gap-3">
+                                    <div class="post-card-footer">
+                                        <i class="bi bi-hand-thumbs-up mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Like"></i>
+                                        Likes
+                                        <i class="bi bi-hand-thumbs-down mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Dislike"></i>
+                                    </div>
+                                    <div class="post-card-footer"><i class="bi bi-chat mx-2"></i><a href=@Url.Content("~/Post/ViewPost?PostID = " + ViewBag.posts[i].PostID) class= "commentLink">Comments</a></div>
+                                    <div class="post-card-footer ms-auto"><i class="bi bi-flag mx-2"></i>Report</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             <!--Load Posts-->
          
             
+            }
         </div>
         <!--Profile Content End-->
-       
+
     </div>
 </div>
-
-<!--Edit Profile Modal-->
-@Html.Partial("EditProfile",(Hello_Travellers.Models.User)@ViewBag.user);
-<!--Edit Profile Modal-->
 
 <!--Crop Modal-->
 <div class="modal fade" id="cropModal" tabindex="-1" role="dialog" aria-labelledby="cropModalLabel" aria-hidden="true">

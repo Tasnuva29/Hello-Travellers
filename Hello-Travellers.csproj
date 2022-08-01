@@ -126,6 +126,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PostController.cs" />
     <Compile Include="Controllers\SendEmail.cs" />
@@ -279,6 +280,7 @@
     <Content Include="Views\Post\TravelPlans.cshtml" />
     <Content Include="Views\Post\ShortStories.cshtml" />
     <Content Include="Views\Post\ViewPost.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\UserProfile\EditProfile.cshtml" />
@@ -288,6 +290,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Images\MediaContent\" />
     <Folder Include="Images\ProfilePicture\" />
+    <Folder Include="Views\Image\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
