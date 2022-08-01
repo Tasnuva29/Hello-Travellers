@@ -45,33 +45,32 @@ namespace Hello_Travellers.Controllers
         [HttpPost]
         public ActionResult SignUp(User user)
         {
+            
             var name = user.Name;
             var username = user.Username;
             var email = user.Email;
             var password= user.Password;
             var confirmpassword= user.ConfirmPassword;
 
-
-            Entities db = new Entities();
-
-            var result = db.Users.Where(t => t.Email.ToLower().Contains(email.ToLower())).ToList();
-            if (result.Count <= 0)
+            if (ModelState.IsValid)
             {
+                Entities db = new Entities();
 
-                
-                SendEmail sendEmail = new SendEmail();
-                sendEmail.sendmail(email, number.ToString());
-                newUser = user;
-                Response.Redirect("~/UserAuth/SendEmail");
-                return View(user);
+                var result = db.Users.Where(t => t.Email.ToLower().Contains(email.ToLower())).ToList();
+                if (result.Count <= 0)
+                {
+
+
+                    SendEmail sendEmail = new SendEmail();
+                    sendEmail.sendmail(email, number.ToString());
+                    newUser = user;
+                    Response.Redirect("~/UserAuth/SendEmail");
+                    return View(user);
+
+                }
+          
 
             }
-            else
-            {
-                ViewBag.Message = String.Format("Hello{0}.\\ncurrent Date and time:{1}", name, DateTime.Now.ToString()); 
-            }
-
-            
      
             return View(user);
 
@@ -98,31 +97,18 @@ namespace Hello_Travellers.Controllers
         {
 
             string unum = newUser.Name;
-            var alert = $"<script>alert('{newUser.Name}')</script>" ;
-            Response.Write(alert);
+            //var alert = $"<script>alert('{newUser.Name}')</script>" ;
+            //Response.Write(alert);
 
-            //if (number.ToString().Contains(code))
+            if (number.ToString().Contains(code))
             {
                 Entities db = new Entities();
                 db.Users.Add(newUser);
                 db.SaveChanges();
                 db.Dispose();
+                Session["Username"] = newUser.Username;
+                Response.Redirect("~/Home/Index");
 
-                //try { 
-                //Entities db = new Entities();
-                //db.Users.Add(newUser);
-                //db.SaveChanges();
-                //db.Dispose();
-                //} catch (System.Data.Entity.Validation.DbEntityValidationException ex)
-                //{
-                //    foreach (var entityValidationErrors in ex.EntityValidationErrors)
-                //    {
-                //        foreach (var validationError in entityValidationErrors.ValidationErrors)
-                //        {
-                //            Response.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                //        }
-                //    }
-                //}
             }
 
             return View();

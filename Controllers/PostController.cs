@@ -11,7 +11,7 @@ namespace Hello_Travellers.Controllers
 {
     public class PostController : Controller
     {
-
+        Entities db = new Entities();
         // GET: UserProfile
         public ActionResult CreatePost()
         {

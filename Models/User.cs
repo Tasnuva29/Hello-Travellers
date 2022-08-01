@@ -26,8 +26,9 @@ namespace Hello_Travellers.Models
             this.Replies = new HashSet<Reply>();
             this.Reports = new HashSet<Report>();
         }
-    
+        
         public string Username { get; set; }
+       
         public string Name { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
@@ -36,7 +37,7 @@ namespace Hello_Travellers.Models
        
         public string Password { get; set; }
 
-      
+        [Compare("Password")]
         public string ConfirmPassword { get; set; }
         public string About { get; set; }
         public string DisplayPictureName { get; set; }

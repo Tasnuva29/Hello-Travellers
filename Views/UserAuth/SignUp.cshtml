@@ -22,9 +22,11 @@
 
         </div>
         <div class="signup-input-group">
-            <input type="password" placeholder="Password" name="Password" id="myInput1" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" required>
+            <input type="password" placeholder="Password" name="Password" id="myInput1" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
+                   title ="Must be 6 digit with A-Z,a-z,digit"
+                   required>
             <i class="input-group-text bi bi-eye-slash" id="togglePassword1" onclick="showPass()"></i>
-            @*@<input type="checkbox" onclick="myFunction()">Show Password*@
+           
 
 
         </div>
@@ -84,10 +86,12 @@
 
 @if (ViewBag.Message != null)
 {
-     <script>
-          type = "text/javascript" & gt;
-    window.onload = function() {
+     <script type ="text/javascript">
+
+    window.onload = function () {
+
         alert("@ViewBag.Message");
+    
     };
-  
+  </script>
 }

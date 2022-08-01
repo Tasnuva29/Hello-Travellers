@@ -16,7 +16,7 @@ namespace Hello_Travellers.Controllers
 
              smtp.EnableSsl = true;
              smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
-             NetworkCredential nc = new NetworkCredential("190104113@aust.edu", "rohit4321");
+             NetworkCredential nc = new NetworkCredential("190104113@aust.edu", "aust4321");
              smtp.UseDefaultCredentials = false;
              smtp.Credentials = nc;
              smtp.Send(mc);
