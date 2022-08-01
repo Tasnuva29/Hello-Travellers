@@ -1,53 +1,40 @@
-
-@if (ViewBag.MediaItems.Count > 0)
+<style>
+    .text {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 4; /* number of lines to show */
+        line-clamp: 4;
+        -webkit-box-orient: vertical;
+    }
+</style>
+@if (ViewBag.TopMedias.Length > 0)
 {
     <div id="indexCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
-
-            <button type="button" data-bs-target="#indexCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#indexCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#indexCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            @for (int i = 0; i < ViewBag.TopPosts.Length; ++i)
+            {
+                if (i == 0)
+                {
+                    <button type="button" data-bs-target="#indexCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                }
+                else
+                {
+                    <button type="button" data-bs-target="#indexCarousel" data-bs-slide-to=@String.Format("{0}", i) aria-label=@String.Format("Slide {0}", i + 1)></button>
+                }
+            }
         </div>
         <div class="carousel-inner">
-            <div class="carousel-item index-carousal-fitter active">
-                <img src=@Url.Content("~/Images/MediaContent/" + ViewBag.MediaItems[0].MediaID + "." + ViewBag.MediaItems[0].Type) class="index-carousal-img" alt="...">
-                <div class="index-carousal-content">
-                    <h1 class="index-post-header">@ViewBag.Posts[0].Title</h1>
-                    <p class="index-post-writer">@String.Format("by {0}", ViewBag.Posts[0].CreatorUsername)</p>
-                </div>
-            </div>
-            @for (int i = 1; i < ViewBag.MediaItems.Count; ++i)
+            @for (int i = 0; i < ViewBag.TopMedias.Length; ++i)
             {
-                <div class="carousel-item index-carousal-fitter">
-                    <img src=@Url.Content("~/Images/MediaContent/" + ViewBag.MediaItems[i].MediaID + "." + ViewBag.MediaItems[i].Type) class="index-carousal-img" alt="...">
+                <div id=@String.Format("slideInner{0}", i) class="carousel-item index-carousal-fitter">
+                    <img src=@Url.Content("~/Images/MediaContent/" + ViewBag.TopMedias[i].MediaID + ViewBag.TopMedias[i].Type) class="post-img rounded index-carousal-img" alt="...">
                     <div class="index-carousal-content">
-                        <h1 class="index-post-header">@ViewBag.Posts[i].Title</h1>
-                        <p class="index-post-writer">@String.Format("by {0}", ViewBag.Posts[i].CreatorUsername)</p>
+                        <h1 class="index-post-header">@ViewBag.TopPosts[i].Title</h1>
+                        <p class="index-post-writer">@String.Format("by {0}", ViewBag.TopWriters[i].Name)</p>
                     </div>
                 </div>
             }
-            @*<div class="carousel-item index-carousal-fitter active">
-                    <img src="~/Images/img1.jpg" class="index-carousal-img" alt="...">
-                    <div class="index-carousal-content">
-                        <h1 class="index-post-header">A journey to Space</h1>
-                        <p class="index-post-writer">by Kite L.</p>
-                    </div>
-                </div>
-                <div class="carousel-item index-carousal-fitter">
-                    <img src="~/Images/img1.png" class="index-carousal-img" alt="...">
-                    <div class="index-carousal-content">
-                        <h1 class="index-post-header">A journey to Space (Part 2)</h1>
-                        <p class="index-post-writer">by Kite L.</p>
-
-                    </div>
-                </div>
-                <div class="carousel-item index-carousal-fitter">
-                    <img src="~/Images/img2.jpg" class="index-carousal-img" alt="...">
-                    <div class="index-carousal-content">
-                        <h1 class="index-post-header">Visit the land of the Vikings!</h1>
-                        <p class="index-post-writer">by Thor Bjornsson</p>
-                    </div>
-                </div>*@
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#indexCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -61,53 +48,68 @@
 }
 
 <div class="container-fluid my-5">
-    <div class="btn-toolbar my-5" role="toolbar">
+    <div class="btn-toolbar my-3" role="toolbar">
         <div class="btn-group mx-2" role="group" aria-label="Sorting Group">
             <button type="button" class="btn btn-secondary">New</button>
             <button type="button" class="btn btn-secondary">Most Upvoted</button>
             <button type="button" class="btn btn-secondary">Most Commented</button>
         </div>
-       
-            <form>
-                @using (Html.BeginForm("Forum", "Post", FormMethod.Post))
-                {
-                    <div class="btn-group mx-2" role="group" aria-label="Forum Group">
-                        <button type="button" class="btn btn-secondary" name="submit" value="Experiences" onclick="@("window.location.href='"+Url.Content("~/Post/Forum?forumID=1")+"'"); ">Experiences</button>
-                        <button type="button" class="btn btn-secondary" name="submit" value="Travel Plans" onclick="@("window.location.href='"+Url.Content("~/Post/Forum?forumID=2")+"'");">Travel Plans</button>
-                        <button type="button" class="btn btn-secondary" name="submit" value="Short Stories" onclick="@("window.location.href='"+Url.Content("~/Post/Forum?forumID=3")+"'");">Short Stories</button>
-                    </div>
-                }
-                </form>
-        
-        <div class="row">
-            <div class="col-sm-12 col-md-4">
+        <div class="btn-group mx-2" role="group" aria-label="Forum Group">
+            <button type="button" class="btn btn-secondary" name="submit" value="Experiences" onclick="@("window.location.href='"+Url.Content("~/Post/Forum?forumID=1")+"'"); ">Experiences</button>
+            <button type="button" class="btn btn-secondary" name="submit" value="Travel Plans" onclick="@("window.location.href='"+Url.Content("~/Post/Forum?forumID=2")+"'");">Travel Plans</button>
+            <button type="button" class="btn btn-secondary" name="submit" value="Short Stories" onclick="@("window.location.href='"+Url.Content("~/Post/Forum?forumID=3")+"'");">Short Stories</button>
+        </div>
+    </div>
+
+    <div class="row">
+
+        @for (int i = 0; i < ViewBag.selectedPost.Length; ++i)
+        {
+            <div class="col-sm-12 col-md-4 my-3" onclick="">
                 <div class="card mx-2">
-                    <img class="card-img-top" src="~/Images/img1.jpg" alt="Card image cap">
+                    <img class="card-img-top" src=@Url.Content("~/Images/MediaContent/" + ViewBag.selectedMedia[i].MediaID + ViewBag.selectedMedia[i].Type) alt="Card image cap">
                     <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <h5 class="card-title">@ViewBag.selectedPost[i].Title</h5>
+                        <p style="color: dimgrey">By @ViewBag.selectedAuthor[i].Name</p>
+                        <p class="card-text text">@ViewBag.selectedPost[i].Content</p>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-12 col-md-4">
-                <div class="card mx-2">
-                    <img class="card-img-top" src="~/Images/img1.jpg" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>
+        }
+        @*<div class="col-sm-12 col-md-4">
+            <div class="card mx-2">
+                <img class="card-img-top" src="~/Images/img1.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                 </div>
             </div>
-            <div class="col-sm-12 col-md-4">
-                <div class="card mx-2">
-                    <img class="card-img-top" src="~/Images/img1.jpg" alt="Card image cap">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    </div>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <div class="card mx-2">
+                <img class="card-img-top" src="~/Images/img1.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
                 </div>
             </div>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <div class="card mx-2">
+                <img class="card-img-top" src="~/Images/img1.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+            </div>
+        </div>*@
 
     </div>
 </div>
 
+    <script type="text/javascript">
+        var slideInner0 = document.getElementById("slideInner0");
+        if (slideInner0 != null) {
+            slideInner0.setAttribute("class", "carousel-item index-carousal-fitter active post-img rounded");
+        }
+    </script>

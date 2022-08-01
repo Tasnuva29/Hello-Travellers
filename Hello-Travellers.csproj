@@ -275,10 +275,7 @@
     <Content Include="Views\UserAuth\SignOut.cshtml" />
     <Content Include="Views\UserAuth\SignUp.cshtml" />
     <Content Include="Views\UserAuth\SendEmail.cshtml" />
-    <Content Include="Views\UserAuth\ForgotPassword.cshtml" />
     <Content Include="Views\Post\Forum.cshtml" />
-    <Content Include="Views\Post\TravelPlans.cshtml" />
-    <Content Include="Views\Post\ShortStories.cshtml" />
     <Content Include="Views\Post\ViewPost.cshtml" />
     <Content Include="Views\Admin\Index.cshtml" />
   </ItemGroup>

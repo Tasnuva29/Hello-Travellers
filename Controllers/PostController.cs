@@ -72,25 +72,35 @@ namespace Hello_Travellers.Controllers
         [HttpGet]
         public ActionResult ViewPost(int PostID)
         {
+
             TempData["PostID"] = PostID;
-            Entities db = new Entities();
-            var replies = db.Replies
-                .Where(temp => temp.PostID == PostID)
-                .ToArray();
-            var users = new User[replies.Length];
-            for(int i = 0; i < replies.Length; i++)
+            try
             {
-                var currentUsername = replies[i].CreatorUsername;
-                users[i] = db.Users.Where(t => t.Username == currentUsername).Single();
+                Entities db = new Entities();
+
+                var post = db.Posts.Where(t => t.PostID == PostID).Single();
+                var replies = db.Replies
+                    .Where(temp => temp.PostID == PostID)
+                    .ToArray();
+                var users = new User[replies.Length];
+                for (int i = 0; i < replies.Length; i++)
+                {
+                    var currentUsername = replies[i].CreatorUsername;
+                    users[i] = db.Users.Where(t => t.Username == currentUsername).Single();
+                }
+
+                var writer = db.Users.Where(t => t.Username == post.CreatorUsername).Single();
+                var media = db.MediaItems.Where(t => t.PostID == post.PostID).ToArray();
+                ViewBag.Replies = replies;
+                ViewBag.Users = users;
+                ViewBag.Post = post;
+                ViewBag.Media = media;
+                ViewBag.Writer = writer;
             }
-            var post = db.Posts.Where(t => t.PostID == PostID).Single();
-            var writer = db.Users.Where(t => t.Username == post.CreatorUsername).Single();
-            var media = db.MediaItems.Where(t => t.PostID == post.PostID).ToArray();
-            ViewBag.Replies = replies;
-            ViewBag.Users = users;
-            ViewBag.Post = post;
-            ViewBag.Media = media;
-            ViewBag.Writer = writer;
+            catch
+            {
+                return HttpNotFound();
+            }
             return View();
         }
 
@@ -103,31 +113,40 @@ namespace Hello_Travellers.Controllers
                 return null;
             }
 
-            reply.CreatorUsername = (string)Session["Username"];
-            reply.CreationTime = DateTime.Now;
-            reply.PostID = (int)TempData["PostID"];
-            
-            Entities db = new Entities();
-            db.Replies.Add(reply);
-            db.SaveChanges();
-            var replies = db.Replies
-                .Where(temp => temp.PostID == reply.PostID)
-                .ToArray();
-            var users = new User[replies.Length];
-            for (int i = 0; i < replies.Length; i++)
+            try
             {
-                var currentUsername = replies[i].CreatorUsername;
-                users[i] = db.Users.Where(t => t.Username == currentUsername).Single();
+                Entities db = new Entities();
+
+                var post = db.Posts.Where(t => t.PostID == reply.PostID).Single();
+                var writer = db.Users.Where(t => t.Username == post.CreatorUsername).Single();
+                var media = db.MediaItems.Where(t => t.PostID == post.PostID).ToArray();
+                reply.CreatorUsername = (string)Session["Username"];
+                reply.CreationTime = DateTime.Now;
+                reply.PostID = (int)TempData["PostID"];
+
+
+                db.Replies.Add(reply);
+                db.SaveChanges();
+                var replies = db.Replies
+                    .Where(temp => temp.PostID == reply.PostID)
+                    .ToArray();
+                var users = new User[replies.Length];
+                for (int i = 0; i < replies.Length; i++)
+                {
+                    var currentUsername = replies[i].CreatorUsername;
+                    users[i] = db.Users.Where(t => t.Username == currentUsername).Single();
+                }
+                ViewBag.Replies = replies;
+                ViewBag.Users = users;
+                ViewBag.Post = post;
+                ViewBag.Media = media;
+                ViewBag.Writer = writer;
+                TempData["PostID"] = reply.PostID;
             }
-            var post = db.Posts.Where(t => t.PostID == reply.PostID).Single();
-            var writer = db.Users.Where(t => t.Username == post.CreatorUsername).Single();
-            var media = db.MediaItems.Where(t => t.PostID == post.PostID).ToArray();
-            ViewBag.Replies = replies;
-            ViewBag.Users = users;
-            ViewBag.Post = post;
-            ViewBag.Media = media;
-            ViewBag.Writer = writer;
-            TempData["PostID"] = reply.PostID;
+            catch
+            {
+                return HttpNotFound();
+            }
             return View();
         }
 
@@ -139,28 +158,5 @@ namespace Hello_Travellers.Controllers
             //var fetch = db.Posts.ToList();
             return View(fetch);
         }
-
-        public ActionResult TravelPlans(String submit)
-        {
-
-            string s = ViewBag.submit;
-            var fetch = db.Posts.ToList();
-            return View(fetch);
-        }
-
-       
- public ActionResult ShortStories(String submit)
-        {
-
-            string s = ViewBag.submit;
-            var fetch = db.Posts.ToList();
-            return View(fetch);
-        }
-
-
-
-
-
-
     }
 }
