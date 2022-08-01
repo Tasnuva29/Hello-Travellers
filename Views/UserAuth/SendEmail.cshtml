@@ -1,0 +1,30 @@
+﻿<style>
+    body {
+        width: 100%;
+        height: 100%;
+        background-color: #f5f5dc;
+    }
+</style>
+
+
+
+<div class="signup-container">
+
+
+    @using (Html.BeginForm("SendEmail", "UserAuth"))
+    {
+        <h1 class="py-3">An activaton code has been sent your mail address</h1>
+
+        <div class="signup-input-group">
+            <input type="text" placeholder="Activation Code" name="code" required>
+        </div>
+
+
+        <div class="signup-input-group">
+            <button name="submit" value="submit" class="ok-btn">Next</button>
+        </div>
+        <p class="signup-register-text text-center">Have an account? <a href="/UserProfile/messages">Login Here</a></p>
+    }
+
+</div>
+

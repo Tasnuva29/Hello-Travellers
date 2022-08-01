@@ -16,7 +16,8 @@
         </div>
 
         <div class="signup-input-group">
-            <input type="password" placeholder="Password" name="Password" required>
+            <input type="password" placeholder="Password" name="Password" id="myInput3" required>
+            <i class="input-group-text bi bi-eye-slash" id="togglePassword1" onclick="showPass1()"></i>
         </div>
 
         <div class="signup-input-group">
@@ -25,9 +26,20 @@
 
         <!--<p class="signin-page-text text-center">Forgot Password! <a href="">Click here</a></p>-->
 
-        <p class="signin-page-text text-center">Don't have an account? <a href="/Home/About">Sign Up Here</a></p>
+        <p class="signin-page-text text-center">Don't have an account? <a href="/UserAuth/SignUp">Sign Up Here</a></p>
 
     </form>
 
 
 </div>
+<script>
+    function showPass1() {
+    var x = document.getElementById("myInput3");
+    if (x.type === "password") {
+    x.type = "text";
+    } else {
+    x.type = "password";
+    }
+    }
+
+</script>

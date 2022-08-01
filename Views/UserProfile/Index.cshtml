@@ -15,8 +15,8 @@
 <div class="container-lg container-md mt-2">
     <div class="row">
         <!--Profile Card Start-->
-        <div class="col-lg-3 col-md-4" id="profile-info">
-            <div class="card rounded shadow">
+        <div class="col-lg-3 col-md-4 m-5" id="profile-info">
+            <div class="card-body rounded shadow">
                 <img src="~/Images/default.jpg"
                      class="card-img-top"
                      alt="..." />
@@ -89,10 +89,8 @@
             </div>
 
             <!--Load Posts-->
-            @for (int i = 0; i < 2; i++)
-            {
-                @Html.Partial("_Post");
-            }
+         
+            
         </div>
         <!--Profile Content End-->
        
