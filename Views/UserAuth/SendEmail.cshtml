@@ -13,7 +13,7 @@
 
     @using (Html.BeginForm("SendEmail", "UserAuth"))
     {
-        <h1 class="py-3">An activaton code has been sent your mail address</h1>
+        <h4 class="py-3 text-center">An activaton code has been sent to your mail address</h4>
 
         <div class="signup-input-group">
             <input type="text" placeholder="Activation Code" name="code" required>
@@ -21,7 +21,7 @@
 
 
         <div class="signup-input-group">
-            <button name="submit" value="submit" class="ok-btn">Next</button>
+            <button name="submit" value="submit" class="SignupBtn">Next</button>
         </div>
         <p class="signup-register-text text-center">Have an account? <a href="/UserProfile/messages">Login Here</a></p>
     }
