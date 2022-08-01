@@ -10,7 +10,7 @@ namespace Hello_Travellers.Controllers
     {
       
 
-        static int number = new Random().Next(5000, 6000);
+        static int number = new Random().Next(1000, 9999);
         static User newUser;
         // GET
 
@@ -65,6 +65,7 @@ namespace Hello_Travellers.Controllers
                     sendEmail.sendmail(email, number.ToString());
                     newUser = user;
                     Response.Redirect("~/UserAuth/SendEmail");
+                   
                     return View(user);
 
                 }
