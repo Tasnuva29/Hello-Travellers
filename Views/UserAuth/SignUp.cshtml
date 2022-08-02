@@ -6,6 +6,23 @@
         height: 100%;
         background-color: #f5f5dc;
     }
+    .hq-input {
+        outline: none;
+        border-radius: 30px;
+        border: 2px solid #e7e7e7;
+        width: 100%;
+        height: 50px;
+      
+    }
+
+      .hq-input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+    .input-group-text {
+        border-radius: 30px;
+    }
 </style>
 
 
@@ -35,18 +52,19 @@
             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
 
         </div>
-        <div class="signup-input-group">
+        <div class="input-group">
             <input type="password" placeholder="Password" name="Password" id="myInput1" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
                    title="Must be 6 digit with A-Z,a-z,digit"
+                   class="form-control hq-input"
                    required>
-            <i class="input-group-text bi bi-eye-slash" id="togglePassword1" onclick="showPass()"></i>
+            <i class="input-group-text bi bi-eye-slash" id="togglePassword1" onclick="showPass(); showPassword(this.id, 'inputNewPassword')"></i>
 
 
 
         </div>
-        <div class="signup-input-group">
-            <input type="password" placeholder="Confirm Password" name="ConfirmPassword" id="myInput2" required>
-            <i class="input-group-text bi bi-eye-slash" id="togglePassword2" onclick="showConPass()"></i>
+        <div class="input-group mt-4 mb-4">
+            <input type="password" placeholder="Confirm Password" name="ConfirmPassword" id="myInput2" class="form-control hq-input" required>
+            <i class="input-group-text bi bi-eye-slash" id="togglePassword2" onclick="showConPass(); showPassword(this.id, 'inputConfirmPassword')"></i>
         </div>
 
 
@@ -106,7 +124,18 @@
 
         alert("@ViewBag.Message");
 
-    };
+        };
+        //--password toggle--//
+        function showPassword(iconID, inputFieldID) {
+            if (document.getElementById(iconID).className === "input-group-text bi bi-eye-slash") {
+                document.getElementById(iconID).className = "input-group-text bi bi-eye";
+                document.getElementById(inputFieldID).type = "text";
+            }
+            else {
+                document.getElementById(iconID).className = "input-group-text bi bi-eye-slash";
+                document.getElementById(inputFieldID).type = "password";
+            }
+        }
     </script>
 
 }
