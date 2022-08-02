@@ -49,7 +49,7 @@
                         @for (int i = 0; i < ViewBag.Media.Length; ++i)
                         {
                             <div id=@String.Format("slideInner{0}", i) class="carousel-item index-carousal-fitter">
-                                <img src=@Url.Content("~/Images/MediaContent/" + ViewBag.Media[i].MediaID + "." + ViewBag.Media[i].Type) class="post-img rounded index-carousal-img" alt="...">
+                                <img src=@Url.Content("~/Images/MediaContent/" + ViewBag.Media[i].MediaID + ViewBag.Media[i].Type) class="post-img rounded index-carousal-img" alt="...">
                             </div>
                         }
                     </div>

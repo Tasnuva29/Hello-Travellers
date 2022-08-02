@@ -8,7 +8,7 @@
         -webkit-box-orient: vertical;
     }
 </style>
-@if (ViewBag.TopMedias.Length > 0)
+@if (ViewBag.TopPosts.Length > 0)
 {
     <div id="indexCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
@@ -65,7 +65,7 @@
 
         @for (int i = 0; i < ViewBag.selectedPost.Length; ++i)
         {
-            <div class="col-sm-12 col-md-4 my-3" onclick="">
+            <div class="col-sm-12 col-md-4 my-3" onclick="@("window.location.href='"+Url.Content("~/Post/ViewPost?PostID=" + ViewBag.selectedPost[i].PostID)+"'")">
                 <div class="card mx-2">
                     <img class="card-img-top" src=@Url.Content("~/Images/MediaContent/" + ViewBag.selectedMedia[i].MediaID + ViewBag.selectedMedia[i].Type) alt="Card image cap">
                     <div class="card-body">
