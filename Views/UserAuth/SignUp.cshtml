@@ -112,6 +112,17 @@
         }
     }
 
+    function showPassword(iconID, inputFieldID) {
+        if (document.getElementById(iconID).className === "input-group-text bi bi-eye-slash") {
+            document.getElementById(iconID).className = "input-group-text bi bi-eye";
+            document.getElementById(inputFieldID).type = "text";
+        }
+        else {
+            document.getElementById(iconID).className = "input-group-text bi bi-eye-slash";
+            document.getElementById(inputFieldID).type = "password";
+        }
+    }
+
 
 
 </script>
@@ -126,16 +137,6 @@
 
         };
         //--password toggle--//
-        function showPassword(iconID, inputFieldID) {
-            if (document.getElementById(iconID).className === "input-group-text bi bi-eye-slash") {
-                document.getElementById(iconID).className = "input-group-text bi bi-eye";
-                document.getElementById(inputFieldID).type = "text";
-            }
-            else {
-                document.getElementById(iconID).className = "input-group-text bi bi-eye-slash";
-                document.getElementById(inputFieldID).type = "password";
-            }
-        }
     </script>
 
 }

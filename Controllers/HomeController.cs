@@ -13,7 +13,7 @@ namespace Hello_Travellers.Controllers
         {
           
             Entities db = new Entities();
-            var topPosts = db.Posts.OrderBy(temp => temp.CreationTime).Skip(Math.Max(0, db.Posts.Count() - 3)).ToArray();
+            var topPosts = db.Posts.OrderByDescending(temp => temp.CreationTime).Skip(Math.Max(0, db.Posts.Count() - 3)).ToArray();
             var topWriters = new User[topPosts.Length];
             for (int i = 0; i < topPosts.Length; i++)
             {
@@ -30,7 +30,7 @@ namespace Hello_Travellers.Controllers
             ViewBag.TopWriters = topWriters;
             ViewBag.TopMedias = topMedias;
 
-            var selectedPost = db.Posts.OrderBy(temp => temp.CreationTime).Skip(Math.Max(0, db.Posts.Count() - 9)).ToArray();
+            var selectedPost = db.Posts.OrderByDescending(temp => temp.CreationTime).Skip(Math.Max(0, db.Posts.Count() - 9)).ToArray();
             var selectedAuthor = new User[selectedPost.Length];
             for (int i = 0; i < selectedPost.Length; ++i)
             {

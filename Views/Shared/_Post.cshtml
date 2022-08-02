@@ -18,7 +18,7 @@
 
 
 <!--Post Content-->
-<div class="container-fluid mt-3">
+<div class="container mt-3">
     <div class="row">
         <div class="card post-card border-0 shadow mb-2">
             <div class="card-header shadow-sm">
@@ -28,7 +28,8 @@
                     </div>
                     <div class="vstack">
                         <div>
-                           @ViewBag.item.CreatorUsername
+                           <h5 class="card-title text-muted">@ViewBag.item.Title</h5>
+                            <p>By @ViewBag.item.CreatorUsername, On @ViewBag.item.CreationTime</p>
                         </div>
                         <div>
                             <small></small>
@@ -47,7 +48,7 @@
                         Likes
                         <i class="bi bi-hand-thumbs-down mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Dislike"></i>
                     </div>
-                    <div class="post-card-footer"><i class="bi bi-chat mx-2"></i>Comments</div>
+                    <div class="post-card-footer" onclick="@("window.location.href='"+Url.Content("~/Post/ViewPost?PostID=" + ViewBag.item.PostID)+"'")"><i class="bi bi-chat mx-2"></i>Comments</div>
                     <div class="post-card-footer ms-auto"><i class="bi bi-flag mx-2"></i>Report</div>
                 </div>
             </div>

@@ -107,6 +107,11 @@ namespace Hello_Travellers.Controllers
         [HttpPost]
         public ActionResult ViewPost(Reply reply)
         {
+            reply.CreatorUsername = (string)Session["Username"];
+            reply.CreationTime = DateTime.Now;
+            reply.PostID = (int)TempData["PostID"];
+            TempData["PostID"] = reply.PostID;
+
             if (Session["Username"] == null)
             {
                 Response.Redirect("~/UserAuth/Login");
@@ -120,9 +125,6 @@ namespace Hello_Travellers.Controllers
                 var post = db.Posts.Where(t => t.PostID == reply.PostID).Single();
                 var writer = db.Users.Where(t => t.Username == post.CreatorUsername).Single();
                 var media = db.MediaItems.Where(t => t.PostID == post.PostID).ToArray();
-                reply.CreatorUsername = (string)Session["Username"];
-                reply.CreationTime = DateTime.Now;
-                reply.PostID = (int)TempData["PostID"];
 
 
                 db.Replies.Add(reply);
@@ -141,7 +143,6 @@ namespace Hello_Travellers.Controllers
                 ViewBag.Post = post;
                 ViewBag.Media = media;
                 ViewBag.Writer = writer;
-                TempData["PostID"] = reply.PostID;
             }
             catch
             {

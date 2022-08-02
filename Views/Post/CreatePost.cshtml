@@ -31,10 +31,10 @@
             </select>
         </div>
         <div class="mb-3">
-            <input class="form-control" type="text" placeholder="Title" name="Title" required/>
+            <input class="form-control" type="text" placeholder="Title" id="Title" name="Title" required/>
         </div>
         <div class="mb-3">
-            <textarea class="form-control" rows="6" name="Content" placeholder="Write here..." required></textarea>
+            <textarea class="form-control" rows="6" id="Content" name="Content" placeholder="Write here..." required></textarea>
         </div>
         <div class="mb-3">
             <input class="form-control hide" type="file" name="postedImages" id="postedImages" accept="image/png, image/jpeg" multiple required>
@@ -51,7 +51,7 @@
         </div>
 
     }
-    <input type="button" id="btnSubmit" class="btn-primary form-control" value="Submit" onclick="$('#postForm').submit();" />
+    <input type="button" id="btnSubmit" class="btn-primary form-control" value="Submit" onclick="btnSubmitOnClicked" />
 </div>
 
 <script type="text/javascript">
@@ -69,5 +69,11 @@
             imageContainerTemp.appendChild(image);
         }
         imageContainer.innerHTML = imageContainerTemp.innerHTML;
+    }
+
+    function btnSubmitOnClicked() {
+        @*var title = document.getElementById("Title").val*@
+        if(title > 0)
+        $('#postForm').submit();
     }
 </script>

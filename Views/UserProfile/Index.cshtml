@@ -75,7 +75,7 @@
         </div>
         <!--Profile Card End-->
         <!--Profile Content Start-->
-        <div class="col-lg-9 col-md-8" id="profile-content">
+        <div class="col-lg-8 col-md-7" id="profile-content">
             <!-- <div class="container border-1 shadow-sm" id="profile-content-info">
         <div class="row p-2">
             <div class="col text-center border-dark">
@@ -160,7 +160,7 @@
                                         Likes
                                         <i class="bi bi-hand-thumbs-down mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Dislike"></i>
                                     </div>
-                                    <div class="post-card-footer"><i class="bi bi-chat mx-2"></i><a href=@Url.Content("~/Post/ViewPost?PostID = " + ViewBag.posts[i].PostID) class= "commentLink">Comments</a></div>
+                                    <div class="post-card-footer" onclick="@("window.location.href='"+Url.Content("~/Post/ViewPost?PostID=" + ViewBag.posts[i].PostID)+"'")"><i class="bi bi-chat mx-2"></i>Comments</div>
                                     <div class="post-card-footer ms-auto"><i class="bi bi-flag mx-2"></i>Report</div>
                                 </div>
                             </div>
