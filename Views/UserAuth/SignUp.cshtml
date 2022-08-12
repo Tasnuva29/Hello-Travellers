@@ -35,7 +35,7 @@
         <h1 class="signup-text text-center py-3">Sign Up</h1>
 
         <div class="signup-input-group">
-            <input type="text" placeholder="Name" pattern="[A-Za-z ]*" title="only A-z,a-z,Space is allowed" name="Name">
+            <input type="text" placeholder="Name" pattern="[A-Za-z ]*" title="only A-z,a-z,Space is allowed" name="Name" required>
             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
 
         </div>
@@ -44,11 +44,11 @@
 
 
         <div class="signup-input-group">
-            <input type="text" placeholder="Username" pattern="[A-Za-z0-9]*" title="only A-z,a-z,0-9 is allowed" name="Username">
+            <input type="text" placeholder="Username" pattern="[A-Za-z0-9]*" title="only A-z,a-z,0-9 is allowed" name="Username" required>
             @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
         </div>
         <div class="signup-input-group">
-            <input type="email" placeholder="Email" name="Email">
+            <input type="email" placeholder="Email" name="Email" required>
             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
 
         </div>

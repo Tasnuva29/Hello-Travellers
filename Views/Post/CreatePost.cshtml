@@ -17,7 +17,7 @@
     }
 </style>
 <div class="container my-5">
-    @using (Html.BeginForm("CreatePost", "Post", FormMethod.Post, new { id = "postForm", enctype = "multipart/form-data" })) 
+    @using (Html.BeginForm("CreatePost", "Post", FormMethod.Post, new { id = "postForm", enctype = "multipart/form-data" }))
     {
         <div class="input-group mb-3">
             <div class="input-group-prepend">
@@ -31,7 +31,7 @@
             </select>
         </div>
         <div class="mb-3">
-            <input class="form-control" type="text" placeholder="Title" id="Title" name="Title" required/>
+            <input class="form-control" type="text" placeholder="Title" id="Title" name="Title" required />
         </div>
         <div class="mb-3">
             <textarea class="form-control" rows="6" id="Content" name="Content" placeholder="Write here..." required></textarea>
@@ -51,9 +51,9 @@
         </div>
 
     }
-    <input type="button" id="btnSubmit" class="btn-primary form-control" value="Submit" onclick="btnSubmitOnClicked" />
+    <input type="button" id="btnSubmit" class="btn-primary form-control" value="Submit" onclick="btnSubmitOnClicked()" />
 </div>
-
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
     var imageContainer = document.getElementById("img-container");
     var imageContainerTemp = document.createElement("div");
@@ -72,8 +72,33 @@
     }
 
     function btnSubmitOnClicked() {
-        @*var title = document.getElementById("Title").val*@
-        if(title > 0)
+        var title = document.getElementById('Title');
+        var content = document.getElementById('Content');
+        var file = imageInput.files.length;
+        if (title.value.trim().length <= 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Insert Title!'
+            });
+            return;
+        }
+        if (content.value.trim().length <= 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Type some contents!'
+            });
+            return;
+        }
+        if (file <= 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Attach atleast 1 image!'
+            });
+            return;
+        }
         $('#postForm').submit();
     }
 </script>

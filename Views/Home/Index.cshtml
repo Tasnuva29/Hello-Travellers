@@ -32,7 +32,7 @@
             @for (int i = 0; i < ViewBag.TopMedias.Length; ++i)
             {
                 <div id=@String.Format("slideInner{0}", i) class="carousel-item index-carousal-fitter">
-                    <img src=@Url.Content("~/Images/MediaContent/" + ViewBag.TopMedias[i].MediaID + ViewBag.TopMedias[i].Type) class="post-img rounded index-carousal-img" alt="...">
+                    <img onclick="@("window.location.href='"+Url.Content("~/Post/ViewPost?PostID=" + ViewBag.TopPosts[i].PostID)+"'")" src=@Url.Content("~/Images/MediaContent/" + ViewBag.TopMedias[i].MediaID + ViewBag.TopMedias[i].Type) class="post-img rounded index-carousal-img" alt="...">
                     <div class="index-carousal-content">
                         <h1 class="index-post-header">@ViewBag.TopPosts[i].Title</h1>
                         <p class="index-post-writer">@String.Format("by {0}", ViewBag.TopWriters[i].Name)</p>

@@ -74,9 +74,9 @@
                     <div class="col-11 p-0">
                         @if (Session["Username"] != null)
                         {
-                            <form action="~/Post/ViewPost" method="post" class="p-0">
-                                <textarea class="form-control my-1" rows="3" placeholder="Comment something..." name="Content"></textarea>
-                                <input type="submit" class="btn-primary form-control" value="Comment" />
+                            <form action="~/Post/ViewPost" method="post" class="p-0" id="cmntForm">
+                                <textarea id="comment" class="form-control my-1" rows="3" placeholder="Comment something..." name="Content"></textarea>
+                                <input type="button" class="btn-primary form-control" value="Comment" onclick="btnSubmitComment()" />
                             </form>
                         } else
                         {
@@ -102,6 +102,7 @@
         </div>
     </div>
 </div>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
     var slideButton0 = document.getElementById("slideBtn0");
     if (slideButton0 != null) {
@@ -112,5 +113,18 @@
     var slideInner0 = document.getElementById("slideInner0");
     if (slideInner0 != null) {
         slideInner0.setAttribute("class", "carousel-item index-carousal-fitter active post-img rounded");
+    }
+
+    function btnSubmitComment() {
+        var cmnt = document.getElementById('comment');
+        if (cmnt.value.trim().length <= 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Write Something!'
+            });
+            return;
+        }
+        $('#cmntForm').submit();
     }
 </script>
