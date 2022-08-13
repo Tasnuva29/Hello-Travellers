@@ -36,6 +36,7 @@
         <div class="col-md-9 col-sm-12 post-view-height overflow-auto p-3">
             <p class="text-center fs-1 fw-bold font-monospace">@ViewBag.Post.Title</p>
             <p class="text-center fw-bold font-monospace">Written By @ViewBag.Writer.Name, Posted on @ViewBag.Post.CreationTime</p>
+            <p class="text-center fw-bold font-monospace"><i class="bi bi-hand-thumbs-up mx-2" onclick="btnUpvoteClicked()">Upvote</i><i class="bi bi-hand-thumbs-down mx-2">Downvote</i></p>
             @if (ViewBag.Media.Length > 0)
             {
                 <div id="indexCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -126,5 +127,11 @@
             return;
         }
         $('#cmntForm').submit();
+    }
+
+    function btnUpvoteClicked() {
+        const params = new URLSearchParams(window.location.search);
+        var postID = params.get('PostID');
+
     }
 </script>
