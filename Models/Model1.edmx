@@ -30,11 +30,11 @@
             <PropertyRef Name="PostID" />
           </Key>
           <Property Name="PostID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Content" Type="varchar" MaxLength="1024" />
+          <Property Name="Content" Type="varchar" MaxLength="8000" />
+          <Property Name="Title" Type="varchar" MaxLength="128" />
           <Property Name="CreatorUsername" Type="varchar" MaxLength="32" />
           <Property Name="CreationTime" Type="datetime" />
           <Property Name="ForumID" Type="int" />
-          <Property Name="Title" Type="varchar" MaxLength="128" />
         </EntityType>
         <EntityType Name="React">
           <Key>
@@ -84,6 +84,7 @@
           <Property Name="Password" Type="varchar" MaxLength="32" />
           <Property Name="About" Type="varchar" MaxLength="256" />
           <Property Name="DisplayPictureName" Type="varchar" MaxLength="256" />
+          <Property Name="Rank" Type="varchar" MaxLength="128" />
         </EntityType>
         <Association Name="fk_creatorUsername">
           <End Role="User" Type="Self.User" Multiplicity="0..1" />
@@ -294,6 +295,7 @@
           <NavigationProperty Name="Reacts" Relationship="HTModel.fk_username" FromRole="User" ToRole="React" />
           <NavigationProperty Name="Replies" Relationship="HTModel.fk_replyCreatorUsername" FromRole="User" ToRole="Reply" />
           <NavigationProperty Name="Reports" Relationship="HTModel.fk_ReporterUsername" FromRole="User" ToRole="Report" />
+          <Property Name="Rank" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
           </EntityType>
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Users" EntityType="Self.User" />
@@ -378,7 +380,7 @@
             <PropertyRef Name="PostID" />
           </Key>
           <Property Name="PostID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Content" Type="String" MaxLength="1024" FixedLength="false" Unicode="false" />
+          <Property Name="Content" Type="String" MaxLength="8000" FixedLength="false" Unicode="false" />
           <Property Name="CreatorUsername" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
           <Property Name="CreationTime" Type="DateTime" Precision="3" />
           <Property Name="ForumID" Type="Int32" />
@@ -572,6 +574,7 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="HTModel.User">
               <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="Rank" ColumnName="Rank" />
                 <ScalarProperty Name="Username" ColumnName="Username" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
