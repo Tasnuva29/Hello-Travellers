@@ -36,7 +36,33 @@
         <div class="col-md-9 col-sm-12 post-view-height overflow-auto p-3">
             <p class="text-center fs-1 fw-bold font-monospace">@ViewBag.Post.Title</p>
             <p class="text-center fw-bold font-monospace">Written By @ViewBag.Writer.Name, Posted on @ViewBag.Post.CreationTime</p>
-            <p class="text-center fw-bold font-monospace"><i class="bi bi-hand-thumbs-up mx-2" onclick="btnUpvoteClicked()">Upvote</i><i class="bi bi-hand-thumbs-down mx-2">Downvote</i></p>
+            @if (Session["Username"] != null)
+            {
+                <p class="text-center fw-bold font-monospace">
+                    @if (ViewBag.currentReact.ReactStatus == 1)
+                    {
+                        <i class="bi bi-hand-thumbs-up-fill mx-2" onclick="btnVoteClicked(0)">Upvote</i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-hand-thumbs-up mx-2" onclick="btnVoteClicked(1)">Upvote</i>
+                    }
+                    @if (ViewBag.currentReact.ReactStatus == -1)
+                    {
+                        <i class="bi bi-hand-thumbs-down-fill mx-2" onclick="btnVoteClicked(-1)">Downvote</i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-hand-thumbs-down mx-2" onclick="btnVoteClicked(-1)">Downvote</i>
+                    }
+                    <!--Report Button to trigger modal starts here-->
+                    @if (Session["Username"].ToString().CompareTo(ViewBag.Writer.Username) != 0)
+                    {
+                        <i class="bi bi-flag mx-2" data-bs-toggle="modal" data-bs-target="#reportModal">Report</i>
+                    }
+
+                </p>
+            }
             @if (ViewBag.Media.Length > 0)
             {
                 <div id="indexCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -68,6 +94,29 @@
             <p class="text-start font-monospace my-3">
                 @ViewBag.Post.Content
             </p>
+            <!--Report Modal Begins here-->
+            <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalArea" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="reportModal">Modal title</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="reportDescription">Why are you reporting this post?</label>
+                                <textarea class="form-control" id="reportDescription" rows="4"></textarea>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="btnReportClicked()">Report</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--Report Modal Ends here here-->
         </div>
         <div class="col-md-3 col-sm-12 overflow-auto position-sticky">
             <div class="container-fluid">
@@ -79,11 +128,12 @@
                                 <textarea id="comment" class="form-control my-1" rows="3" placeholder="Comment something..." name="Content"></textarea>
                                 <input type="button" class="btn-primary form-control" value="Comment" onclick="btnSubmitComment()" />
                             </form>
-                        } else
+                        }
+                        else
                         {
-                        <div class="p-0 container-fluid">
-                            <p class="text-center">Login to comment!</p>
-                        </div>
+                            <div class="p-0 container-fluid">
+                                <p class="text-center">Login to comment!</p>
+                            </div>
                         }
                     </div>
                 </div>
@@ -103,7 +153,6 @@
         </div>
     </div>
 </div>
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
     var slideButton0 = document.getElementById("slideBtn0");
     if (slideButton0 != null) {
@@ -129,9 +178,65 @@
         $('#cmntForm').submit();
     }
 
-    function btnUpvoteClicked() {
+    function btnVoteClicked(reactStatus) {
         const params = new URLSearchParams(window.location.search);
         var postID = params.get('PostID');
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UpdateReact", "Post")',
+            data: {
+                PostID: postID,
+                ReactStatus: reactStatus
+            },
+            success: function (response) {
+                location.reload();
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        })
+    }
 
+    function btnReportClicked() {
+        const params = new URLSearchParams(window.location.search);
+        var postID = params.get('PostID');
+        var reportReason = $('#reportDescription').val();
+        if (reportReason.trim().length <= 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Write Something!'
+            });
+            return;
+        }
+        console.log(reportReason);
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("Report", "Post")',
+            data: {
+                Reason: reportReason,
+                Context: 'POST',
+                ContextID: postID
+            },
+            success: function (response) {
+                console.log(response);
+                let jsonData = JSON.parse(response);
+                console.log(jsonData);
+                if (jsonData.Status == "Exists") {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Report Pending',
+                        text: 'Seems like you have a pending report on this post!'
+                    });
+                }
+                if (jsonData.Status == "Reported") {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Reported',
+                        text: 'Your report was succesfully submitted!'
+                    });
+                }
+            }
+        })
     }
 </script>

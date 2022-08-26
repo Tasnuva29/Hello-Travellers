@@ -69,6 +69,68 @@ namespace Hello_Travellers.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult Report(String Reason, String Context, String ContextID)
+        {
+            try
+            {
+                Entities db = new Entities();
+                string Username = (string)Session["Username"];
+
+                Report existingReport = db.Reports.Where(temp => Context == temp.Context && ContextID == temp.ContextID && Username == temp.ReporterUsername).FirstOrDefault();
+                if(existingReport != null)
+                {
+                    return Json("{\"Status\": \"Exists\"}");
+                }
+                Report report = new Report();
+                report.ReporterUsername = Username;
+                report.Context = Context;
+                report.ContextID = ContextID;
+                report.Reason = Reason;
+                db.Reports.Add(report);
+                db.SaveChanges();
+
+                return Json("{\"Status\": \"Reported\"}");
+            }
+            catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(401, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult UpdateReact(int PostID, int ReactStatus)
+        {
+            try
+            {
+                Entities db = new Entities();
+                string Username = (string) Session["Username"];
+
+                React newReact = new React();
+                newReact.PostID = PostID;
+                newReact.ReactStatus = ReactStatus;
+                newReact.Username = Username;
+
+                React existingReact = db.Reacts.Where(temp => temp.PostID == newReact.PostID && temp.Username == newReact.Username).FirstOrDefault();
+                if (existingReact == null)
+                {
+                    db.Reacts.Add(newReact);
+                    db.SaveChanges();
+                }
+                else
+                {
+                    existingReact.ReactStatus = newReact.ReactStatus;
+                    db.Entry(existingReact).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+
+                return Json("Success");
+            } catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(401, ex.Message);
+            }
+        }
+
         [HttpGet]
         public ActionResult ViewPost(int PostID)
         {
@@ -91,6 +153,21 @@ namespace Hello_Travellers.Controllers
 
                 var writer = db.Users.Where(t => t.Username == post.CreatorUsername).Single();
                 var media = db.MediaItems.Where(t => t.PostID == post.PostID).ToArray();
+
+                string Username = (string)Session["Username"];
+                if(!String.IsNullOrEmpty(Username))
+                {
+                    var currentReact = db.Reacts.Where(t => t.PostID == post.PostID && t.Username == Username).FirstOrDefault();
+                    if(currentReact != null)
+                    {
+                        ViewBag.currentReact = currentReact;
+
+                    } else
+                    {
+                        ViewBag.currentReact = new React() { ReactStatus = 0, Username = Username, PostID = post.PostID };
+                    }
+                }
+
                 ViewBag.Replies = replies;
                 ViewBag.Users = users;
                 ViewBag.Post = post;
