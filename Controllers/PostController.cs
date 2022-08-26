@@ -140,7 +140,7 @@ namespace Hello_Travellers.Controllers
             {
                 Entities db = new Entities();
 
-                var post = db.Posts.Where(t => t.PostID == PostID).Single();
+                var post = db.Posts.Where(t => t.PostID == PostID).FirstOrDefault();
                 var replies = db.Replies
                     .Where(temp => temp.PostID == PostID)
                     .ToArray();
@@ -151,9 +151,10 @@ namespace Hello_Travellers.Controllers
                     users[i] = db.Users.Where(t => t.Username == currentUsername).Single();
                 }
 
-                var writer = db.Users.Where(t => t.Username == post.CreatorUsername).Single();
-                var media = db.MediaItems.Where(t => t.PostID == post.PostID).ToArray();
-
+                //var writer = db.Users.Where(t => t.Username == post.CreatorUsername).Single();
+                //var media = db.MediaItems.Where(t => t.PostID == post.PostID).ToArray();
+                var writer = post.User;
+                var media = post.MediaItems.ToArray();
                 string Username = (string)Session["Username"];
                 if(!String.IsNullOrEmpty(Username))
                 {

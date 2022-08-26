@@ -18,6 +18,8 @@ namespace Hello_Travellers.Models
         public Entities()
             : base("name=Entities")
         {
+            this.Configuration.LazyLoadingEnabled = true;
+            this.Configuration.ProxyCreationEnabled = true;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
