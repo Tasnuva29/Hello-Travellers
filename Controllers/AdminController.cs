@@ -13,5 +13,29 @@ namespace Hello_Travellers.Controllers
         {
             return View();
         }
+        public ActionResult Dashboard()
+        {
+            return View();
+        }
+        public ActionResult Users()
+        {
+            return View();
+        }
+        public ActionResult Admins()
+        {
+            return View();
+        }
+        public ActionResult Posts()
+        {
+            return View();
+        }
+        public ActionResult Reports()
+        {
+            return View();
+        }
+        public ActionResult Settings()
+        {
+            return View();
+        }
     }
 }

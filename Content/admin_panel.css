@@ -1,0 +1,38 @@
+﻿
+.admin-sidebar {
+    box-shadow: 0px 0px 20px rgba(1, 41, 112, 0.1);
+    background-color: #010B08; 
+}
+
+
+    .admin-sidebar .admin-sidebar-content {
+        list-style: none;        
+    }
+
+    .admin-sidebar-item {        
+ 
+    }
+    .spanTitle{
+        font-size: 30px;
+    }
+
+        .admin-sidebar .admin-sidebar-item .admin-sidebar-link {
+            display: flex;
+            align-items: center;
+            font-size: 15px;
+            font-weight: 600;
+            text-decoration: none;
+            color: #F6F5F5;          
+        }
+
+            .admin-sidebar .admin-sidebar-item .admin-sidebar-link:hover {
+                color: #F73D93;
+            }
+
+
+
+.topBar {
+    height: 40px;
+    box-shadow: 0 4px 2px -2px rgba(1, 41, 112, 0.1);
+    
+}
