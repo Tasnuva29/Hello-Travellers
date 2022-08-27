@@ -127,6 +127,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\ChatController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PostController.cs" />
     <Compile Include="Controllers\SendEmail.cs" />
@@ -141,6 +142,7 @@
     <Compile Include="Models\Message.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\MessageContainer.cs" />
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -210,6 +212,7 @@
     <Content Include="Content\bootstrap.rtl.css.map" />
     <Content Include="Content\bootstrap.rtl.min.css" />
     <Content Include="Content\bootstrap.rtl.min.css.map" />
+    <Content Include="Content\chat.css" />
     <Content Include="Content\index.css" />
     <Content Include="Content\jquery.dataTables.css" />
     <Content Include="Content\signup_signin.css" />
@@ -331,6 +334,9 @@
     <Content Include="Views\Admin\Reports.cshtml" />
     <Content Include="Views\Admin\Settings.cshtml" />
     <Content Include="Views\Admin\Subforums.cshtml" />
+    <Content Include="Views\Admin\Forums.cshtml" />
+    <Content Include="Views\Chat\Index.cshtml" />
+    <Content Include="Views\Shared\_MessageBox.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\UserProfile\EditProfile.cshtml" />

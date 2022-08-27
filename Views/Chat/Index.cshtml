@@ -1,0 +1,205 @@
+<style>
+    .chat-online {
+        color: #34ce57
+    }
+
+    .chat-offline {
+        color: #e4606d
+    }
+
+    .chat-messages {
+        display: flex;
+        flex-direction: column;
+        max-height: 800px;
+        overflow-y: scroll
+    }
+
+    .chat-message-left,
+    .chat-message-right {
+        display: flex;
+        flex-shrink: 0
+    }
+
+    .chat-message-left {
+        margin-right: auto
+    }
+
+    .chat-message-right {
+        flex-direction: row-reverse;
+        margin-left: auto
+    }
+
+    .py-3 {
+        padding-top: 1rem !important;
+        padding-bottom: 1rem !important;
+    }
+
+    .px-4 {
+        padding-right: 1.5rem !important;
+        padding-left: 1.5rem !important;
+    }
+
+    .flex-grow-0 {
+        flex-grow: 0 !important;
+    }
+
+    .border-top {
+        border-top: 1px solid #dee2e6 !important;
+    }
+
+    .border-left {
+        border-left: 1px solid #dee2e6 !important;
+    }
+
+    .border-right {
+        border-right: 1px solid #dee2e6 !important;
+    }
+
+    .border-bottom {
+        border-bottom: 1px solid #dee2e6 !important;
+    }
+
+    .side-shadow {
+        box-shadow: 10px 0px 9px -3px rgb(232 238 255);
+    }
+
+    .bot-shadow {
+        box-shadow: 0px 12px 9px -3px rgb(232 238 255);
+    }
+
+    .top-shadow {
+        box-shadow: 0px -12px 9px -3px rgb(232 238 255);
+    }
+</style>
+<div class="container p-0" style="min-height: 80vh;">
+    <div class="row g-0">
+        <div class="col-12 col-lg-5 col-xl-3 border-right border-left side-shadow">
+            @foreach (var item in ViewBag.chatList)
+            {
+                <a href="?Username=@item.Username" class="list-group-item list-group-item-action border-0" >
+                    <div class="d-flex align-items-start">
+                        <img src="https://bootdey.com/img/Content/avatar/avatar2.png" class="rounded-circle mx-3"
+                             alt="William Harris" width="40" height="40">
+                        <div class="flex-grow-1 ml-3" style="align-self: center">
+                            @item.Name
+                        </div>
+                    </div>
+                </a>
+                <hr class="d-block d-lg-none mt-1 mb-0">
+            }
+
+        </div>
+        <div class="col-12 col-lg-7 col-xl-9 border-left border-right">
+            @if (ViewBag.Load == true)
+            {
+                <div class="py-2 px-4 border-bottom d-none d-lg-block bot-shadow">
+                    <div class="d-flex align-items-center py-1">
+                        <div class="position-relative">
+                            <img src="https://bootdey.com/img/Content/avatar/avatar3.png"
+                                 class="rounded-circle mx-3" alt="Sharon Lessman" width="40" height="40">
+                        </div>
+                        <div class="flex-grow-1 pl-3">
+                            <strong>@ViewBag.Receiver.Name</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="position-relative" style="height: 80vh;">
+                    <div id="chat-container" class="chat-messages p-4" style="height: 80vh;">
+
+
+                        @*<div class="chat-message-right mb-4">
+                                <div>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                                         class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
+                                    <div class="text-muted small text-nowrap mt-2">2:43 am</div>
+                                </div>
+                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 mr-3">
+                                    <div class="font-weight-bold mb-1">You</div>
+                                    Lorem ipsum dolor sit amet, vis erat denique in, dicunt prodesset te vix.
+                                </div>
+                            </div>*@
+
+                        @*<div class="chat-message-left pb-4">
+                                <div>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar3.png"
+                                         class="rounded-circle mr-1" alt="Sharon Lessman" width="40" height="40">
+                                    <div class="text-muted small text-nowrap mt-2">2:44 am</div>
+                                </div>
+                                <div class="flex-shrink-1 bg-light rounded py-2 px-3 ml-3">
+                                    <div class="font-weight-bold mb-1">Sharon Lessman</div>
+                                    Sit meis deleniti eu, pri vidit meliore docendi ut, an eum erat animal commodo.
+                                </div>
+                            </div>*@
+
+                    </div>
+                </div>
+
+                <div class="flex-grow-0 py-3 px-4 border-top top-shadow">
+                    <div class="input-group">
+                        <input type="text" id="messageBox" class="form-control" placeholder="Type your message">
+                        <button id="btnSubmit" class="btn btn-primary" onclick="sendMessage()">Send</button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+<script>
+    var delay = 10;
+    var currentCount = 0;
+    const params = new URLSearchParams(window.location.search);
+    var username = params.get('Username');
+    setInterval(loadMessage, delay);
+
+    function loadMessage() {
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("GetNewMessages", "Chat")',
+            data: {
+                Username: username,
+                CurrentCount: currentCount
+            },
+            success: function (response) {
+                if (response == "Empty") {
+                    delay = 2000;
+                }
+                else {
+                    $('#chat-container').append(response);
+                    delay = 10;
+                    currentCount++;
+                }
+            },
+            error: function (response) {
+            }
+        })
+    }
+
+    function validateInput() {
+        if ($('#messageBox').val().trim().length <= 0) {
+            $('#btnSubmit').disabled = true;
+        }
+        else {
+            $('#btnSubmit').disabled = false;
+        }
+    }
+
+    function sendMessage() {
+        var content = $('#messageBox').val();
+        if (content.trim().length <= 0) {
+            return;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("SendMessage", "Chat")',
+            data: {
+                Username: username,
+                Content: content
+            },
+            success: function (response) {
+                console.log(response);
+                $('#messageBox').val("");
+            }
+        })
+    }
+</script>
