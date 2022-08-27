@@ -52,7 +52,7 @@ namespace Hello_Travellers.Controllers
         {
             return View();
         }
-        
+
         public ActionResult Subforums()
         {
             Entities db = new Entities();
@@ -68,12 +68,27 @@ namespace Hello_Travellers.Controllers
         {
             Entities db = new Entities();
             var subForum = new Subforum();
-            subForum.ForumName = ForumName;
-            db.Subforums.Add(subForum);
+            var count = db.Subforums.Where(temp => temp.ForumName == ForumName).Count();
+            if (count >= 1)
+            {
+                return Json("false", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                subForum.ForumName = ForumName;
+                db.Subforums.Add(subForum);
+                db.SaveChanges();
+                return Json("true", JsonRequestBehavior.AllowGet);
+            }
+
+        }
+        public ActionResult DeleteSubforum(int ForumID)
+        {
+            Entities db = new Entities();
+            var subForum = db.Subforums.Where(temp => temp.ForumID == ForumID).SingleOrDefault();
+            db.Subforums.Remove(subForum);
             db.SaveChanges();
             return Json("true", JsonRequestBehavior.AllowGet);
-
-
         }
         public ActionResult Reports()
         {
