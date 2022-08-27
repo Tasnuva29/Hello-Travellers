@@ -46,6 +46,7 @@ namespace Hello_Travellers.Controllers
             {
                 post.CreatorUsername = (string)Session["Username"];
                 post.CreationTime = DateTime.Now;
+                
                 db.Posts.Add(post);
                 db.SaveChanges();
 
@@ -67,6 +68,23 @@ namespace Hello_Travellers.Controllers
                 ViewBag.Subforums = db.Subforums.ToList();
             }
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult UpdatePost(int PostID, String Content)
+        {
+            try
+            {
+                Entities db = new Entities();
+                var post = db.Posts.Find(PostID);
+                post.Content = Content;
+                db.Entry(post).State = EntityState.Modified;
+                db.SaveChanges();
+                return Json("{\"Status\": \"Edited\"}");
+            } catch (Exception ex)
+            {
+                return new HttpStatusCodeResult(401, ex.Message);
+            }
         }
 
         [HttpPost]
@@ -134,16 +152,13 @@ namespace Hello_Travellers.Controllers
         [HttpGet]
         public ActionResult ViewPost(int PostID)
         {
-
             TempData["PostID"] = PostID;
             try
             {
                 Entities db = new Entities();
 
                 var post = db.Posts.Where(t => t.PostID == PostID).FirstOrDefault();
-                var replies = db.Replies
-                    .Where(temp => temp.PostID == PostID)
-                    .ToArray();
+                var replies = post.Replies.ToArray();
                 var users = new User[replies.Length];
                 for (int i = 0; i < replies.Length; i++)
                 {
