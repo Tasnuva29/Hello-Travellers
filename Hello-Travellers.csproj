@@ -300,7 +300,6 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\toggleSidebar.js" />
     <Content Include="Views\UserAuth\Login.cshtml" />
     <Content Include="Views\UserProfile\Index.cshtml" />
     <Content Include="Web.config" />
@@ -331,7 +330,7 @@
     <Content Include="Views\Admin\Posts.cshtml" />
     <Content Include="Views\Admin\Reports.cshtml" />
     <Content Include="Views\Admin\Settings.cshtml" />
-    <Content Include="Views\Admin\Forums.cshtml" />
+    <Content Include="Views\Admin\Subforums.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\UserProfile\EditProfile.cshtml" />

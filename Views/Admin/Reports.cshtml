@@ -3,25 +3,122 @@
     ViewBag.Title = "Reports";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-<style>
-    .page-header {
-        color: #787A91;
-        font-weight: 600;
-        font-size: 25px;
-    }
-</style>
+<head>
+    <style>
+        .page-header {
+            color: #787A91;
+            font-weight: 600;
+            font-size: 25px;
+        }
+
+        .tab-header {
+            color: #787A91;
+            font-weight: 600;
+            font-size: 20px;
+        }
+
+        .table-container {
+            box-shadow: 0 0 10px 1px rgba(217,217,217,1);
+            padding: 20px;
+        }
+    </style>
+
+</head>
+
 <p class="mb-4 mt-2 page-header">Reports</p>
 
 <nav>
     <div class="nav nav-tabs" id="nav-tab" role="tablist">
-        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Post</button>
-        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</button>
-        <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Chat</button>
+        <button class="nav-link active tab-header" id="nav-post-tab" data-bs-toggle="tab" data-bs-target="#nav-post" type="button" role="tab" aria-controls="nav-post" aria-selected="true">Posts</button>
+        <button class="nav-link tab-header" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</button>
+        <button class="nav-link tab-header" id="nav-chat-tab" data-bs-toggle="tab" data-bs-target="#nav-chat" type="button" role="tab" aria-controls="nav-chat" aria-selected="false">Chat</button>
     </div>
 </nav>
+<div class="tab-content" id="nav-tabContent">
+    <!--post tab-->
+    <div class="tab-pane fade show active" id="nav-post" role="tabpanel" aria-labelledby="nav-post-tab" tabindex="0">
+        <div class="container-fluid table-container">
+            <div class="d-flex  flex-row">
+                <div class="page-header">Total Reports : </div>
+                <div class="fw-bold page-header ms-1"> @ViewBag.count</div>
+            </div>
+            <div class="row mt-2">
+                <table class="table table-hover mt-2" id="post-table">
+                    <thead class="bg-dark text-white">
+                        <tr>
+                            <th>Report ID</th>
+                            <th>Context ID</th>
+                            <th>Context</th>
+                            <th>Reason</th>
+                            <th>Reporter User</th>
+                            <th>Reported User</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-<div class="tab-content mt-2" id="nav-tabContent">
-    <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">Post Clicked</div>
-    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">Profile Clicked</div>
-    <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">Chat Clicked</div>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--profile tab-->
+    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+        <div class="container-fluid table-container">
+            <div class="d-flex  flex-row">
+                <div class="page-header">Total Reports : </div>
+                <div class="fw-bold page-header ms-1"> @ViewBag.count</div>
+            </div>
+            <div class="row mt-2">
+                <table class="table table-hover mt-2" id="profile-table">
+                    <thead class="bg-dark text-white">
+                        <tr>
+                            <th>Report ID</th>
+                            <th>Context ID</th>
+                            <th>Reason</th>
+                            <th>Reporter User</th>
+                            <th>Reported User</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <!--chat tab-->
+    <div class="tab-pane fade" id="nav-chat" role="tabpanel" aria-labelledby="nav-chat-tab" tabindex="0">
+        <div class="container-fluid table-container">
+            <div class="d-flex  flex-row">
+                <div class="page-header">Total Reports : </div>
+                <div class="fw-bold page-header ms-1"> @ViewBag.count</div>
+            </div>
+            <div class="row mt-2">
+                <table class="table table-hover mt-2" id="chat-table">
+                    <thead class="bg-dark text-white">
+                        <tr>
+                            <th>Report ID</th>
+                            <th>Context ID</th>                           
+                            <th>Reason</th>
+                            <th>Reporter User</th>
+                            <th>Reported User</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
 </div>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#post-table').DataTable();
+        $('#profile-table').DataTable();
+        $('#chat-table').DataTable();
+    });
+</script>

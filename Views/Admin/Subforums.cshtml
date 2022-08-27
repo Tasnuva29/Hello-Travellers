@@ -1,0 +1,123 @@
+﻿@{
+    ViewBag.Title = "Subforums";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<style>
+    .page-header {
+        color: #787A91;
+        font-weight: 600;
+        font-size: 21px;
+    }
+
+    .table-container {
+        box-shadow: 0 0 10px 1px rgba(217,217,217,1);
+        padding: 20px;
+    }
+
+    .forum-input-text {
+        border: 0;
+        outline: 0;
+        border-bottom: 2px solid #21BCA8;
+    }
+
+        .forum-input-text:hover, :focus {
+            border-bottom: 2px solid #066163;
+        }
+
+    .forum-btn {
+        background-color: #21BCA8;
+        color: white;
+        transition: 0.3s ease;
+        outline: none;
+    }
+
+        .forum-btn:hover {
+            background-color: #066163;
+            color: white;
+            outline: none;
+        }
+</style>
+
+<p class="mb-4 mt-3 page-header">Subforums</p>
+<div class="container-fluid table-container">
+    <div class="d-flex  flex-row mb-2">
+        <div class="page-header">Total Subforums : </div>
+        <div class="fw-bold page-header ms-1">@ViewBag.count</div>
+    </div>
+    <div class="alert alert-success d-flex align-items-center" role="alert" id="success-alert" style="display:none;">
+        <i class="bi-check-lg c-success me-2"></i>  An example success alert with an icon
+    </div>
+
+    <div class="hstack gap-3 mb-3 mt-3">
+        <button type="button" class="btn forum-btn" onclick="takeInput()"><i class="bi-plus-lg me-2"></i>Add Subforum</button>
+
+        <form class="ms-3" id="showForm" style="display:none;">
+            <input type="text" id="forumInput" required pattern="^[a-zA-Z ]+$" minlength=3 maxlength=100 title="Only letters and spaces are allowed" class="forum-input-text" placeholder="Enter Subforum name">
+            <button type="submit" class="btn forum-btn ms-2" onclick="btnSubmitClicked()">Submit</button>
+        </form>
+
+    </div>
+    <div class="row mt-2">
+        <table class="table table-hover mt-2" id="user-table">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th>Forum ID</th>
+                    <th>Forum Name</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            @foreach (var item in ViewBag.subForums)
+            {
+                <tr>
+                    <td>@item.ForumID</td>
+                    <td>@item.ForumName</td>
+                    <td>
+                        <div class="hstack gap-2">
+                            <button type="button" class="btn forum-btn"><i class="bi-pencil-fill me-2"></i>Edit</button>
+                            <button type="button" class="btn forum-btn"><i class="bi-trash3-fill me-2"></i>Delete</button>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#user-table').DataTable();
+    });
+    function takeInput() {
+        var x = document.getElementById("showForm");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
+    function btnSubmitClicked() {
+        var forumName = $('#forumInput').val(); 
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("CreateSubforum", "Admin")',
+            data: {
+                ForumName: forumName
+            },
+            dataType: "json", 
+            success: function (response) {
+                alert(ForumName);
+                console.log(response);
+                location.reload();
+            },
+            error: function (response) {
+                console.log(response);
+            }
+        })
+    }
+
+</script>
