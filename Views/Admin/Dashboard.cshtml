@@ -3,6 +3,123 @@
     ViewBag.Title = "Dashboard";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<style>
+    .overview-card {
+        border: none;
+        box-shadow: 7px 10px 7px -1px rgba(217,217,217,1);
+        padding: 20px;
+    }
 
-<h2>Dashboard</h2>
+        .overview-card:hover {
+        }
+
+    .first-card {
+        background-color: #FDD7AA;
+    }
+
+        .first-card i {
+            color: #F7A76C;
+        }
+
+    .second-card {
+        background-color: #D9F8C4;
+    }
+
+    .third-card {
+        background-color: #CDF0EA;
+    }
+
+    .fourth-card {
+        background-color: #ead5dc;
+    }
+
+    .card-icon {
+        border: 1px solid;
+        border-radius: 50%;
+        padding: 5px;
+    }
+
+    .page-header {
+        color: #787A91;
+        font-weight: 600;
+        font-size: 25px;
+    }
+    .card-heading{
+
+    }
+    
+    .chart-1 {
+        background-color: #FCFFE7;
+    }
+    .chart-2 {
+        background-color: #FFF5E1;
+    }
+</style>
+<p class="mb-4 mt-3 page-header">Dashboard</p>
+<!--overview---->
+<div class="row mt-2">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card overview-card  first-card py-2">
+            <div class="card-body">
+                <div class="hstack">
+                    <div class="vstack">
+                        <h5 class="card-title">Card title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                    </div>
+                    <i class="fs-4 bi-flag card-icon"></i>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card overview-card second-card py-2">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card overview-card third-card py-2">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+            </div>
+        </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card overview-card fourth-card py-2">
+            <div class="card-body">
+                <h5 class="card-title">Card title</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+            </div>
+        </div>
+    </div>
+</div>
+<!--charts-->
+<div class="row">
+    <!--monthly post-->
+    <div class="col-xl-5 col-md-12 mb-4">
+        <div class="card overview-card py-2 chart-1">
+            <div class="card-heading">
+                <h4 class="text-center d-flex align-content-center justify-content-center">Post Track</h4>
+            </div>
+            <hr class= "m-0" style="height:2px;"/>
+            <div class="card-body">
+               
+            </div>
+        </div>
+    </div>
+    <!--post per forum-->
+    <div class="col-xl-7 col-md-12 mb-4">
+        <div class="card overview-card chart-2 py-2">
+            <div class="card-heading">
+                <h4 class="text-center d-flex align-content-center justify-content-center">Post per month</h4>
+            </div>
+            <hr class="m-0" style="height:2px;" />
+        </div>
+    </div>
+</div>
+
 

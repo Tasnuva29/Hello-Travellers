@@ -29,6 +29,10 @@ namespace Hello_Travellers.Controllers
         {
             return View();
         }
+        public ActionResult Forums()
+        {
+            return View();
+        }
         public ActionResult Reports()
         {
             return View();

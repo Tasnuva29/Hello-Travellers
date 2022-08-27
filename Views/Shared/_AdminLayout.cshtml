@@ -24,45 +24,51 @@
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start admin-sidebar-content" id="menu">
                         <li class="admin-sidebar-item">
                             <a href="@Url.Action("Dashboard", "Admin")" class="nav-link align-middle px-0 admin-sidebar-link">
-                                <i class="fs-4 bi-grid"></i> <span class="ms-2 d-none d-sm-inline">Dashboard</span>
+                                <i class="fs-4 bi-grid"></i> <span class="ms-3 d-none d-sm-inline">Dashboard</span>
                             </a>
                         </li>
                         <li class="admin-sidebar-item">
                             <a href="@Url.Action("Users", "Admin")" class="nav-link px-0 align-middle admin-sidebar-link">
-                                <i class="fs-4 bi-people"></i> <span class="ms-2 d-none d-sm-inline">Users</span>
+                                <i class="fs-4 bi-people"></i> <span class="ms-3 d-none d-sm-inline">Users</span>
                             </a>
                         </li>
                         <li class="admin-sidebar-item">
                             <a href="@Url.Action("Admins", "Admin")" class="nav-link px-0 align-middle admin-sidebar-link">
-                                <i class="fs-4 bi-shield-fill-check"></i> <span class="ms-2 d-none d-sm-inline">Admins</span>
+                                <i class="fs-4 bi-shield-fill-check"></i> <span class="ms-3 d-none d-sm-inline">Admins</span>
                             </a>
                         </li>
                         <li class="admin-sidebar-item">
                             <a href="@Url.Action("Posts", "Admin")" class="nav-link px-0 align-middle admin-sidebar-link">
-                                <i class="fs-4 bi-file-post"></i> <span class="ms-2 d-none d-sm-inline">Posts</span>
+                                <i class="fs-4 bi-file-post"></i> <span class="ms-3 d-none d-sm-inline">Posts</span>
+                            </a>
+                        </li>
+                        <li class="admin-sidebar-item">
+                            <a href="@Url.Action("Forums", "Admin")" class="nav-link px-0 align-middle admin-sidebar-link">
+                                <i class="fs-4 bi-card-list"></i> <span class="ms-3 d-none d-sm-inline">Forums</span>
                             </a>
                         </li>
                         <li class="admin-sidebar-item">
                             <a href="@Url.Action("Reports", "Admin")" class="nav-link px-0 align-middle admin-sidebar-link">
-                                <i class="fs-4 bi-flag"></i> <span class="ms-2 d-none d-sm-inline">Reports</span>
+                                <i class="fs-4 bi-flag"></i> <span class="ms-3 d-none d-sm-inline">Reports</span>
                             </a>
                         </li>
                         <li class="admin-sidebar-item">
                             <a href="@Url.Action("Settings", "Admin")" class="nav-link px-0 align-middle admin-sidebar-link">
-                                <i class="fs-4 bi-gear-fill"></i> <span class="ms-2 d-none d-sm-inline">Settings</span>
+                                <i class="fs-4 bi-gear-fill"></i> <span class="ms-3 d-none d-sm-inline">Settings</span>
                             </a>
                         </li>
                         <li class="admin-sidebar-item">
                             <a href="@Url.Action("Logout", "Admin")" class="nav-link px-0 align-middle admin-sidebar-link">
-                                <i class="fs-4 bi-box-arrow-left"></i> <span class="ms-2 d-none d-sm-inline">Logout</span>
+                                <i class="fs-4 bi-box-arrow-left"></i> <span class="ms-3 d-none d-sm-inline">Logout</span>
                             </a>
                         </li>
                     </ul>
                 </div>
             </div>
-            <div class="col py-3">
-                <div class="topBar d-flex flex-row-reverse">
+            <div class="col py-3 content-wrapper">
+                <div class="top-bar d-flex flex-row-reverse">
                     <div class="me-3">Hello Admin</div>
+                   
                 </div>
                 @RenderBody()                
             </div>
