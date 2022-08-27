@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hello_Travellers.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -11,7 +12,9 @@ namespace Hello_Travellers.Controllers
         // GET: Admin
         public ActionResult Index()
         {
+
             return View();
+
         }
         public ActionResult Dashboard()
         {
@@ -19,6 +22,12 @@ namespace Hello_Travellers.Controllers
         }
         public ActionResult Users()
         {
+            Entities db = new Entities();
+            var userList = db.Users.Where(temp => temp.Rank == "USERS").ToList();
+            var count = db.Users.Where(temp => temp.Rank == "USERS").Count();
+            ViewBag.userList = userList;
+            ViewBag.count = count;
+            // return Json(new { data = userList}, JsonRequestBehavior.AllowGet);
             return View();
         }
         public ActionResult Admins()
