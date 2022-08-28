@@ -11,7 +11,7 @@
         <EntityTypeShape EntityType="HTModel.Post" Width="1.5" PointX="8.875" PointY="7.125" />
         <EntityTypeShape EntityType="HTModel.React" Width="1.5" PointX="9.875" PointY="3.75" />
         <EntityTypeShape EntityType="HTModel.Reply" Width="1.5" PointX="11.125" PointY="7.375" />
-        <EntityTypeShape EntityType="HTModel.Report" Width="2" PointX="5.5" PointY="4.75" />
+        <EntityTypeShape EntityType="HTModel.Report" Width="2" PointX="5.5" PointY="4.5" />
         <EntityTypeShape EntityType="HTModel.Subforum" Width="1.5" PointX="8" PointY="4.75" />
         <AssociationConnector Association="HTModel.fk_miPostID" />
         <AssociationConnector Association="HTModel.fk_miUploaderUsername" />

@@ -75,6 +75,7 @@
           <Property Name="ContextID" Type="varchar" MaxLength="32" />
           <Property Name="Reason" Type="varchar" MaxLength="256" />
           <Property Name="ReporterUsername" Type="varchar" MaxLength="32" />
+          <Property Name="Status" Type="varchar" MaxLength="32" />
         </EntityType>
         <EntityType Name="Subforum">
           <Key>
@@ -459,6 +460,7 @@
           <Property Name="Reason" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
           <Property Name="ReporterUsername" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="User" Relationship="HTModel.fk_ReporterUsername" FromRole="Report" ToRole="User" />
+          <Property Name="Status" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Subforum">
           <Key>
@@ -702,6 +704,7 @@
           <EntitySetMapping Name="Reports">
             <EntityTypeMapping TypeName="HTModel.Report">
               <MappingFragment StoreEntitySet="Report">
+                <ScalarProperty Name="Status" ColumnName="Status" />
                 <ScalarProperty Name="ReporterUsername" ColumnName="ReporterUsername" />
                 <ScalarProperty Name="Reason" ColumnName="Reason" />
                 <ScalarProperty Name="ContextID" ColumnName="ContextID" />
