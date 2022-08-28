@@ -38,7 +38,9 @@
             outline: none;
         }
 </style>
+<script>
 
+</script>
 <p class="mb-4 mt-3 page-header">Subforums</p>
 <div class="container-fluid table-container">
     <div class="d-flex  flex-row mb-2">
@@ -72,16 +74,16 @@
                     <td>@item.ForumName</td>
                     <td>
                         <div class="hstack gap-2">
-                        @if (item.ForumName == "Experiences" || item.ForumName == "Travel Plans" || item.ForumName == "Short Stories")
-                        {
-                            <button type="button" class="btn forum-btn disabled"><i class="bi-pencil-fill me-2"></i>Edit</button>
-                            <button type="button" class="btn forum-btn disabled"><i class="bi-trash3-fill me-2"></i>Delete</button>
-                        }
-                        else
-                        {
-                            <button type="button" class="btn forum-btn" onclick="editForum(@item.ForumID, @item.ForumName)"><i class="bi-pencil-fill me-2"></i>Edit</button>
-                            <button type="button" class="btn forum-btn" onclick="deleteForum(@item.ForumID)"><i class="bi-trash3-fill me-2"></i>Delete</button>
-                        }
+                            @if (item.ForumName == "Experiences" || item.ForumName == "Travel Plans" || item.ForumName == "Short Stories")
+                            {
+                                <button type="button" class="btn forum-btn disabled"><i class="bi-pencil-fill me-2"></i>Edit</button>
+                                <button type="button" class="btn forum-btn disabled"><i class="bi-trash3-fill me-2"></i>Delete</button>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn forum-btn" onclick="editForum(this)" forum-id="@item.ForumID" forum-name="@item.ForumName"><i class="bi-pencil-fill me-2"></i>Edit</button>
+                                <button type="button" class="btn forum-btn" onclick="deleteForum(@item.ForumID)"><i class="bi-trash3-fill me-2"></i>Delete</button>
+                            }
                         </div>
                     </td>
                 </tr>
@@ -120,7 +122,7 @@
             },
             dataType: "json",
             success: function (response) {
-                if (response === "false") {
+                if (response == "false") {
                     $.notify(
                         "Such a subforum already exists! Please insert a unique one",
                         {
@@ -129,7 +131,7 @@
                         }
                     );
                 }
-                if (response === "true") {
+                if (response == "true") {
                     $.notify(
                         "Inserted Successfully",
                         {
@@ -146,10 +148,55 @@
             }
         });
     }
+    async function editForum(element) {
+        var id = element.getAttribute("forum-id");
+        var name = element.getAttribute("forum-name");
+        const { value: text } = await Swal.fire({
+            title: 'Edit Subforum name',
+            input: 'text',
+            inputPlaceholder: 'Enter subforum name',
+            showCancelButton: true,
+            confirmButtonText: "Save",
+            confirmButtonColor: '#21BCA8',
+            inputValue: name,
+        })
+        if (text) {
+            //Swal.fire(`Entered name: ${text}`)
+            //alert(text);
 
-    function editForum(id, name) {
+            $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("EditSubforum", "Admin")',
+                    data: {
+                        ForumName: text,
+                        ForumID: id
+                },
+                     dataType: "json",
+                success: function (response) {                    
+                    if (response == "false") {
+                        $.notify(
+                            "Subforum already exists!",
+                            {
+                                globalPosition: "top center",
+                                className: "error"
+                            }
+                        );                        
+                    }
+                    if (response == "true") {
+                        $.notify(
+                            "Updated Successfully",
+                            {
+                                globalPosition: "top center",
+                                className: "success"
+                            }
+                        );
+                        console.log("Updated");
+                        location.reload();
+                    }
 
-
+                }
+                });
+        }
     }
     function deleteForum(id) {
         Swal.fire({
