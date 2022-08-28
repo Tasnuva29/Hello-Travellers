@@ -60,8 +60,9 @@ namespace Hello_Travellers.Controllers
             ViewBag.count = count;
             var subForums = db.Subforums.ToList();
             ViewBag.subForums = subForums;
-            return View();
+            return View();            
         }
+       
 
         [HttpPost]
         public ActionResult CreateSubforum(string ForumName)
