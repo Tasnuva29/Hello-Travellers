@@ -73,20 +73,8 @@
 </style>
 <div class="container p-0" style="min-height: 80vh;">
     <div class="row g-0">
-        <div class="col-12 col-lg-5 col-xl-3 border-right border-left side-shadow">
-            @foreach (var item in ViewBag.chatList)
-            {
-                <a href="?Username=@item.Username" class="list-group-item list-group-item-action border-0" >
-                    <div class="d-flex align-items-start">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar2.png" class="rounded-circle mx-3"
-                             alt="William Harris" width="40" height="40">
-                        <div class="flex-grow-1 ml-3" style="align-self: center">
-                            @item.Name
-                        </div>
-                    </div>
-                </a>
-                <hr class="d-block d-lg-none mt-1 mb-0">
-            }
+        <div id="chatListBox" class="col-12 col-lg-5 col-xl-3 border-right border-left side-shadow" style="height: 100vh">
+
 
         </div>
         <div class="col-12 col-lg-7 col-xl-9 border-left border-right">
@@ -146,13 +134,41 @@
     </div>
 </div>
 <script>
-    var delay = 10;
+
+    document.addEventListener("DOMContentLoaded", updateChatList);
+    document.addEventListener("DOMContentLoaded", initialLoad);
+
+    var delay = 100;
     var currentCount = 0;
+
     const params = new URLSearchParams(window.location.search);
     var username = params.get('Username');
+
     setInterval(loadMessage, delay);
+    setInterval(updateChatList, 5000);
+
+    function initialLoad() {
+        if (username == null) {
+            return;
+        }
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("GetBulkMessages", "Chat")',
+            data: {
+                Username: username
+            },
+            success: function (response) {
+                $('#chat-container').html(response);
+                currentCount = $('.chat-count').length;
+            }
+        })
+    }
 
     function loadMessage() {
+        if (username == null) {
+            return;
+        }
+        console.log("GG");
         $.ajax({
             type: 'GET',
             url: '@Url.Action("GetNewMessages", "Chat")',
@@ -166,22 +182,13 @@
                 }
                 else {
                     $('#chat-container').append(response);
-                    delay = 10;
+                    delay = 100;
                     currentCount++;
                 }
             },
             error: function (response) {
             }
         })
-    }
-
-    function validateInput() {
-        if ($('#messageBox').val().trim().length <= 0) {
-            $('#btnSubmit').disabled = true;
-        }
-        else {
-            $('#btnSubmit').disabled = false;
-        }
     }
 
     function sendMessage() {
@@ -199,6 +206,16 @@
             success: function (response) {
                 console.log(response);
                 $('#messageBox').val("");
+            }
+        })
+    }
+
+    function updateChatList() {
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("LoadChatList", "Chat")',
+            success: function (response) {
+                $('#chatListBox').html(response);
             }
         })
     }

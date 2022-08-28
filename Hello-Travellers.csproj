@@ -158,6 +158,9 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Model1.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\Notification.cs">
+      <DependentUpon>Model1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Post.cs">
       <DependentUpon>Model1.tt</DependentUpon>
     </Compile>
@@ -337,6 +340,9 @@
     <Content Include="Views\Admin\Forums.cshtml" />
     <Content Include="Views\Chat\Index.cshtml" />
     <Content Include="Views\Shared\_MessageBox.cshtml" />
+    <Content Include="Views\Shared\_MessageList.cshtml" />
+    <Content Include="Views\Shared\_MessageBulk.cshtml" />
+    <Content Include="Views\Shared\_NotificationBlock.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\UserProfile\EditProfile.cshtml" />

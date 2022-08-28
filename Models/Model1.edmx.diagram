@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="13a63048dc9a4c5994e552ea23d0d5a1" Name="Diagram1">
+      <Diagram DiagramId="13a63048dc9a4c5994e552ea23d0d5a1" Name="Diagram1" ZoomLevel="98">
         <EntityTypeShape EntityType="HTModel.User" PointX="3.375" PointY="6.625" Width="1.75" IsExpanded="true" />
         <EntityTypeShape EntityType="HTModel.MediaItem" Width="1.625" PointX="6.125" PointY="7.375" />
         <EntityTypeShape EntityType="HTModel.Message" Width="1.75" PointX="0.875" PointY="6.625" />
@@ -24,6 +24,8 @@
         <AssociationConnector Association="HTModel.fk_username" />
         <AssociationConnector Association="HTModel.fk_replyCreatorUsername" />
         <AssociationConnector Association="HTModel.fk_ReporterUsername" />
+        <EntityTypeShape EntityType="HTModel.Notification" Width="1.5" PointX="5.875" PointY="10.875" />
+        <AssociationConnector Association="HTModel.fk_ForUsername" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

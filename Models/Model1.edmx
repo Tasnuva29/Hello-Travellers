@@ -24,6 +24,17 @@
           <Property Name="SenderUsername" Type="varchar" MaxLength="32" />
           <Property Name="ReceiverUsername" Type="varchar" MaxLength="32" />
           <Property Name="SentTime" Type="datetime" />
+          <Property Name="SeenStatus" Type="varchar" MaxLength="16" />
+        </EntityType>
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="NotificationID" />
+          </Key>
+          <Property Name="NotificationID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ForUsername" Type="varchar" MaxLength="32" />
+          <Property Name="HtmlContent" Type="varchar" MaxLength="4096" />
+          <Property Name="CreationTime" Type="datetime" />
+          <Property Name="SeenStatus" Type="varchar" MaxLength="32" />
         </EntityType>
         <EntityType Name="Post">
           <Key>
@@ -107,6 +118,18 @@
             </Principal>
             <Dependent Role="Post">
               <PropertyRef Name="ForumID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_ForUsername">
+          <End Role="User" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Notification" Type="Self.Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="ForUsername" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -221,6 +244,7 @@
         <EntityContainer Name="HTModelStoreContainer">
           <EntitySet Name="MediaItem" EntityType="Self.MediaItem" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Messages" EntityType="Self.Messages" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Notification" EntityType="Self.Notification" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="React" EntityType="Self.React" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reply" EntityType="Self.Reply" Schema="dbo" store:Type="Tables" />
@@ -234,6 +258,10 @@
           <AssociationSet Name="fk_forumID" Association="Self.fk_forumID">
             <End Role="Subforum" EntitySet="Subforum" />
             <End Role="Post" EntitySet="Post" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ForUsername" Association="Self.fk_ForUsername">
+            <End Role="User" EntitySet="User" />
+            <End Role="Notification" EntitySet="Notification" />
           </AssociationSet>
           <AssociationSet Name="fk_miPostID" Association="Self.fk_miPostID">
             <End Role="Post" EntitySet="Post" />
@@ -296,6 +324,7 @@
           <NavigationProperty Name="Replies" Relationship="HTModel.fk_replyCreatorUsername" FromRole="User" ToRole="Reply" />
           <NavigationProperty Name="Reports" Relationship="HTModel.fk_ReporterUsername" FromRole="User" ToRole="Report" />
           <Property Name="Rank" Type="String" MaxLength="128" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Notifications" Relationship="HTModel.fk_ForUsername" FromRole="User" ToRole="Notification" />
           </EntityType>
         <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Users" EntityType="Self.User" />
@@ -350,6 +379,11 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Report" EntitySet="Reports" />
           </AssociationSet>
+          <EntitySet Name="Notifications" EntityType="HTModel.Notification" />
+          <AssociationSet Name="fk_ForUsername" Association="HTModel.fk_ForUsername">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Notification" EntitySet="Notifications" />
+          </AssociationSet>
           </EntityContainer>
         <EntityType Name="MediaItem">
           <Key>
@@ -374,6 +408,7 @@
           <Property Name="SentTime" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Receiver" Relationship="HTModel.fk_receiverUsername" FromRole="Message" ToRole="User" />
           <NavigationProperty Name="Sender" Relationship="HTModel.fk_senderUsername" FromRole="Message" ToRole="User" />
+          <Property Name="SeenStatus" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="Post">
           <Key>
@@ -565,6 +600,29 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Notification">
+          <Key>
+            <PropertyRef Name="NotificationID" />
+          </Key>
+          <Property Name="NotificationID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ForUsername" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+          <Property Name="HtmlContent" Type="String" MaxLength="4096" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="User" Relationship="HTModel.fk_ForUsername" FromRole="Notification" ToRole="User" />
+          <Property Name="CreationTime" Type="DateTime" Precision="3" />
+          <Property Name="SeenStatus" Type="String" MaxLength="32" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <Association Name="fk_ForUsername">
+          <End Type="HTModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="HTModel.Notification" Role="Notification" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="Username" />
+            </Principal>
+            <Dependent Role="Notification">
+              <PropertyRef Name="ForUsername" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -600,6 +658,7 @@
           <EntitySetMapping Name="Messages">
             <EntityTypeMapping TypeName="HTModel.Message">
               <MappingFragment StoreEntitySet="Messages">
+                <ScalarProperty Name="SeenStatus" ColumnName="SeenStatus" />
                 <ScalarProperty Name="SentTime" ColumnName="SentTime" />
                 <ScalarProperty Name="ReceiverUsername" ColumnName="ReceiverUsername" />
                 <ScalarProperty Name="SenderUsername" ColumnName="SenderUsername" />
@@ -656,6 +715,17 @@
               <MappingFragment StoreEntitySet="Subforum">
                 <ScalarProperty Name="ForumName" ColumnName="ForumName" />
                 <ScalarProperty Name="ForumID" ColumnName="ForumID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Notifications">
+            <EntityTypeMapping TypeName="HTModel.Notification">
+              <MappingFragment StoreEntitySet="Notification">
+                <ScalarProperty Name="SeenStatus" ColumnName="SeenStatus" />
+                <ScalarProperty Name="CreationTime" ColumnName="CreationTime" />
+                <ScalarProperty Name="HtmlContent" ColumnName="HtmlContent" />
+                <ScalarProperty Name="ForUsername" ColumnName="ForUsername" />
+                <ScalarProperty Name="NotificationID" ColumnName="NotificationID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

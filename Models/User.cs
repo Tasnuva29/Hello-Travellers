@@ -25,6 +25,7 @@ namespace Hello_Travellers.Models
             this.Reacts = new HashSet<React>();
             this.Replies = new HashSet<Reply>();
             this.Reports = new HashSet<Report>();
+            this.Notifications = new HashSet<Notification>();
         }
         
         [Required(ErrorMessage = "Username is required")]
@@ -59,5 +60,7 @@ namespace Hello_Travellers.Models
         public virtual ICollection<Reply> Replies { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Report> Reports { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Notification> Notifications { get; set; }
     }
 }

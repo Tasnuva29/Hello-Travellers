@@ -63,8 +63,32 @@ namespace Hello_Travellers.Controllers
             return View();
         }
 
+        [HttpGet]
+        public ActionResult GetNotificationCount()
+        {
+            if(Session["Username"] == null)
+            {
+                return Json(0, JsonRequestBehavior.AllowGet);
+            }
+            var currUsername = (string)Session["Username"];
+            Entities db = new Entities();
+            int count = db.Users.Where(temp => temp.Username.Equals(currUsername)).FirstOrDefault().Notifications.Where(temp => !temp.SeenStatus.Equals("SEEN")).Count();
+            return Json(count, JsonRequestBehavior.AllowGet);
+        }
 
-      
-
+        [HttpGet]
+        public ActionResult GetNotificationResult()
+        {
+            var currUsername = (string)Session["Username"];
+            Entities db = new Entities();
+            var User = db.Users.Where(temp => temp.Username.Equals(currUsername)).FirstOrDefault();
+            var notificationList = User.Notifications.OrderByDescending(temp => temp.CreationTime).Take(Math.Min(User.Notifications.Count(), 8)).ToList();
+            foreach(var item in notificationList)
+            {
+                item.SeenStatus = "SEEN";
+            }
+            db.SaveChanges();
+            return PartialView("_NotificationBlock", notificationList);
+        }
     }
 }

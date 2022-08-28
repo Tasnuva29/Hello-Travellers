@@ -133,14 +133,43 @@ namespace Hello_Travellers.Controllers
                 if (existingReact == null)
                 {
                     db.Reacts.Add(newReact);
-                    db.SaveChanges();
+                    Notification notification = new Notification();
+                    notification.ForUsername = db.Posts.Where(t => t.PostID == PostID).First().CreatorUsername;
+                    notification.HtmlContent = GenerateHTMLForVote(Username, PostID, ReactStatus);
+                    notification.SeenStatus = "SENT";
+                    notification.CreationTime = DateTime.Now;
+                    db.Notifications.Add(notification);
                 }
                 else
                 {
-                    existingReact.ReactStatus = newReact.ReactStatus;
-                    db.Entry(existingReact).State = EntityState.Modified;
-                    db.SaveChanges();
+                    //Checking notification
+                    string searchKeyword = "downvoted";
+                    if (existingReact.ReactStatus == 1)
+                    {
+                        searchKeyword = "upvoted";
+                    }
+                    var existingNotif = db.Notifications.Where(temp => temp.HtmlContent.Contains(searchKeyword) && temp.HtmlContent.Contains(Username) && temp.HtmlContent.Contains(PostID.ToString())).First();
+
+                    if (ReactStatus == 0)
+                    {
+                        db.Reacts.Remove(existingReact);
+                        db.Notifications.Remove(existingNotif);
+                    }
+                    else
+                    {
+                        //Notification Modification here
+                        existingNotif.HtmlContent = GenerateHTMLForVote(Username, PostID, ReactStatus);
+                        existingNotif.SeenStatus = "SENT";
+                        existingNotif.CreationTime = DateTime.Now;
+                        
+                        //Update db for react and notification
+                        existingReact.ReactStatus = newReact.ReactStatus;
+                        db.Entry(existingReact).State = EntityState.Modified;
+                        db.Entry(existingNotif).State = EntityState.Modified;
+
+                    }
                 }
+                db.SaveChanges();
 
                 return Json("Success");
             } catch (Exception ex)
@@ -215,10 +244,20 @@ namespace Hello_Travellers.Controllers
             {
                 Entities db = new Entities();
 
-                var post = db.Posts.Where(t => t.PostID == reply.PostID).Single();
-                var writer = db.Users.Where(t => t.Username == post.CreatorUsername).Single();
-                var media = db.MediaItems.Where(t => t.PostID == post.PostID).ToArray();
+                var post = db.Posts.Where(t => t.PostID == reply.PostID).FirstOrDefault();
+                var writer = db.Users.Where(t => t.Username == post.CreatorUsername).FirstOrDefault();
+                var media = post.MediaItems.ToArray();
 
+                //Code for comment notification
+                if(writer.Username != (string)Session["Username"])
+                {
+                    Notification notification = new Notification();
+                    notification.ForUsername = writer.Username;
+                    notification.HtmlContent = GenerateHTMLForComment((string)Session["Username"], post.PostID);
+                    notification.CreationTime = DateTime.Now;
+                    notification.SeenStatus = "SENT";
+                    db.Notifications.Add(notification);
+                }
 
                 db.Replies.Add(reply);
                 db.SaveChanges();
@@ -229,8 +268,23 @@ namespace Hello_Travellers.Controllers
                 for (int i = 0; i < replies.Length; i++)
                 {
                     var currentUsername = replies[i].CreatorUsername;
-                    users[i] = db.Users.Where(t => t.Username == currentUsername).Single();
+                    users[i] = db.Users.Where(t => t.Username == currentUsername).First();
                 }
+
+                if (!String.IsNullOrEmpty(reply.CreatorUsername))
+                {
+                    var currentReact = db.Reacts.Where(t => t.PostID == post.PostID && t.Username == reply.CreatorUsername).FirstOrDefault();
+                    if (currentReact != null)
+                    {
+                        ViewBag.currentReact = currentReact;
+
+                    }
+                    else
+                    {
+                        ViewBag.currentReact = new React() { ReactStatus = 0, Username = reply.CreatorUsername, PostID = post.PostID };
+                    }
+                }
+
                 ViewBag.Replies = replies;
                 ViewBag.Users = users;
                 ViewBag.Post = post;
@@ -251,6 +305,35 @@ namespace Hello_Travellers.Controllers
             var fetch = db.Posts.Where(m => m.ForumID == forumID).ToList();
             //var fetch = db.Posts.ToList();
             return View(fetch);
+        }
+
+        private string GenerateHTMLForComment(string Username, int postID)
+        {
+            Entities db = new Entities();
+            var user = db.Users.Where((t) => t.Username == Username).FirstOrDefault();
+            return string.Format("<p class=\"notification-text\"><a class=\"notification-link\" " +
+                "href=\"~/UserProfile?Username={0}\">{1}</a> commented on your " +
+                "<a class=\"notification-link\" href=\"~/Post/ViewPost?PostID={2}\">post</a></p>", user.Username, user.Name, postID);
+        }
+
+        private string GenerateHTMLForVote(string Username, int postID, int voteStatus)
+        {
+            string voteAction = "";
+            if(voteStatus == 0)
+            {
+                voteAction = "removed vote from";
+            } else if(voteStatus == 1)
+            {
+                voteAction = "upvoted";
+            } else
+            {
+                voteAction = "downvoted";
+            }
+            Entities db = new Entities();
+            var user = db.Users.Where((t) => t.Username == Username).FirstOrDefault();
+            return string.Format("<p class=\"notification-text\"><a class=\"notification-link\" " +
+                "href=\"~/UserProfile?Username={0}\">{1}</a> {2} on your " +
+                "<a class=\"notification-link\" href=\"~/Post/ViewPost?PostID={3}\">post</a></p>", user.Username, user.Name, voteAction, postID);
         }
     }
 }

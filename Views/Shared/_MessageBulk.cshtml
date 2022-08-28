@@ -1,0 +1,40 @@
+@model IEnumerable<Hello_Travellers.Models.Message>
+
+@{
+    foreach (var item in Model)
+    {
+        if (item.SenderUsername == (string)Session["Username"])
+        {
+            var Seen = item.SeenStatus == "SEEN" ? "Seen" : "Sent";
+            <div>
+                <div class="text-muted small text-nowrap mt-2 chat-message-right chat-count">@item.SentTime</div>
+                <div class="chat-message-right mb-4">
+                    <div class="d-flex">
+                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                             class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
+                    </div>
+                    <div class="flex-shrink-1 rounded py-2 px-3 mx-3 bg-primary text-white" data-toggle="tooltip" data-placement="left" title="@Seen">
+                        @item.Content
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div>
+                <div class="text-muted small text-nowrap mt-2 chat-count">@item.SentTime</div>
+                <div class="chat-message-left mb-4">
+                    <div class="d-flex">
+                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                             class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
+                    </div>
+                    <div class="flex-shrink-1 bg-light rounded py-2 px-3 mx-3">
+                        @item.Content
+                    </div>
+                </div>
+            </div>
+
+        }
+
+    }
+}

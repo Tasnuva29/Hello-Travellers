@@ -35,5 +35,6 @@ namespace Hello_Travellers.Models
         public virtual DbSet<Reply> Replies { get; set; }
         public virtual DbSet<Report> Reports { get; set; }
         public virtual DbSet<Subforum> Subforums { get; set; }
+        public virtual DbSet<Notification> Notifications { get; set; }
     }
 }

@@ -1,0 +1,15 @@
+@model IEnumerable<Hello_Travellers.Models.Notification>
+
+@{
+    foreach (var item in Model)
+    {
+        <div class="d-flex align-items-start my-2" style="min-width: 15vw">
+            <img src="https://bootdey.com/img/Content/avatar/avatar2.png" class="rounded-circle mx-3" style="align-self: center"
+                 alt="William Harris" width="40" height="40">
+            <div class="flex-grow-1 n-content-holder" style="align-self: center;">
+                @Html.Raw(System.Web.HttpUtility.HtmlDecode(item.HtmlContent))
+            </div>
+        </div>
+        <hr class="dropdown-divider">
+    }
+}

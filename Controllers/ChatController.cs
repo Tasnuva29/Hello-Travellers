@@ -16,8 +16,43 @@ namespace Hello_Travellers.Controllers
             var sentUsers = db.Messages.Where(temp => temp.SenderUsername == Username).Select(temp => temp.Receiver).ToList();
             var receivedUsers = db.Messages.Where(temp => temp.ReceiverUsername == Username).Select(temp => temp.Sender).ToList();
 
-            var chatList = sentUsers.Union(receivedUsers).ToList();
+
+            var query = string.Format("SELECT Content, defTime.SentTime, defTime.MessageID, defTime.SenderUsername, defTime.ReceiverUsername, defTime.SeenStatus " +
+                "FROM Messages AS defTime " +
+                "INNER JOIN " +
+                "(SELECT dbo.concatUsernames(SenderUsername, ReceiverUsername) AS Parties, MAX(SentTime) AS SentTime FROM Messages " +
+                "WHERE SenderUsername = '{0}' OR ReceiverUsername = '{1}' " +
+                "GROUP BY dbo.concatUsernames(SenderUsername, ReceiverUsername)) " +
+                "AS maxTimeTable " +
+                "ON defTime.SentTime = maxTimeTable.SentTime", Username, Username);
+
+            var chatList = db.Messages.SqlQuery(query).OrderByDescending(temp => temp.SentTime).ToList();
             ViewBag.ChatList = chatList;
+        }
+
+        public ActionResult LoadChatList()
+        {
+            Entities db = new Entities();
+            var Username = (string)Session["Username"];
+
+            var query = string.Format("SELECT Content, defTime.SentTime, defTime.MessageID, defTime.SenderUsername, defTime.ReceiverUsername, defTime.SeenStatus " +
+                "FROM Messages AS defTime " +
+                "INNER JOIN " +
+                "(SELECT dbo.concatUsernames(SenderUsername, ReceiverUsername) AS Parties, MAX(SentTime) AS SentTime FROM Messages " +
+                "WHERE SenderUsername = '{0}' OR ReceiverUsername = '{1}' " +
+                "GROUP BY dbo.concatUsernames(SenderUsername, ReceiverUsername)) " +
+                "AS maxTimeTable " +
+                "ON defTime.SentTime = maxTimeTable.SentTime", Username, Username);
+            var chatList = db.Messages.SqlQuery(query).OrderByDescending(temp => temp.SentTime).ToList();
+
+            var unseenMessage = db.Messages.Where(temp => temp.ReceiverUsername == Username && temp.SeenStatus != "SEEN").ToList();
+            foreach(var item in unseenMessage)
+            {
+                item.SeenStatus = "SEEN";
+            }
+            db.SaveChanges();
+
+            return PartialView("_MessageList", chatList);
         }
 
         public ActionResult Index()
@@ -26,7 +61,6 @@ namespace Hello_Travellers.Controllers
             {
                 RedirectToAction("/");
             }
-            SetChatList((string)Session["Username"]);
             ViewBag.Load = false;
             return View();
         }
@@ -41,7 +75,6 @@ namespace Hello_Travellers.Controllers
 
             Entities db = new Entities();
             var currUsername = (string)Session["Username"];
-            SetChatList(currUsername);
             var Messages = db.Messages
                 .Where(temp => (temp.SenderUsername == currUsername && temp.ReceiverUsername == Username) || (temp.SenderUsername == Username && temp.ReceiverUsername == currUsername))
                 .OrderByDescending(temp => temp.SentTime)
@@ -66,12 +99,29 @@ namespace Hello_Travellers.Controllers
                 Hello_Travellers.Models.Message message = db.Messages.
                     OrderBy(temp => temp.SentTime).
                     Skip(CurrentCount).Take(1).FirstOrDefault();
-                return PartialView("_MessageBox", message);
+                if(message.SeenStatus != "SEEN")
+                {
+                    message.SeenStatus = "SEEN";
+                }
+                db.SaveChanges();
+                return PartialView("_MessageBulk", new List<Message>() { message });
             }
             else
             {
                 return Json("Empty", JsonRequestBehavior.AllowGet);
             }
+        }
+
+        [HttpGet]
+        public ActionResult GetBulkMessages(String Username)
+        {
+            
+            var db = new Entities();
+            var currUsername = (string)Session["Username"];
+            var messages = db.Messages
+                .Where(temp => (temp.SenderUsername == currUsername && temp.ReceiverUsername == Username) ||
+                (temp.SenderUsername == Username && temp.ReceiverUsername == currUsername)).ToList();
+            return PartialView("_MessageBulk", messages);
         }
 
         [HttpPost]
@@ -86,6 +136,7 @@ namespace Hello_Travellers.Controllers
                 message.ReceiverUsername = Username;
                 message.Content = Content;
                 message.SentTime = DateTime.Now;
+                message.SeenStatus = "SENT";
                 db.Messages.Add(message);
                 db.SaveChanges();
                 return Json("Success", JsonRequestBehavior.AllowGet);

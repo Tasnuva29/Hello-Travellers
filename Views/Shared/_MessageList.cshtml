@@ -1,0 +1,20 @@
+@model IEnumerable<Hello_Travellers.Models.Message>
+
+@{
+    foreach (var item in Model)
+    {
+        var Username = item.SenderUsername == (string)Session["Username"] ? item.ReceiverUsername : item.SenderUsername;
+        var User = item.SenderUsername == (string)Session["Username"] ? item.Receiver : item.Sender;
+        <a href="?Username=@Username" class="list-group-item list-group-item-action border-0">
+            <div class="d-flex align-items-start">
+                <img src="https://bootdey.com/img/Content/avatar/avatar2.png" class="rounded-circle mx-3" style="align-self: center"
+                     alt="William Harris" width="40" height="40">
+                <div class="flex-grow-1 ml-3" style="align-self: center">
+                    <p style="font-size: 0.85rem; font-weight: bold; margin-bottom: 0">@User.Name</p>
+                    <p style="font-size: 0.85rem; margin-bottom: 0">@item.Content</p>
+                </div>
+            </div>
+        </a>
+        <hr class="d-block d-lg-none mt-1 mb-0">
+    }
+}

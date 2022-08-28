@@ -12,16 +12,14 @@ namespace Hello_Travellers.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Message
+    public partial class Notification
     {
-        public int MessageID { get; set; }
-        public string Content { get; set; }
-        public string SenderUsername { get; set; }
-        public string ReceiverUsername { get; set; }
-        public Nullable<System.DateTime> SentTime { get; set; }
+        public int NotificationID { get; set; }
+        public string ForUsername { get; set; }
+        public string HtmlContent { get; set; }
+        public Nullable<System.DateTime> CreationTime { get; set; }
         public string SeenStatus { get; set; }
     
-        public virtual User Receiver { get; set; }
-        public virtual User Sender { get; set; }
+        public virtual User User { get; set; }
     }
 }

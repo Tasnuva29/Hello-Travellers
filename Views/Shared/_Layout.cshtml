@@ -52,6 +52,15 @@
                         <li class="nav-item">
                             @Html.ActionLink("Sign Out", "SignOut", "UserAuth", new { area = "" }, new { @class = "nav-link" })
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" onclick="loadNotification()" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Notifications <span id="notification-counter"></span>
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><div id="notification-container"></div></li>
+                                <li><a class="dropdown-item" href="#">See All Notifications</a></li>
+                            </ul>
+                        </li>
                     }
                 </ul>
                 <form class="d-flex">
@@ -70,7 +79,35 @@
             <p>&copy; @DateTime.Now.2022 - My ASP.NET Application</p>
         </footer>
     </div>
+    <script>
+        //setInterval(updateNotificationCount ,5000)
 
-    @RenderSection("scripts", false)
+        setInterval(loadNotificationCount, 5000);
+
+        function loadNotificationCount() {
+            if ('@Session["Username"]' != null) {
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetNotificationCount", "Home")',
+                    success: function (response) {
+                        $("#notification-counter").html('(' + response + ')');
+                    }
+                })
+            }
+        }
+
+
+        function loadNotification() {
+            if ('@Session["Username"]' != null) {
+                $.ajax({
+                    type: 'GET',
+                    url: '@Url.Action("GetNotificationResult", "Home")',
+                    success: function (response) {
+                        $('#notification-container').html(response);
+                    }
+                })
+            }
+        }
+    </script>
 </body>
 </html>
