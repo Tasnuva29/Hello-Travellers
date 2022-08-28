@@ -45,9 +45,7 @@
         <div class="page-header">Total Subforums : </div>
         <div class="fw-bold page-header ms-1">@ViewBag.count</div>
     </div>
-    <div class="alert alert-success d-flex align-items-center" role="alert" id="success-alert" style="display:none;">
-        <i class="bi-check-lg c-success me-2"></i>  An example success alert with an icon
-    </div>
+
 
     <div class="hstack gap-3 mb-3 mt-3">
         <button type="button" class="btn forum-btn" onclick="takeInput()"><i class="bi-plus-lg me-2"></i>Add Subforum</button>
@@ -59,7 +57,7 @@
 
     </div>
     <div class="row mt-2">
-        <table class="table table-hover mt-2" id="user-table">
+        <table class="table table-hover mt-2" id="forum-table">
             <thead class="bg-dark text-white">
                 <tr>
                     <th>Forum ID</th>
@@ -73,9 +71,18 @@
                     <td>@item.ForumID</td>
                     <td>@item.ForumName</td>
                     <td>
+
                         <div class="hstack gap-2">
-                            <button type="button" class="btn forum-btn"><i class="bi-pencil-fill me-2"></i>Edit</button>
-                            <button type="button" class="btn forum-btn"><i class="bi-trash3-fill me-2"></i>Delete</button>
+                            @if (item.ForumName == "Experiences" || item.ForumName == "Travel Plans" || item.ForumName == "Short Stories")
+                            {
+                                <button type="button" class="btn forum-btn disabled"><i class="bi-pencil-fill me-2"></i>Edit</button>
+                                <button type="button" class="btn forum-btn disabled"><i class="bi-trash3-fill me-2"></i>Delete</button>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn forum-btn" onclick="editForum(@item.ForumID, @item.ForumName)"><i class="bi-pencil-fill me-2"></i>Edit</button>
+                                <button type="button" class="btn forum-btn" onclick="deleteForum(@item.ForumID)"><i class="bi-trash3-fill me-2"></i>Delete</button>
+                            }
                         </div>
                     </td>
                 </tr>
@@ -88,9 +95,10 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js" integrity="sha512-efUTj3HdSPwWJ9gjfGR71X9cvsrthIA78/Fvd/IN+fttQVy7XWkOAXb295j8B3cmm/kFKVxjiNYzKw9IQJHIuQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     $(document).ready(function () {
-        $('#user-table').DataTable();
+       $('#forum-table').DataTable();
     });
     function takeInput() {
         var x = document.getElementById("showForm");
@@ -101,23 +109,90 @@
         }
     }
     function btnSubmitClicked() {
-        var forumName = $('#forumInput').val(); 
+        var forumName = $('#forumInput').val();
         $.ajax({
             type: 'POST',
             url: '@Url.Action("CreateSubforum", "Admin")',
             data: {
                 ForumName: forumName
             },
-            dataType: "json", 
+            dataType: "json",
             success: function (response) {
-                alert(ForumName);
-                console.log(response);
-                location.reload();
+                if (response == "false") {
+                    $.notify(
+                        "Such a subforum already exists! Please insert a unique one",
+                        {
+                            globalPosition: "top center",
+                            className: "error"
+                        }
+                    );
+                }
+                if (response == "true") {
+                    $.notify(
+                        "Inserted Successfully",
+                        {
+                            globalPosition: "top center",
+                            className: "success"
+                        }
+                    );
+                    location.reload();
+                }
             },
             error: function (response) {
                 console.log(response);
             }
         })
     }
+
+    function editForum(id, name) {
+        Swal.fire({
+            title: 'Login Form',
+            html: `<input type="text" id="editForum" class="swal2-input" placeholder="Username" value= name>`,
+            focusConfirm: false,
+            preConfirm: () => {
+                const inputForum = Swal.getPopup().querySelector('#editForum').value
+                if (!inputForum) {
+                    Swal.showValidationMessage(`Please enter a name`)
+                }
+                return { editForum: editForum }
+            }
+        }).then((result) => {
+            Swal.fire(`
+    Login: ${result.value.editForum}
+  `.trim())
+        })
+
+    }
+    function deleteForum(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("DeleteSubforum", "Admin")',
+                    data: {
+                        ForumID: id
+                    }
+                });
+                Swal.fire(
+                    'Deleted!',
+                    'Subforum has been deleted',
+                    'success'
+                )
+               // $('#forum-table').DataTable().row($(this).parents('tr')).remove().draw();
+                location.reload();
+                //$('#forum-table').DataTable().ajax.reload();
+            }
+        })
+
+    }
+
 
 </script>

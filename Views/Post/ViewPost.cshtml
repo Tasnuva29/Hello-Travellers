@@ -1,6 +1,4 @@
-@{ 
-    var renderEditBox = false;
-}
+
 <style>
     .post-img {
         width: 100%;
@@ -61,13 +59,6 @@
                     @if (Session["Username"].ToString().CompareTo(ViewBag.Writer.Username) != 0)
                     {
                         <i class="bi bi-flag mx-2" data-bs-toggle="modal" data-bs-target="#reportModal">Report</i>
-                        //@renderEditBox = false;
-                    }
-                    else
-                    {
-                        <i class="bi bi-pencil-square mx-2" data-bs-toggle="modal" onclick="btnEditClicked()">Edit</i>
-                        <i class="bi bi-trash3 mx-2" data-bs-toggle="modal" onclick="btnDeleteClicked()">Delete</i>
-                        renderEditBox = true;
                     }
 
                 </p>
@@ -100,20 +91,9 @@
                 </div>
             }
 
-            <p id="content" class="text-start font-monospace my-3">
+            <p class="text-start font-monospace my-3">
                 @ViewBag.Post.Content
             </p>
-            @if(renderEditBox == true)
-            {
-                <div id="editBox" style="display: none">
-                    <div class="form-group my-2">
-                        <textarea class="form-control" id="editedTexts" rows="6">@ViewBag.Post.Content</textarea>
-                    </div>
-                        <button class="btn btn-primary" onclick="btnSaveClicked()">Save</button>
-                        <button class="btn btn-secondary" onclick="btnCancelClicked()">Cancel</button>
-                    
-                </div>
-            }
             <!--Report Modal Begins here-->
             <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalArea" aria-hidden="true">
                 <div class="modal-dialog">
@@ -239,6 +219,7 @@
                 ContextID: postID
             },
             success: function (response) {
+                console.log(response);
                 let jsonData = JSON.parse(response);
                 console.log(jsonData);
                 if (jsonData.Status == "Exists") {
@@ -247,6 +228,7 @@
                         title: 'Report Pending',
                         text: 'Seems like you have a pending report on this post!'
                     });
+                
                 }
                 if (jsonData.Status == "Reported") {
                     Swal.fire({
@@ -255,50 +237,6 @@
                         text: 'Your report was succesfully submitted!'
                     });
                 }
-            }
-        })
-    }
-
-    function btnEditClicked() {
-        $('#content').css('display', 'none');
-        $('#editBox').css('display', 'block');
-    }
-
-    function btnCancelClicked() {
-        $('#content').css('display', 'block');
-        $('#editBox').css('display', 'none');
-    }
-
-    function btnSaveClicked() {
-        const params = new URLSearchParams(window.location.search);
-        var postID = params.get('PostID');
-        var newContent = $('#editedTexts').val();
-        if (newContent.trim().length <= 0) {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Your post cannot be empty!'
-            });
-            return;
-        }
-        $.ajax({
-            type: 'POST',
-            url: '@Url.Action("UpdatePost", "Post")',
-            data: {
-                PostID: postID,
-                Content: newContent
-            },
-            success: () => {
-                location.reload();
-            },
-            error: (response) => {
-                console.log(response);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: 'Something went wrong!'
-                });
-                btnCancelClicked();
             }
         })
     }
