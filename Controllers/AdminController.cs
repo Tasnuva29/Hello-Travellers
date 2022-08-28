@@ -60,8 +60,9 @@ namespace Hello_Travellers.Controllers
             ViewBag.count = count;
             var subForums = db.Subforums.ToList();
             ViewBag.subForums = subForums;
-            return View();
+            return View();            
         }
+       
 
         [HttpPost]
         public ActionResult CreateSubforum(string ForumName)
@@ -75,13 +76,14 @@ namespace Hello_Travellers.Controllers
             }
             else
             {
-                subForum.ForumName = ForumName;
+                subForum.ForumName = ForumName.Trim();
                 db.Subforums.Add(subForum);
                 db.SaveChanges();
                 return Json("true", JsonRequestBehavior.AllowGet);
             }
 
         }
+        [HttpPost]
         public ActionResult DeleteSubforum(int ForumID)
         {
             Entities db = new Entities();
@@ -90,6 +92,27 @@ namespace Hello_Travellers.Controllers
             db.SaveChanges();
             return Json("true", JsonRequestBehavior.AllowGet);
         }
+        [HttpPost]
+        public ActionResult EditSubforum(string ForumName, int ForumID)
+        {
+            Entities db = new Entities();
+            var subForum = new Subforum();
+            var editedName = ForumName.Trim();
+            var count = db.Subforums.Where(temp => temp.ForumName == editedName).Count();
+            if (count >= 1)
+            {
+                return Json("false", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                subForum.ForumName = editedName;
+                subForum.ForumID = ForumID;
+                db.Entry(subForum).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+                return Json("true", JsonRequestBehavior.AllowGet);
+            }
+        }
+
         public ActionResult Reports()
         {
             return View();

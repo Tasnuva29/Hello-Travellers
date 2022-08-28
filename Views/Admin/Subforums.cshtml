@@ -38,7 +38,9 @@
             outline: none;
         }
 </style>
+<script>
 
+</script>
 <p class="mb-4 mt-3 page-header">Subforums</p>
 <div class="container-fluid table-container">
     <div class="d-flex  flex-row mb-2">
@@ -51,7 +53,7 @@
         <button type="button" class="btn forum-btn" onclick="takeInput()"><i class="bi-plus-lg me-2"></i>Add Subforum</button>
 
         <form class="ms-3" id="showForm" style="display:none;">
-            <input type="text" id="forumInput" required pattern="^[a-zA-Z ]+$" minlength=3 maxlength=100 title="Only letters and spaces are allowed" class="forum-input-text" placeholder="Enter Subforum name">
+            <input type="text" id="forumInput" required pattern="^[a-zA-Z ]+$" minlength=3 maxlength=100 title="Only letters and spaces are allowed" class="forum-input-text mb-sm-2" placeholder="Enter Subforum name">
             <button type="submit" class="btn forum-btn ms-2" onclick="btnSubmitClicked()">Submit</button>
         </form>
 
@@ -71,7 +73,6 @@
                     <td>@item.ForumID</td>
                     <td>@item.ForumName</td>
                     <td>
-
                         <div class="hstack gap-2">
                             @if (item.ForumName == "Experiences" || item.ForumName == "Travel Plans" || item.ForumName == "Short Stories")
                             {
@@ -80,7 +81,7 @@
                             }
                             else
                             {
-                                <button type="button" class="btn forum-btn" onclick="editForum(@item.ForumID, @item.ForumName)"><i class="bi-pencil-fill me-2"></i>Edit</button>
+                                <button type="button" class="btn forum-btn" onclick="editForum(this)" forum-id="@item.ForumID" forum-name="@item.ForumName"><i class="bi-pencil-fill me-2"></i>Edit</button>
                                 <button type="button" class="btn forum-btn" onclick="deleteForum(@item.ForumID)"><i class="bi-trash3-fill me-2"></i>Delete</button>
                             }
                         </div>
@@ -95,12 +96,15 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js" integrity="sha512-efUTj3HdSPwWJ9gjfGR71X9cvsrthIA78/Fvd/IN+fttQVy7XWkOAXb295j8B3cmm/kFKVxjiNYzKw9IQJHIuQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
 <script>
     $(document).ready(function () {
-       $('#forum-table').DataTable();
+        $('#forum-table').DataTable();
     });
-    function takeInput() {
+
+     function takeInput() {
         var x = document.getElementById("showForm");
         if (x.style.display === "none") {
             x.style.display = "block";
@@ -135,33 +139,64 @@
                             className: "success"
                         }
                     );
-                    location.reload();
+                    console.log("Inserted");
+                     location.reload();
                 }
             },
             error: function (response) {
                 console.log(response);
             }
-        })
+        });
     }
-
-    function editForum(id, name) {
-        Swal.fire({
-            title: 'Login Form',
-            html: `<input type="text" id="editForum" class="swal2-input" placeholder="Username" value= name>`,
-            focusConfirm: false,
-            preConfirm: () => {
-                const inputForum = Swal.getPopup().querySelector('#editForum').value
-                if (!inputForum) {
-                    Swal.showValidationMessage(`Please enter a name`)
-                }
-                return { editForum: editForum }
-            }
-        }).then((result) => {
-            Swal.fire(`
-    Login: ${result.value.editForum}
-  `.trim())
+    async function editForum(element) {
+        var id = element.getAttribute("forum-id");
+        var name = element.getAttribute("forum-name");
+        const { value: text } = await Swal.fire({
+            title: 'Edit Subforum name',
+            input: 'text',
+            inputPlaceholder: 'Enter subforum name',
+            showCancelButton: true,
+            confirmButtonText: "Save",
+            confirmButtonColor: '#21BCA8',
+            inputValue: name,
         })
+        if (text) {
+            //Swal.fire(`Entered name: ${text}`)
+            //alert(text);
 
+            $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("EditSubforum", "Admin")',
+                    data: {
+                        ForumName: text,
+                        ForumID: id
+                },
+                     dataType: "json",
+                success: function (response) {                    
+                    if (response == "false") {
+                        $.notify(
+                            "Subforum already exists!",
+                            {
+                                globalPosition: "top center",
+                                className: "error"
+                            }
+                        );                        
+                    }
+                    if (response == "true") {
+                        $.notify(
+                            "Updated Successfully",
+                            {
+                                globalPosition: "top center",
+                                className: "success"
+                            }
+                        );
+                        console.log("Updated");
+                        location.reload();
+                    }
+
+                }
+                });
+        }
     }
     function deleteForum(id) {
         Swal.fire({
@@ -193,6 +228,6 @@
         })
 
     }
-
-
 </script>
+
+
