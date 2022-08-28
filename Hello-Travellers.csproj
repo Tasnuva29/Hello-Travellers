@@ -338,12 +338,12 @@
     <Content Include="Views\Admin\Reports.cshtml" />
     <Content Include="Views\Admin\Settings.cshtml" />
     <Content Include="Views\Admin\Subforums.cshtml" />
-    <Content Include="Views\Admin\Forums.cshtml" />
     <Content Include="Views\Chat\Index.cshtml" />
     <Content Include="Views\Shared\_MessageBox.cshtml" />
     <Content Include="Views\Shared\_MessageList.cshtml" />
     <Content Include="Views\Shared\_MessageBulk.cshtml" />
     <Content Include="Views\Shared\_NotificationBlock.cshtml" />
+    <Content Include="Views\Admin\BannedUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\UserProfile\EditProfile.cshtml" />

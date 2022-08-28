@@ -21,97 +21,250 @@
             box-shadow: 0 0 10px 1px rgba(217,217,217,1);
             padding: 20px;
         }
+
+        .overview-card {
+            border: none;
+            box-shadow: 7px 10px 7px -1px rgba(217,217,217,1);
+            padding: 20px;
+            border-left: 4px solid #05445E;
+        }
+
+        .report-btn-1 {
+            background-color: #21BCA8;
+            color: white;
+            transition: 0.3s ease;
+            outline: none;
+        }
+
+            .report-btn-1:hover {
+                background-color: #066163;
+                color: white;
+                outline: none;
+            }
+
+        .report-btn-2 {
+            background-color: #189AB4;
+            color: white;
+            transition: 0.3s ease;
+            outline: none;
+        }
+
+            .report-btn-2:hover {
+                background-color: #05445E;
+                color: white;
+                outline: none;
+            }
+
+        .reported-link {
+            color: #189AB4;
+        }
+
+            .reported-link:hover {
+                color: #05445E;
+            }
+
+        .comment-card {
+            border: none;
+            box-shadow: 7px 10px 7px -1px rgba(217,217,217,1);
+            padding: 20px;           
+        }
+        .comment-img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
     </style>
 
 </head>
 
 <p class="mb-4 mt-2 page-header">Reports</p>
-
-<nav>
-    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-        <button class="nav-link active tab-header" id="nav-post-tab" data-bs-toggle="tab" data-bs-target="#nav-post" type="button" role="tab" aria-controls="nav-post" aria-selected="true">Posts</button>
-        <button class="nav-link tab-header" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</button>
-        <button class="nav-link tab-header" id="nav-chat-tab" data-bs-toggle="tab" data-bs-target="#nav-chat" type="button" role="tab" aria-controls="nav-chat" aria-selected="false">Chat</button>
-    </div>
-</nav>
-<div class="tab-content" id="nav-tabContent">
-    <!--post tab-->
-    <div class="tab-pane fade show active" id="nav-post" role="tabpanel" aria-labelledby="nav-post-tab" tabindex="0">
-        <div class="container-fluid table-container">
-            <div class="d-flex  flex-row">
-                <div class="page-header">Total Reports : </div>
-                <div class="fw-bold page-header ms-1"> @ViewBag.count</div>
-            </div>
-            <div class="row mt-2">
-                <table class="table table-hover mt-2" id="post-table">
-                    <thead class="bg-dark text-white">
-                        <tr>
-                            <th>Report ID</th>
-                            <th>Context ID</th>
-                            <th>Context</th>
-                            <th>Reason</th>
-                            <th>Reporter User</th>
-                            <th>Reported User</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                    </tbody>
-                </table>
+<div class="row mt-2">
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card overview-card  first-card py-2">
+            <div class="card-body">
+                <h5 class="card-title">Total Reports</h5>
+                <h6 class="card-subtitle mb-2 text-muted">@ViewBag.reportCount</h6>
             </div>
         </div>
     </div>
-
-    <!--profile tab-->
-    <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
-        <div class="container-fluid table-container">
-            <div class="d-flex  flex-row">
-                <div class="page-header">Total Reports : </div>
-                <div class="fw-bold page-header ms-1"> @ViewBag.count</div>
-            </div>
-            <div class="row mt-2">
-                <table class="table table-hover mt-2" id="profile-table">
-                    <thead class="bg-dark text-white">
-                        <tr>
-                            <th>Report ID</th>
-                            <th>Context ID</th>
-                            <th>Reason</th>
-                            <th>Reporter User</th>
-                            <th>Reported User</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card overview-card second-card py-2">
+            <div class="card-body">
+                <h5 class="card-title">Post</h5>
+                <h6 class="card-subtitle mb-2 text-muted">@ViewBag.postReportCount</h6>
             </div>
         </div>
     </div>
-    <!--chat tab-->
-    <div class="tab-pane fade" id="nav-chat" role="tabpanel" aria-labelledby="nav-chat-tab" tabindex="0">
-        <div class="container-fluid table-container">
-            <div class="d-flex  flex-row">
-                <div class="page-header">Total Reports : </div>
-                <div class="fw-bold page-header ms-1"> @ViewBag.count</div>
-            </div>
-            <div class="row mt-2">
-                <table class="table table-hover mt-2" id="chat-table">
-                    <thead class="bg-dark text-white">
-                        <tr>
-                            <th>Report ID</th>
-                            <th>Context ID</th>                           
-                            <th>Reason</th>
-                            <th>Reporter User</th>
-                            <th>Reported User</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card overview-card third-card py-2">
+            <div class="card-body">
+                <h5 class="card-title">Profile</h5>
+                <h6 class="card-subtitle mb-2 text-muted">@ViewBag.profileReportCount</h6>
             </div>
         </div>
     </div>
-
+    <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card overview-card fourth-card py-2">
+            <div class="card-body">
+                <h5 class="card-title">Comment</h5>
+                <h6 class="card-subtitle mb-2 text-muted">@ViewBag.commentReportCount</h6>
+            </div>
+        </div>
+    </div>
 </div>
+<div class="container-fluid table-container">
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active tab-header" id="nav-post-tab" data-bs-toggle="tab" data-bs-target="#nav-post" type="button" role="tab" aria-controls="nav-post" aria-selected="true">Posts</button>
+            <button class="nav-link tab-header" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</button>
+            <button class="nav-link tab-header" id="nav-comment-tab" data-bs-toggle="tab" data-bs-target="#nav-comment" type="button" role="tab" aria-controls="nav-chat" aria-selected="false">Comment</button>
+        </div>
+    </nav>
+
+
+    <div class="tab-content" id="nav-tabContent">
+        <!--post tab-->
+        <div class="tab-pane fade show active" id="nav-post" role="tabpanel" aria-labelledby="nav-post-tab" tabindex="0">
+            <div class="container-fluid table-container">
+                <div class="row mt-2">
+                    <table class="table table-hover mt-2" id="post-table">
+                        <thead class="bg-dark text-white">
+                            <tr>
+                                <th>Report ID</th>
+                                <th>Reason</th>
+                                <th>View Post</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.postReport)
+                            {
+                                <tr>
+                                    <td>@item.ReportID</td>
+                                    <td>@item.Reason</td>
+                                    <td><a href=@Url.Action("ViewPost", "Post", new { PostID = item.ContextID }) class="reported-link">View</a></td>
+                                    <td>
+                                        <button type="button" class="btn report-btn-1" onclick="ban()"><i class="bi-slash-circle-fill me-2 c-white"></i>Ban</button>
+                                        <button type="button" class="btn report-btn-2"><i class="bi-x-circle-fill me-2 c-white"></i>Dismiss</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!--profile tab-->
+        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab" tabindex="0">
+            <div class="container-fluid table-container">
+                <div class="row mt-2">
+                    <table class="table table-hover mt-2" id="profile-table">
+                        <thead class="bg-dark text-white">
+                            <tr>
+                                <th>Report ID</th>
+                                <th>Reason</th>
+                                <th>View Profile</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.profileReport)
+                            {
+                                <tr>
+                                    <td>@item.ReportID</td>
+                                    <td>@item.Reason</td>
+                                    <td><a href=@Url.Action("Index", "UserProfile", new { Username = item.ContextID }) class="reported-link">View</a></td>
+                                    <td>
+                                        <button type="button" class="btn report-btn-1"><i class="bi-slash-circle-fill me-2 c-white"></i>Ban</button>
+                                        <button type="button" class="btn report-btn-2"><i class="bi-x-circle-fill me-2 c-white"></i>Dismiss</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--comment tab-->
+        <div class="tab-pane fade" id="nav-comment" role="tabpanel" aria-labelledby="nav-comment-tab" tabindex="0">
+            <div class="container-fluid table-container">
+                <div class="row mt-2">
+                    <table class="table table-hover mt-2" id="comment-table">
+                        <thead class="bg-dark text-white">
+                            <tr>
+                                <th>Report ID</th>
+                                <th>Reason</th>
+                                <th>View Comment</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in ViewBag.commentReport)
+                            {
+                                <tr>
+                                    <td>@item.ReportID</td>
+                                    <td>@item.Reason</td>
+                                    <td><a data-bs-toggle="modal" href="#viewComment" data-commenter-name = "@ViewBag.viewComment[item].CreatorUsername" role="button">View</a></td>
+                                    <td>
+                                        <button type="button" class="btn report-btn-1"><i class="bi-slash-circle-fill me-2 c-white"></i>Ban</button>
+                                        <button type="button" class="btn report-btn-2"><i class="bi-x-circle-fill me-2 c-white"></i>Dismiss</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--View comment-->
+<!-- Modal -->
+<div class="modal fade" id="viewComment" tabindex="-1" aria-labelledby="viewCommentLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="card comment-card">
+                            <div class="hstack gap-3">
+                                <div class="post-card-img">
+                                    <img src="~/Images/img1.jpg" alt="profileImage" class="comment-img">
+                                </div>
+                                <div class="vstack">
+                                    <div>
+                                        <h5 class="mb-0">CreatorUsername</h5>
+                                    </div>
+                                    <div>
+                                        <small class="text-muted">Creation date</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="post-description mt-2 border-top">
+                                <p>Bootdey is a gallery of free snippets resources templates and utilities for bootstrap css hmtl js framework. Codes for developers and web designers</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-end align-items-center mb-2 mt-3">
+                        <a class="btn report-btn-1">View Post</a>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn report-btn-1" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn report-btn-2">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
@@ -119,6 +272,13 @@
     $(document).ready(function () {
         $('#post-table').DataTable();
         $('#profile-table').DataTable();
-        $('#chat-table').DataTable();
+        $('#comment-table').DataTable();
+        function ban() {
+
+        }
+        $('viewComment').on('show.bs.modal', function (event) {
+            let bookId = $(event.relatedTarget).data('bookid')
+            $(this).find('.modal-body input').val(bookId)
+        })
     });
 </script>

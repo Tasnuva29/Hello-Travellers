@@ -25,15 +25,27 @@
             border-bottom: 2px solid #066163;
         }
 
-    .forum-btn {
+    .forum-btn-1 {
         background-color: #21BCA8;
         color: white;
         transition: 0.3s ease;
         outline: none;
     }
 
-        .forum-btn:hover {
+        .forum-btn-1:hover {
             background-color: #066163;
+            color: white;
+            outline: none;
+        }
+    .forum-btn-2 {
+        background-color: #189AB4;
+        color: white;
+        transition: 0.3s ease;
+        outline: none;
+    }
+
+        .forum-btn-2:hover {
+            background-color: #05445E;
             color: white;
             outline: none;
         }
@@ -50,11 +62,11 @@
 
 
     <div class="hstack gap-3 mb-3 mt-3">
-        <button type="button" class="btn forum-btn" onclick="takeInput()"><i class="bi-plus-lg me-2"></i>Add Subforum</button>
+        <button type="button" class="btn forum-btn-1" onclick="takeInput()"><i class="bi-plus-lg me-2"></i>Add Subforum</button>
 
         <form class="ms-3" id="showForm" style="display:none;">
             <input type="text" id="forumInput" required pattern="^[a-zA-Z ]+$" minlength=3 maxlength=100 title="Only letters and spaces are allowed" class="forum-input-text mb-sm-2" placeholder="Enter Subforum name">
-            <button type="submit" class="btn forum-btn ms-2" onclick="btnSubmitClicked()">Submit</button>
+            <button type="button" class="btn forum-btn-1 ms-2" onclick="btnSubmitClicked()">Submit</button>
         </form>
 
     </div>
@@ -67,7 +79,7 @@
                     <th>Actions</th>
                 </tr>
             </thead>
-            @foreach (var item in ViewBag.subForums)
+            @foreach (var item in ViewBag.subForum)
             {
                 <tr>
                     <td>@item.ForumID</td>
@@ -76,13 +88,13 @@
                         <div class="hstack gap-2">
                             @if (item.ForumName == "Experiences" || item.ForumName == "Travel Plans" || item.ForumName == "Short Stories")
                             {
-                                <button type="button" class="btn forum-btn disabled"><i class="bi-pencil-fill me-2"></i>Edit</button>
-                                <button type="button" class="btn forum-btn disabled"><i class="bi-trash3-fill me-2"></i>Delete</button>
+                                <button type="button" class="btn forum-btn-1 disabled"><i class="bi-pencil-fill me-2"></i>Edit</button>
+                                <button type="button" class="btn forum-btn-2 disabled"><i class="bi-trash3-fill me-2"></i>Delete</button>
                             }
                             else
                             {
-                                <button type="button" class="btn forum-btn" onclick="editForum(this)" forum-id="@item.ForumID" forum-name="@item.ForumName"><i class="bi-pencil-fill me-2"></i>Edit</button>
-                                <button type="button" class="btn forum-btn" onclick="deleteForum(@item.ForumID)"><i class="bi-trash3-fill me-2"></i>Delete</button>
+                                <button type="button" class="btn forum-btn-1" onclick="editForum(this)" forum-id="@item.ForumID" forum-name="@item.ForumName"><i class="bi-pencil-fill me-2"></i>Edit</button>
+                                <button type="button" class="btn forum-btn-2" onclick="deleteForum(@item.ForumID)"><i class="bi-trash3-fill me-2"></i>Delete</button>
                             }
                         </div>
                     </td>
