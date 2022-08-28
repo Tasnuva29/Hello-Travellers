@@ -4,6 +4,7 @@
         height: 100%;
         background-color: #f5f5dc;
     }
+
     .hq-input {
         outline: none;
         border-radius: 30px;
@@ -33,7 +34,7 @@
         </div>
 
         <div class="input-group">
-            <input type="password" placeholder="Password" name="Password" id="myInput3" required class= "form-control hq-input">
+            <input type="password" placeholder="Password" name="Password" id="myInput3" required class="form-control hq-input">
             <i class="input-group-text bi bi-eye-slash" id="togglePassword1" onclick="showPass1(); showPassword(this.id, 'inputNewPassword')"></i>
         </div>
 
@@ -50,13 +51,17 @@
 
 </div>
 <script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        redirectIfLoggedIn('@Session["Username"]');
+    });
+
     function showPass1() {
-    var x = document.getElementById("myInput3");
-    if (x.type === "password") {
-    x.type = "text";
-    } else {
-    x.type = "password";
-    }
+        var x = document.getElementById("myInput3");
+        if (x.type === "password") {
+            x.type = "text";
+        } else {
+            x.type = "password";
+        }
     }
     //--password toggle--//
     function showPassword(iconID, inputFieldID) {

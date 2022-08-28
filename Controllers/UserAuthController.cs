@@ -22,6 +22,11 @@ namespace Hello_Travellers.Controllers
         [HttpPost]
         public ActionResult Login(FormCollection form)
         {
+            if (Session["Username"] != null)
+            {
+                Response.Redirect("~/Home/Index");
+            }
+
             Entities db = new Entities();
             var email = form["Email"];
             var password = form["Password"];

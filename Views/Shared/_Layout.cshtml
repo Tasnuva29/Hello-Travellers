@@ -36,15 +36,18 @@
                     {
                         <li class="nav-item">
                             @Html.ActionLink("Login", "Login", "UserAuth", new { area = "" }, new { @class = "nav-link" })
+                            <input type="text" id="logger" value="false" style="display:none" />
                         </li>
                         <li class="nav-item">
                             @Html.ActionLink("Sign Up", "SignUp", "UserAuth", new { area = "" }, new { @class = "nav-link" })
                         </li>
+
                     }
                     else
                     {
                         <li class="nav-item">
                             @Html.ActionLink("Create Post", "CreatePost", "Post", new { area = "" }, new { @class = "nav-link" })
+                            <input type="text" id="logger" value="true" style="display:none" />
                         </li>
                         <li class="nav-item">
                             @Html.ActionLink("My Profile", "Index", "UserProfile", new { area = "" }, new { @class = "nav-link" })
@@ -81,6 +84,15 @@
     </div>
     <script>
         //setInterval(updateNotificationCount ,5000)
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            var username = '@Session["Username"]';
+            var usernameCheck = username.trim().length > 0;
+            var loggerCheck = $('#logger').val();
+            if (loggerCheck == usernameCheck) {
+                location.reload();
+            }
+        });
 
         setInterval(loadNotificationCount, 5000);
 

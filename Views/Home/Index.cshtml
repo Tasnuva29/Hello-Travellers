@@ -84,6 +84,10 @@
 </div>
 
 <script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', (event) => {
+        reloadIfNotLoggedIn('@Session["Username"]');
+    });
+
     var slideInner0 = document.getElementById("slideInner0");
     if (slideInner0 != null) {
         slideInner0.setAttribute("class", "carousel-item index-carousal-fitter active post-img rounded");

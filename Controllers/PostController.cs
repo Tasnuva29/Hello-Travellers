@@ -119,60 +119,78 @@ namespace Hello_Travellers.Controllers
         [HttpPost]
         public ActionResult UpdateReact(int PostID, int ReactStatus)
         {
-            try
-            {
+            try { 
                 Entities db = new Entities();
-                string Username = (string) Session["Username"];
+                string Username = (string)Session["Username"];
 
-                React newReact = new React();
-                newReact.PostID = PostID;
-                newReact.ReactStatus = ReactStatus;
-                newReact.Username = Username;
+                var post = db.Posts.Where(temp => temp.PostID == PostID).FirstOrDefault();
+                var existingReact = db.Reacts.Where(temp => temp.PostID == PostID && temp.Username == Username).FirstOrDefault();
+                var existingNotif = db.Notifications.
+                            Where(temp => temp.ForUsername == post.CreatorUsername && temp.HtmlContent.Contains(Username) &&
+                            temp.HtmlContent.Contains("voted") && temp.HtmlContent.Contains(PostID.ToString())).
+                            FirstOrDefault();
 
-                React existingReact = db.Reacts.Where(temp => temp.PostID == newReact.PostID && temp.Username == newReact.Username).FirstOrDefault();
+                //If react status is 0 is passed, then there was already a react before
+                //First we remove that then we remove the notification for that
+                if (ReactStatus == 0)
+                {
+                    db.Reacts.Remove(existingReact);
+                    if (Username != post.CreatorUsername && existingNotif != null)
+                    {
+                        db.Notifications.Remove(existingNotif);
+                    }
+                    db.SaveChanges();
+                    return Json("Success", JsonRequestBehavior.AllowGet);
+                }
+
+                //If react status is 1 or -1, we check if there was a react before
+                //If there was a react we update that
+                //Otherwise enter new react
                 if (existingReact == null)
                 {
-                    db.Reacts.Add(newReact);
-                    Notification notification = new Notification();
-                    notification.ForUsername = db.Posts.Where(t => t.PostID == PostID).First().CreatorUsername;
-                    notification.HtmlContent = GenerateHTMLForVote(Username, PostID, ReactStatus);
-                    notification.SeenStatus = "SENT";
-                    notification.CreationTime = DateTime.Now;
-                    db.Notifications.Add(notification);
+                    React react = new React();
+                    react.PostID = PostID;
+                    react.ReactStatus = ReactStatus;
+                    react.Username = Username;
+                    db.Reacts.Add(react);
                 }
                 else
                 {
-                    //Checking notification
-                    string searchKeyword = "downvoted";
-                    if (existingReact.ReactStatus == 1)
-                    {
-                        searchKeyword = "upvoted";
-                    }
-                    var existingNotif = db.Notifications.Where(temp => temp.HtmlContent.Contains(searchKeyword) && temp.HtmlContent.Contains(Username) && temp.HtmlContent.Contains(PostID.ToString())).First();
-
-                    if (ReactStatus == 0)
-                    {
-                        db.Reacts.Remove(existingReact);
-                        db.Notifications.Remove(existingNotif);
-                    }
-                    else
-                    {
-                        //Notification Modification here
-                        existingNotif.HtmlContent = GenerateHTMLForVote(Username, PostID, ReactStatus);
-                        existingNotif.SeenStatus = "SENT";
-                        existingNotif.CreationTime = DateTime.Now;
-                        
-                        //Update db for react and notification
-                        existingReact.ReactStatus = newReact.ReactStatus;
-                        db.Entry(existingReact).State = EntityState.Modified;
-                        db.Entry(existingNotif).State = EntityState.Modified;
-
-                    }
+                    existingReact.ReactStatus = ReactStatus;
+                    db.Entry(existingReact).State = EntityState.Modified;
                 }
                 db.SaveChanges();
 
-                return Json("Success");
-            } catch (Exception ex)
+
+                //if the username and creatorUsername isn't same that means there should be a corresponding notifcation entry
+                //We find that entry and update it
+                //If we are unable to retrieve that entry, we create a new one
+                if (Username != post.CreatorUsername)
+                {
+                    if (existingNotif == null)
+                    {
+                        Notification notification = new Notification()
+                        {
+                            ForUsername = post.CreatorUsername,
+                            HtmlContent = GenerateHTMLForVote(Username, PostID, ReactStatus),
+                            SeenStatus = "SENT",
+                            CreationTime = DateTime.Now
+                        };
+                        db.Notifications.Add(notification);
+                    }
+                    else
+                    {
+                        existingNotif.HtmlContent = GenerateHTMLForVote(Username, PostID, ReactStatus);
+                        existingNotif.SeenStatus = "SENT";
+                        existingNotif.CreationTime = DateTime.Now;
+                        db.Entry(existingNotif).State = EntityState.Modified;
+                    }
+                    db.SaveChanges();
+                }
+
+                return Json("Success", JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception ex)
             {
                 return new HttpStatusCodeResult(401, ex.Message);
             }
@@ -312,8 +330,8 @@ namespace Hello_Travellers.Controllers
             Entities db = new Entities();
             var user = db.Users.Where((t) => t.Username == Username).FirstOrDefault();
             return string.Format("<p class=\"notification-text\"><a class=\"notification-link\" " +
-                "href=\"~/UserProfile?Username={0}\">{1}</a> commented on your " +
-                "<a class=\"notification-link\" href=\"~/Post/ViewPost?PostID={2}\">post</a></p>", user.Username, user.Name, postID);
+                "href=\"/UserProfile?Username={0}\">{1}</a> commented on your " +
+                "<a class=\"notification-link\" href=\"/Post/ViewPost?PostID={2}\">post</a></p>", user.Username, user.Name, postID);
         }
 
         private string GenerateHTMLForVote(string Username, int postID, int voteStatus)
@@ -332,8 +350,8 @@ namespace Hello_Travellers.Controllers
             Entities db = new Entities();
             var user = db.Users.Where((t) => t.Username == Username).FirstOrDefault();
             return string.Format("<p class=\"notification-text\"><a class=\"notification-link\" " +
-                "href=\"~/UserProfile?Username={0}\">{1}</a> {2} on your " +
-                "<a class=\"notification-link\" href=\"~/Post/ViewPost?PostID={3}\">post</a></p>", user.Username, user.Name, voteAction, postID);
+                "href=\"/UserProfile?Username={0}\">{1}</a> {2} on your " +
+                "<a class=\"notification-link\" href=\"/Post/ViewPost?PostID={3}\">post</a></p>", user.Username, user.Name, voteAction, postID);
         }
     }
 }
