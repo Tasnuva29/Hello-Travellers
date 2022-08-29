@@ -67,6 +67,12 @@
                         <li class="nav-item">
                             @Html.ActionLink("Sign Out", "SignOut", "UserAuth", new { area = "" }, new { @class = "nav-link" })
                         </li>
+                        if (Session["RANK"].Equals("ADMIN"))
+                        {
+                            <li class="nav-item">
+                                @Html.ActionLink("Admin Panel", "Users", "Admin", new { area = "" }, new { @class = "nav-link" })
+                            </li>
+                        }
                     }
                 </ul>
 
