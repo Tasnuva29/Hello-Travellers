@@ -32,8 +32,23 @@
     .post-card-footer i {
         color: #4abdac;
     }
+
     .commentLink {
         text-decoration: none;
+    }
+    .overview-card {
+        border: none;
+        box-shadow: 7px 10px 7px -1px rgba(217,217,217,1);
+        padding: 20px;
+        background-color: rgba(232,238,255,1);
+    }
+    .page-header {
+        color: #787A91;
+        font-weight: 600;
+        font-size: 20px;
+    }
+    .post-sidebar {
+        box-shadow: -11px 4px 15px -6px rgba(232,238,255,1);
     }
 </style>
 <div class="container-xl px-4 mt-4">
@@ -86,101 +101,60 @@
         </div>
         <!--Profile Card End-->
         <!--Profile Content Start-->
-        <div class="col-xl-8 col-lg-8 col-md-7" id="profile-content">
-            <!-- <div class="container border-1 shadow-sm" id="profile-content-info">
-            <div class="row p-2">
-                <div class="col text-center border-dark">
-                    <div class="card text-dark bg-light shadow-sm border-0 profile-content-count"
-                         style="max-width: 18rem">
-                        <div class="card-body">
-                            <h5 class="card-title">Posts</h5>
-                            <p class="card-text">2</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col text-center">
-                    <div class="card text-dark bg-light shadow-sm border-0"
-                         style="max-width: 18rem">
-                        <div class="card-body">
-                            <h5 class="card-title">Search</h5>
-                            <p class="card-text">2</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col text-center">
-                    <div class="card text-dark bg-light shadow-sm border-0"
-                         style="max-width: 18rem">
-                        <div class="card-body">
-                            <h5 class="card-title">Stories</h5>
-                            <p class="card-text">2</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <nav class="nav nav-pills nav-fill">
-            <a class="nav-link active countNavs" aria-current="page" href="~/UserProfile/EditProfile">
-                <h4 class="m-0">Posts</h4>
-                <small>counts</small>
-            </a>
-            <a class="nav-link" aria-current="page">
-                <h4 class="m-0">Posts</h4>
-                <small>counts</small>
-            </a>
-            <a class="nav-link" aria-current="page">
-                <h4 class="m-0">Posts</h4>
-                <small>counts</small>
-            </a>
-        </nav>
-             -->
-            <!--Load Posts-->
-
-            @for (int i = 0; i < ViewBag.posts.Length; i++)
+        <div class="col-xl-8 col-lg-8 col-md-7 post-sidebar" id="profile-content">            
+            @if (ViewBag.posts.Length == 0)
             {
-                <!--Post Content-->
-                <div class="container-fluid mt-3">
-                    <div class="row">
-                        <div class="card post-card border-0 shadow mb-2">
-                            <div class="card-header shadow-sm">
-                                <div class="hstack gap-3">
-                                    <div class="post-card-img">
-                                        <img src="@url" alt="profileImage">
-                                    </div>
-                                    <div class="vstack">
-                                        <div>
-                                            <h5>@ViewBag.posts[i].Title</h5>
-                                        </div>
-                                        <div>
-                                            <small> @ViewBag.posts[i].CreatorUsername  @ViewBag.posts[i].CreationTime</small>
-                                        </div>
-                                    </div>
-                                </div>
+                <div class = "row">
+                    <img src= "~/Images/nopost.jpg">
+                </div>
+            }
+            else
+            {
+                for (int i = 0; i < ViewBag.posts.Length; i++)
+                {
 
-                            </div>
-                            <div class="card-body">
-                                <img src=@Url.Content("~/Images/MediaContent/" + ViewBag.mediaItems[i].MediaID + ViewBag.mediaItems[i].Type) class="card-img-top" />
-                                @ViewBag.posts[i].Content
-                            </div>
-                            <div class="card-footer border-0">
-                                <div class="hstack gap-3">
-                                    <div class="post-card-footer">
-                                        <i class="bi bi-hand-thumbs-up mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Like"></i>
-                                        Likes
-                                        <i class="bi bi-hand-thumbs-down mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Dislike"></i>
+
+                    <!--Post Content-->
+                    <div class="container-fluid mt-3">
+                        <div class="row">
+                            <div class="card post-card border-0 shadow mb-2">
+                                <div class="card-header shadow-sm">
+                                    <div class="hstack gap-3">
+                                        <div class="post-card-img">
+                                            <img src="@url" alt="profileImage">
+                                        </div>
+                                        <div class="vstack">
+                                            <div>
+                                                <h5>@ViewBag.posts[i].Title</h5>
+                                            </div>
+                                            <div>
+                                                <small> @ViewBag.posts[i].CreatorUsername  @ViewBag.posts[i].CreationTime</small>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="post-card-footer" onclick="@("window.location.href='"+Url.Content("~/Post/ViewPost?PostID=" + ViewBag.posts[i].PostID)+"'")"><i class="bi bi-chat mx-2"></i>Comments</div>
-                                    <div class="post-card-footer ms-auto"><i class="bi bi-flag mx-2"></i>Report</div>
+
+                                </div>
+                                <div class="card-body">
+                                    <img src=@Url.Content("~/Images/MediaContent/" + ViewBag.mediaItems[i].MediaID + ViewBag.mediaItems[i].Type) class="card-img-top" />
+                                    @ViewBag.posts[i].Content
+                                </div>
+                                <div class="card-footer border-0">
+                                    <div class="hstack gap-3">
+                                        <div class="post-card-footer">
+                                            <i class="bi bi-hand-thumbs-up mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Like"></i>
+                                            Likes
+                                            <i class="bi bi-hand-thumbs-down mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Dislike"></i>
+                                        </div>
+                                        <div class="post-card-footer" onclick="@("window.location.href='" + Url.Content("~/Post/ViewPost?PostID=" + ViewBag.posts[i].PostID) + "'")"><i class="bi bi-chat mx-2"></i>Comments</div>
+                                        <div class="post-card-footer ms-auto"><i class="bi bi-flag mx-2"></i>Report</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!--Load Posts-->
-
+                    <!--Load Posts-->
+                }
 
             }
         </div>
@@ -189,34 +163,7 @@
     </div>
 </div>
 
-<!--Crop Modal-->
-<div class="modal fade" id="cropModal" tabindex="-1" role="dialog" aria-labelledby="cropModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header border-0 shadow-sm">
-                <h5 class="modal-title">Crop Image</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="img-container">
-                    <div class="row">
-                        <div class="col-md-8">
-                            <img src="~/Images/default.jpg" class="img-fluid" id="inputImage" />
-                        </div>
-                        <div class="col-md-4">
-                            <div class="preview"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="crop" class="btn btn-primary">Crop</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
-    </div>
-</div>
-<!--Crop Modal End-->
+
 
 <script>
     //---textArea character count---//
