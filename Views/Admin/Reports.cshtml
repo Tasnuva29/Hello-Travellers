@@ -8,7 +8,7 @@
         .page-header {
             color: #787A91;
             font-weight: 600;
-            font-size: 25px;
+            font-size: 20px;
         }
 
         .tab-header {
@@ -190,7 +190,9 @@
                                     <td>@item.Reason</td>
                                     <td><a href=@Url.Action("Index", "UserProfile", new { Username = item.ContextID }) class="reported-link">View</a></td>
                                     <td>
-                                        <button type="button" class="btn report-btn-1" @disable><i class="bi-slash-circle-fill me-2 c-white"></i>Ban</button>
+
+                                        <button type="button" class="btn report-btn-1"><i class="bi-slash-circle-fill me-2 c-white" onclick="Ban(this)" report-id="@item.ReportID" context-id="@item.ContextID" context="@item.Context"></i>Ban</button>
+
                                         <button type="button" class="btn report-btn-2" onclick="Dismiss(this)" report-id="@item.ReportID"><i class="bi-x-circle-fill me-2 c-white"></i>Dismiss</button>
                                     </td>
                                 </tr>
@@ -238,49 +240,7 @@
     </div>
 </div>
 
-<!--View comment-->
-<!-- Modal -->
-<div class="modal fade" id="viewComment" tabindex="-1" aria-labelledby="viewCommentLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="container">
-                    <div class="row">
-                        <div class="card comment-card">
-                            <div class="hstack gap-3">
-                                <div class="post-card-img">
-                                    <img src="~/Images/img1.jpg" alt="profileImage" class="comment-img">
-                                </div>
-                                <div class="vstack">
-                                    <div>
-                                        <h5 class="mb-0">CreatorUsername</h5>
-                                    </div>
-                                    <div>
-                                        <small class="text-muted">Creation date</small>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="post-description mt-2 border-top">
-                                <p>Bootdey is a gallery of free snippets resources templates and utilities for bootstrap css hmtl js framework. Codes for developers and web designers</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex justify-content-end align-items-center mb-2 mt-3">
-                        <a class="btn report-btn-1">View Post</a>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn report-btn-1" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn report-btn-2">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -502,12 +462,42 @@
                 commentViewPopup(data);
                 return false;
             }
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("DeletePostOrComment", "Admin")',
+                    data: {
+                        ReportID: reportID,
+                        ContextID: contextID,
+                        Context: context
+                    },
+                    success: (response) => {
+                        if (response == "post") {
+                            console.log(response);
+                        }
 
-            //formValues[0] returns amount
-            //formValues[1] returns 1, 2, 3 where 1 = hour, 2 = day, 3 = year
-            //write your code here
+                    }
+
+                });
+                if (context == "POST") {
+                    Swal.fire(
+                        'Deleted!',
+                        'This post has been deleted',
+                        'success'
+                    )
+                } else if (context == "COMMENT") {
+                    Swal.fire(
+                        'Deleted!',
+                        'This comment has been deleted',
+                        'success'
+                    )
+                }
+
+                //formValues[0] returns amount
+                //formValues[1] returns 1, 2, 3 where 1 = hour, 2 = day, 3 = year
+                //write your code here
+            }
         }
     }
-
 
 </script>

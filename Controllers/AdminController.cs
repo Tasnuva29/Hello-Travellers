@@ -1,7 +1,10 @@
 ﻿using Hello_Travellers.Models;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Web;
 using System.Web.Mvc;
 
@@ -283,6 +286,7 @@ namespace Hello_Travellers.Controllers
         [HttpPost]
         public ActionResult BanUser(int ReportID, string ContextID, string Context, int Banvalue, string Banduration)
         {
+            var sub = "Regarding your ban";
             var currentTime = DateTime.Now;
             switch (Banduration)
             {
@@ -306,8 +310,14 @@ namespace Hello_Travellers.Controllers
             {
                 var setRank = db.Users.Where(temp => temp.Username == ContextID).FirstOrDefault();
                 setRank.Rank = "BANNED," + currentTime.ToString() + "," + Context;
+                var to = setRank.Email;
+                setRank.ConfirmPassword = setRank.Password;
                 db.Entry(setRank).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
+                var body = "We have noticed activities from your profile that goes" +
+                           "against our standards and hence you have been banned for "
+                           + Banvalue.ToString() + " " + Banduration;
+                sendmail(to, body, sub);
                 UpdateStatus(ReportID);
             }
             else if (Context == "POST")
@@ -315,18 +325,29 @@ namespace Hello_Travellers.Controllers
                 var getPost = db.Posts.Where(temp => temp.PostID.ToString() == ContextID).FirstOrDefault();
                 var setRank = getPost.User;
                 setRank.ConfirmPassword = setRank.Password;
+                var to = setRank.Email;
                 setRank.Rank = "BANNED," + currentTime.ToString() + "," + Context;
                 db.Entry(setRank).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
+                var body = "We have noticed activities from your profile that goes" +
+                          "against our standards and hence you have been banned for "
+                          + Banvalue.ToString() + " " + Banduration;
+                sendmail(to, body, sub);
                 UpdateStatus(ReportID);
             }
             else if (Context == "COMMENT")
             {
                 var getComment = db.Replies.Where(temp => temp.ReplyID.ToString() == ContextID).FirstOrDefault();
                 var setRank = getComment.User;
+                var to = setRank.Email;
+                setRank.ConfirmPassword = setRank.Password;
                 setRank.Rank = "BANNED," + currentTime.ToString() + "," + Context;
                 db.Entry(setRank).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
+                var body = "We have noticed activities from your profile that goes" +
+                     "against our standards and hence you have been banned for "
+                     + Banvalue.ToString() + " " + Banduration;
+                sendmail(to, body, sub);
                 UpdateStatus(ReportID);
             }
             return Json(currentTime, JsonRequestBehavior.AllowGet);
@@ -379,11 +400,17 @@ namespace Hello_Travellers.Controllers
             Entities db = new Entities();
             var getUser = db.Users.Where(temp => temp.Username == Username).FirstOrDefault();
             getUser.Rank = "USER";
+            var to = getUser.Email;
+            var sub = "Regarding removing your ban";
             getUser.ConfirmPassword = getUser.Password;
             db.Entry(getUser).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
+            var body = "We have removed your ban." +
+                          "You can now log in to your account.Please be careful next time";
+            sendmail(to, body, sub);
             return Json("true", JsonRequestBehavior.AllowGet);
         }
+
         [HttpGet]
         public ActionResult GetReportInformation(int ReportID)
         {
@@ -397,5 +424,27 @@ namespace Hello_Travellers.Controllers
                 "\"Content\": \"{4}\"", comment.User.Name, comment.User.Username, comment.User.DisplayPictureName, comment.PostID, comment.Content);
             return Json('{' + jsonString + '}', JsonRequestBehavior.AllowGet);
         }
+        public void sendmail(string To, string body, string sub)
+        {
+            MailMessage mc = new MailMessage("190104113@aust.edu", To);
+            mc.Subject = sub; mc.Body = body;
+            mc.IsBodyHtml = false;
+            SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587);
+            smtp.EnableSsl = true;
+            smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            NetworkCredential nc = new NetworkCredential("190104113@aust.edu", "Rohit1234");
+            smtp.UseDefaultCredentials = false;
+            smtp.Credentials = nc;
+            try
+            {
+                smtp.Send(mc);
+            }
+            catch (Exception ex)
+            {
+                Debug.Write(ex);
+            }
+
+        }
+
     }
 }

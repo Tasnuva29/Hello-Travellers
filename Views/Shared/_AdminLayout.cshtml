@@ -18,8 +18,8 @@
         <div class="row flex-nowrap">
             <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 admin-sidebar">
                 <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
-                    <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none fw-bolder">
-                        <span class="fs-5 d-none d-sm-inline spanTitle">Hello Travellers</span>
+                    <a href="@Url.Action("Index", "Home")" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none fw-bolder">
+                        <span class="fs-5 d-none d-sm-inline spanTitle">Hello Travellers!</span>
                         <hr class="bg-white" style="color:white" />
                     </a>
 
@@ -59,14 +59,9 @@
                             <a href="@Url.Action("BannedUser", "Admin")" class="nav-link px-0 align-middle admin-sidebar-link">
                                 <i class="fs-4 bi-slash-circle-fill"></i> <span class="ms-3 d-none d-sm-inline">Banned User</span>
                             </a>
-                        </li>
+                        </li>                       
                         <li class="admin-sidebar-item">
-                            <a href="@Url.Action("Settings", "Admin")" class="nav-link px-0 align-middle admin-sidebar-link">
-                                <i class="fs-4 bi-gear-fill"></i> <span class="ms-3 d-none d-sm-inline">Settings</span>
-                            </a>
-                        </li>
-                        <li class="admin-sidebar-item">
-                            <a href="@Url.Action("Logout", "Admin")" class="nav-link px-0 align-middle admin-sidebar-link">
+                            <a href="@Url.Action("SignOut", "UserAuth")" class="nav-link px-0 align-middle admin-sidebar-link">
                                 <i class="fs-4 bi-box-arrow-left"></i> <span class="ms-3 d-none d-sm-inline">Logout</span>
                             </a>
                         </li>
@@ -76,6 +71,9 @@
             <div class="col content-wrapper">
                 <div class="top-bar d-flex flex-row-reverse">
                     <div class="me-3"><h5 class="text-black">Hello @Session["Username"]</h5></div>
+                    <div class="mx-3">
+                        <a href="@Url.Action("Index", "Home")">User Mode</a>
+                    </div>
                 </div>
                 @RenderBody()
             </div>
