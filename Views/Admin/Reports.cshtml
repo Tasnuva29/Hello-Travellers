@@ -191,7 +191,7 @@
                                     <td><a href=@Url.Action("Index", "UserProfile", new { Username = item.ContextID }) class="reported-link">View</a></td>
                                     <td>
 
-                                        <button type="button" class="btn report-btn-1"><i class="bi-slash-circle-fill me-2 c-white" onclick="Ban(this)" report-id="@item.ReportID" context-id="@item.ContextID" context="@item.Context"></i>Ban</button>
+                                        <button type="button" class="btn report-btn-1" onclick="Ban(this)" report-id="@item.ReportID" context-id="@item.ContextID" context="@item.Context" @disable><i class="bi-slash-circle-fill me-2 c-white"></i>Ban</button>
 
                                         <button type="button" class="btn report-btn-2" onclick="Dismiss(this)" report-id="@item.ReportID"><i class="bi-x-circle-fill me-2 c-white"></i>Dismiss</button>
                                     </td>
@@ -226,7 +226,7 @@
                                     <td>@item.ReportID</td>
                                     <td>@item.Reason</td>
                                     <td>
-                                        <button type="button" class="btn bg-primary text-white" onclick="Delete(this)" report-id="@item.ReportID" context-id="@item.ContextID" context="@item.Context"><i class="bi-slash-circle-fill me-2 c-white"></i>Delete</button>
+                                        <button type="button" class="btn bg-primary text-white" onclick="Delete(this)" report-id="@item.ReportID" context-id="@item.ContextID" context="@item.Context" @disable><i class="bi-slash-circle-fill me-2 c-white"></i>Delete</button>
                                         <button type="button" onclick="btnActionClicked('@item.ReportID')" class="btn report-btn-1" @disable><i class="bi-slash-circle-fill me-2 c-white"></i>Action</button>
                                         <button type="button" class="btn report-btn-2" onclick="Dismiss(this)" report-id="@item.ReportID"><i class="bi-x-circle-fill me-2 c-white"></i>Dismiss</button>
                                     </td>
