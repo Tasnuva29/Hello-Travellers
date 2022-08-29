@@ -16,82 +16,92 @@
         border-radius: 10px;
     }
 </style>
-<div class="container-xl px-4 mt-4">
-    <div class="row">
-        <div class="col-xl-4">
-            <!-- Profile picture card-->
-            <div class="card mb-4 mb-xl-0">
-                <div class="card-header">Profile Picture</div>
-                <div class="card-body text-center">
-                    <!-- Profile picture image-->
-                    <img class="img-fluid shadow" src="~/Images/default.jpg" name="DisplayPictureName">
-                    <!-- Profile picture upload button-->
-                    <div class="mt-2">
-                        <input type="file" name="files" id="files" accept="image/png,image/jpeg,image/jpg">
-                    </div>
+@using (Html.BeginForm("EditProfile", "UserProfile", FormMethod.Post, new { id = "postForm", enctype = "multipart/form-data" }))
+{ 
+    var url = Url.Content("~/Images/ProfilePicture/" + ViewBag.user.DisplayPictureName);
+    <div class="container-xl px-4 mt-4">
+        <div class="row">
+            <div class="col-xl-4">
+                <!-- Profile picture card-->
+                <div class="card mb-4 mb-xl-0">
+                    <div class="card-header">Profile Picture</div>
+                    <div class="card-body text-center">
+                        <!-- Profile picture image-->
+                        <img class="img-fluid shadow" src="@url" id="DisplayPicture">
+                        <!-- Profile picture upload button-->
+                        <div class="mt-2">
+                            <input type="file" accept="image/png,image/jpeg,image/jpg" name="postedImages" id="postedImages">
+                        </div>
 
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-xl-8">
-            <!-- Account details card-->
-            <div class="card mb-4">
-                <div class="card-header">Account Details</div>
-                <div class="card-body">
-                    @*<form action="EditProfile" method="POST">*@
-                        @using (Html.BeginForm("EditProfile", "UserProfile", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                        {
-                            <!--info change-->
-                            <div class="mb-2">
-                                <label for="inputName" class="small mb-1 ms-2">Name</label>
-                                <input type="text" class="form-control hq-input" id="inputName" placeholder="your name" name="Name" value="@ViewBag.user.Name">
-                            </div>
-                            <div class="mb-2">
-                                <label for="inputPhoneNum" class="small mb-1 ms-2">Phone Number</label>
-                                <input type="text" class="form-control hq-input" id="inputPhoneNum" placeholder="01765432890" name="PhoneNumber" value="@ViewBag.user.PhoneNumber">
-                            </div>
-                            <div class="mb-2">
-                                <label for="inputUserEmail" class="small mb-1 ms-2">Email address</label>
-                                <input type="text" class="form-control hq-input" id="inputUserEmail" placeholder="name@example.com" name="Email" value="@ViewBag.user.Email">
-                            </div>
-                            <div class="mb-2">
-                                <label for="inputUserAbout" class="small mb-1 ms-2">About</label>
-                                <textarea class="form-control hq-input" id="inputUserAbout" maxlength="250" name="About">@ViewBag.user.About</textarea>
-                                <span id="char_count"></span>
-                            </div>
+            <div class="col-xl-8">
+                <!-- Account details card-->
+                <div class="card mb-4">
+                    <div class="card-header">Account Details</div>
+                    <div class="card-body">
 
-                            <hr class="mt-4 mb-4">
-                            <!--Password-->
-                            <label for="inputOldPassword" class="small mb-1 ms-2">Old Password</label>
-                            <div class="input-group mb-2">
-                                <input type="password" class="form-control hq-input" id="inputOldPassword">
-                                <i class="input-group-text bi bi-eye-slash" id="togglePassword1" onclick="showPassword(this.id, 'inputOldPassword')"></i>
-                            </div>
-                            <label for="inputNewPassword" class="small mb-1 ms-2">New Password</label>
-                            <div class="input-group mb-2">
-                                <input type="password" class="form-control hq-input" id="inputNewPassword">
-                                <i class="input-group-text bi bi-eye-slash" id="togglePassword2" onclick="showPassword(this.id, 'inputNewPassword')"></i>
-                            </div>
-                            <label for="inputConfirmPassword" class="small mb-1 ms-2">Confirm Password</label>
-                            <div class="input-group mb-2 border-0 shadow-sm">
-                                <input type="password" class="form-control hq-input" id="inputConfirmPassword">
-                                <i class="input-group-text bi bi-eye-slash" id="togglePassword3" onclick="showPassword(this.id, 'inputConfirmPassword')"></i>
+                        <!--info change-->
+                        <div class="mb-2">
+                            <label for="inputName" class="small mb-1 ms-2">Name</label>
+                            <input type="text" class="form-control hq-input" id="inputName" placeholder="your name" name="Name" value="@ViewBag.user.Name" required>
+                        </div>
+                        <div class="mb-2">
+                            <label for="inputPhoneNum" class="small mb-1 ms-2">Phone Number</label>
+                            <input type="text" class="form-control hq-input" id="inputPhoneNum" placeholder="01765432890" name="PhoneNumber" value="@ViewBag.user.PhoneNumber" required>
+                        </div>
+                        <div class="mb-2">
+                            <label for="inputUserEmail" class="small mb-1 ms-2">Email address</label>
+                            <input type="text" class="form-control hq-input" id="inputUserEmail" placeholder="name@example.com" name="Email" value="@ViewBag.user.Email" required>
+                        </div>
+                        <div class="mb-2">
+                            <label for="inputUserAbout" class="small mb-1 ms-2">About</label>
+                            <textarea class="form-control hq-input" id="inputUserAbout" maxlength="250" name="About" required>@ViewBag.user.About</textarea>
+                            <span id="char_count"></span>
+                        </div>
 
-                            </div>
-                            <!-- Save changes button-->
-                            <button class="btn" type="submit" style="background-color: #4abdac; color:white;">Save changes</button>
-                            <button class="btn" type="button" id="btnCancel" style="background-color: #4abdac; color:white;">Cancel</button>
-                        }
-                        @*</form>*@
+                        <hr class="mt-4 mb-4">
+                        <!--Password-->
+                        <label for="inputOldPassword" class="small mb-1 ms-2">Old Password</label>
+                        <div class="input-group mb-2">
+                            <input type="password" class="form-control hq-input" id="inputOldPassword">
+                            <i class="input-group-text bi bi-eye-slash" id="togglePassword1" onclick="showPassword(this.id, 'inputOldPassword')"></i>
+                        </div>
+                        <label for="inputNewPassword" class="small mb-1 ms-2">New Password</label>
+                        <div class="input-group mb-2">
+                            <input type="password" class="form-control hq-input" id="inputNewPassword">
+                            <i class="input-group-text bi bi-eye-slash" id="togglePassword2" onclick="showPassword(this.id, 'inputNewPassword')"></i>
+                        </div>
+                        <label for="inputConfirmPassword" class="small mb-1 ms-2">Confirm Password</label>
+                        <div class="input-group mb-2 border-0 shadow-sm">
+                            <input type="password" class="form-control hq-input" id="inputConfirmPassword">
+                            <i class="input-group-text bi bi-eye-slash" id="togglePassword3" onclick="showPassword(this.id, 'inputConfirmPassword')"></i>
+
+                        </div>
+                        <!-- Save changes button-->
+                        <button class="btn" type="submit" style="background-color: #4abdac; color:white;">Save changes</button>
+                        <button class="btn" type="button" id="btnCancel" style="background-color: #4abdac; color:white;">Cancel</button>
+
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+}
 
 <script>
 
+
     document.addEventListener("DOMContentLoaded", redirectIfNotLoggedIn('@Session["Username"]'));
+
+    //Image Upload
+    var imageInput = document.getElementById("postedImages");
+    imageInput.onchange = event => {
+        $('#DisplayPicture').attr("src", URL.createObjectURL(imageInput.files[0]));
+    }
+
 
     //---textArea character count---//
 
