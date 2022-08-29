@@ -13,7 +13,7 @@
 }
 
 .spanTitle {
-    font-size: 30px;
+    font-size: 40px;
 }
 
 .admin-sidebar .admin-sidebar-item .admin-sidebar-link {
@@ -32,6 +32,7 @@
 
 .top-bar {
     height: 40px;
+
     box-shadow: 0px 10px 7px -1px rgba(217,217,217,1);
     
 }
