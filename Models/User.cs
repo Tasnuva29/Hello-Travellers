@@ -29,19 +29,26 @@ namespace Hello_Travellers.Models
             this.Notifications = new HashSet<Notification>();
         }
 
-        [Required(ErrorMessage = "Username is required")]
+        [Required(ErrorMessage = "Enter Username")]
         public string Username { get; set; }
 
-        [Required(ErrorMessage = "Name is required")]
+        [Required(ErrorMessage = "Enter Name")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Email is required")]
+        [Required(ErrorMessage = "Enter Email")]
         public string Email { get; set; }
         [DataType(DataType.PhoneNumber)]
         [RegularExpression(@"^\+?\d+$", ErrorMessage = "Not a valid phone number")]
         public string PhoneNumber { get; set; }
+        [Required(ErrorMessage = "Select Gender")]
         public string Gender { get; set; }
+
+        [Required(ErrorMessage = "Enter Password")]
         public string Password { get; set; }
+
+        [Compare("Password", ErrorMessage = "Doesn't Matched")]
+        public string ConfirmPassword { get; set; }
+   
         public string About { get; set; }
         public string DisplayPictureName { get; set; }
         public string Rank { get; set; }

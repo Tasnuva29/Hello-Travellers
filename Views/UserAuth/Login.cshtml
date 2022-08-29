@@ -22,9 +22,18 @@
         border-radius: 30px;
     }
 </style>
+
+
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+
 <div class="signin-container">
 
-    <form action="Login" method="post" class="signin-email">
+    <img src="~/Images/ef.png">
+
+    @using (Html.BeginForm("Login", "UserAuth"))
+    {
+
 
         <h1 class="signin-text text-center  py-3">Sign In</h1>
 
@@ -39,17 +48,20 @@
         </div>
 
         <div class="signup-input-group">
-            <button name="submit" class="SigninBtn">Login</button>
+            <button name="submit" id="submit" onclick="showalert();" class="SigninBtn">Login</button>
         </div>
 
         <!--<p class="signin-page-text text-center">Forgot Password! <a href="">Click here</a></p>-->
 
         <p class="signin-page-text text-center">Don't have an account? <a href="/UserAuth/SignUp">Sign Up Here</a></p>
+        <p class="signin-page-text text-center">Forgot Password! <a href="/UserAuth/ForgotPassword">Click here</a></p>
+
+    }
      
-    </form>
 
 
 </div>
+
 <script>
     document.addEventListener('DOMContentLoaded', (event) => {
         redirectIfLoggedIn('@Session["Username"]');
@@ -68,6 +80,8 @@
         if (document.getElementById(iconID).className === "input-group-text bi bi-eye-slash") {
             document.getElementById(iconID).className = "input-group-text bi bi-eye";
             document.getElementById(inputFieldID).type = "text";
+
+
         }
         else {
             document.getElementById(iconID).className = "input-group-text bi bi-eye-slash";
@@ -76,3 +90,20 @@
     }
 
 </script>
+
+
+@{
+    if (ViewBag.ValidID != null)
+    {
+
+
+        <script>
+
+            swal("", "Email is not registered", "error");
+
+        </script>
+
+    }
+
+}
+

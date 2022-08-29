@@ -6,16 +6,10 @@
     }
 </style>
 
-
-
-
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 
-
-
-
 @{
-    if (ViewBag.correct!= null)
+    if (ViewBag.correct != null)
     {
 
 
@@ -34,10 +28,10 @@
 }
 
 
-<div class="signin-container">
-    
+<div class="signup-container">
+    <img src="~/Images/pass.png">
 
-    @using (Html.BeginForm("SendEmail", "UserAuth"))
+    @using (Html.BeginForm("SendMailForPass", "UserAuth"))
     {
         <h4 class="py-3 text-center">An activaton code has been sent to your mail address</h4>
 
@@ -49,6 +43,8 @@
         <div class="signup-input-group">
             <button name="submit" value="submit" class="SignupBtn">Next</button>
         </div>
+        <p class="signup-register-text text-center">Have an account? <a href="/UserProfile/messages">Login Here</a></p>
     }
 
 </div>
+

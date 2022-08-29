@@ -1,0 +1,87 @@
+﻿<style>
+    body {
+      
+        background-color: #f5f5dc;
+    }
+
+    hr.solid {
+        border-top: 8px solid #bbb;
+        border-color:black;
+        
+    }
+
+
+    </style>
+
+<div class="p-5">
+
+<table class="table table-hover table-striped table-borderless">
+    <h4 class="text-center"><u>Peoples</u></h4>
+    <thead class="bg-dark text-white">
+        <tr>
+            <th scope="col">People</th>
+          
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in ViewBag.userData)
+        {
+            <tr>
+                <td>
+                        @item.Name
+                   
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<hr class="solid">
+    </div>
+
+<div class="p-5">
+    <table class="table table-hover table-striped table-borderless table-responsive">
+        <h4 class="text-center"><u>Posts</u></h4>
+        <thead class="bg-dark text-white">
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Uploading Day</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var item in ViewBag.PostData)
+            {
+
+                <tr>
+
+                    <td>
+                        <a class="text-black" style="text-decoration: none" href="@Url.Action("ViewPost", "Post", new { PostID = item.PostID })">
+                            @item.Title
+                        </a>
+                    </td>
+
+                    <td>
+                        <a class="text-black" style="text-decoration: none" href="@Url.Action("ViewPost", "Post", new { PostID = item.PostID })">
+                            @item.CreationTime
+                        </a>
+
+                    </td>
+
+
+                </tr>
+
+
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+
+
+
+
