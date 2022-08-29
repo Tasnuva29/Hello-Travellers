@@ -67,7 +67,7 @@
 
     <div class="row">
 
-        @for (int i = 0; i < ViewBag.selectedPost.Length; ++i)
+      @*  @for (int i = 0; i < ViewBag.selectedPost.Length; ++i)
         {
             <div class="col-sm-12 col-md-4 my-3" onclick="@("window.location.href='"+Url.Content("~/Post/ViewPost?PostID=" + ViewBag.selectedPost[i].PostID)+"'")">
                 <div class="card mx-2">
@@ -79,7 +79,7 @@
                     </div>
                 </div>
             </div>
-        }
+        }*@
     </div>
 </div>
 

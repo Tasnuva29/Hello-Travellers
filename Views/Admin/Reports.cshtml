@@ -145,9 +145,9 @@
                                     <td>@item.Reason</td>
                                     <td><a href=@Url.Action("ViewPost", "Post", new { PostID = item.ContextID }) class="reported-link">View</a></td>
                                     <td>
-                                        <button type="button" class="btn bg-primary text-white"  onclick="Delete(this)" report-id="@item.ReportID" context-id="@item.ContextID" context="@item.Context"><i class="bi-slash-circle-fill me-2 c-white"></i>Delete</button>
+                                        <button type="button" class="btn bg-primary text-white" onclick="Delete(this)" report-id="@item.ReportID" context-id="@item.ContextID" context="@item.Context"><i class="bi-slash-circle-fill me-2 c-white"></i>Delete</button>
                                         <button type="button" class="btn report-btn-1" onclick="Ban(this)" report-id="@item.ReportID" context-id="@item.ContextID" context="@item.Context"><i class="bi-slash-circle-fill me-2 c-white"></i>Actions</button>
-                                        <button type="button" class="btn report-btn-2"><i class="bi-x-circle-fill me-2 c-white"></i>Dismiss</button>
+                                        <button type="button" class="btn report-btn-2"  onclick="Dismiss(this)" report-id="@item.ReportID"><i class="bi-x-circle-fill me-2 c-white"></i>Dismiss</button>
                                     </td>
                                 </tr>
                             }
@@ -177,7 +177,7 @@
                                     <td>@item.ReportID</td>
                                     <td>@item.Reason</td>
                                     <td><a href=@Url.Action("Index", "UserProfile", new { Username = item.ContextID }) class="reported-link">View</a></td>
-                                    <td>                                        
+                                    <td>
                                         <button type="button" class="btn report-btn-1"><i class="bi-slash-circle-fill me-2 c-white"></i>Ban</button>
                                         <button type="button" class="btn report-btn-2"><i class="bi-x-circle-fill me-2 c-white"></i>Dismiss</button>
                                     </td>
@@ -197,7 +197,7 @@
                             <tr>
                                 <th>Report ID</th>
                                 <th>Reason</th>
-                                <th>View Comment</th>                                
+                                <th>View Comment</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -297,18 +297,47 @@
                         ReportID: reportID,
                         ContextID: contextID,
                         Context: context
+                    },
+                    success: (response) => {
+                        if (response == "post") {
+                            console.log(response);
+                        }
+
                     }
+
                 });
-                Swal.fire(
-                    'Deleted!',
-                    'Post has been deleted',
-                    'success'
-                )
+                if (context == "POST") {
+                    Swal.fire(
+                        'Deleted!',
+                        'This post has been deleted',
+                        'success'
+                    )
+                } else if(context == "COMMENT" ) {
+                    Swal.fire(
+                        'Deleted!',
+                        'This comment has been deleted',
+                        'success'
+                    )
+                }
                // $('#forum-table').DataTable().row($(this).parents('tr')).remove().draw();
                 location.reload();
                 //$('#forum-table').DataTable().ajax.reload();
             }
         })
+    }
+    function Dismiss(element) {
+        var reportID = element.getAttribute("report-id");       
+         $.ajax({
+            type: 'POST',
+            url: '@Url.Action("DismissReport", "Admin")',
+            data: {
+                ReportID: reportID,
+            },
+            success: (response) => {              
+                location.reload();
+            }
+        })
+
     }
     async function Ban(element) {
         var contextID = element.getAttribute("context-id");
