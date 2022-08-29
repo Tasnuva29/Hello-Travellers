@@ -94,10 +94,8 @@
     </form>
 </div>
 <script>
-    document.addEventListener('DOMContentLoaded', (event) => {
-        redirectIfLoggedIn('@Session["Username"]');
-    });
 
+    document.addEventListener("DOMContentLoaded", redirectLoggedIn('@Session["Username"]'));
 
     function showPass() {
         var x = document.getElementById("myInput1");

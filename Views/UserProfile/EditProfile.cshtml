@@ -90,6 +90,9 @@
 </div>
 
 <script>
+
+    document.addEventListener("DOMContentLoaded", redirectIfNotLoggedIn('@Session["Username"]'));
+
     //---textArea character count---//
 
     let textArea = document.getElementById("inputUserAbout");

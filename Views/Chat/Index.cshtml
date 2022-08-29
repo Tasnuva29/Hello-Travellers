@@ -135,6 +135,7 @@
 </div>
 <script>
 
+    document.addEventListener("DOMContentLoaded", redirectIfNotLoggedIn('@Session["Username"]'));
     document.addEventListener("DOMContentLoaded", updateChatList);
     document.addEventListener("DOMContentLoaded", initialLoad);
 

@@ -66,8 +66,9 @@
         .comment-card {
             border: none;
             box-shadow: 7px 10px 7px -1px rgba(217,217,217,1);
-            padding: 20px;           
+            padding: 20px;
         }
+
         .comment-img {
             width: 50px;
             height: 50px;
@@ -205,9 +206,8 @@
                                 <tr>
                                     <td>@item.ReportID</td>
                                     <td>@item.Reason</td>
-                                    <td><a data-bs-toggle="modal" href="#viewComment" data-commenter-name = "@ViewBag.viewComment[item].CreatorUsername" role="button">View</a></td>
                                     <td>
-                                        <button type="button" class="btn report-btn-1"><i class="bi-slash-circle-fill me-2 c-white"></i>Ban</button>
+                                        <button type="button" onclick="btnActionClicked('@item.ReportID')" class="btn report-btn-1"><i class="bi-slash-circle-fill me-2 c-white"></i>Action</button>
                                         <button type="button" class="btn report-btn-2"><i class="bi-x-circle-fill me-2 c-white"></i>Dismiss</button>
                                     </td>
                                 </tr>
@@ -268,6 +268,7 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function () {
         $('#post-table').DataTable();
@@ -276,9 +277,81 @@
         function ban() {
 
         }
+
+
         $('viewComment').on('show.bs.modal', function (event) {
             let bookId = $(event.relatedTarget).data('bookid')
             $(this).find('.modal-body input').val(bookId)
         })
     });
+
+    var profilePictureBaseLoc = '@Url.Content("~/Images/ProfilePicture/")';
+    var postBaseLoc = '@Url.Content("~/Post/ViewPost")';
+
+    async function btnActionClicked(reportID) {
+
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("GetReportInformation", "Admin")',
+            data: {
+                ReportID: reportID,
+            },
+            success: (response) => {
+                response = JSON.parse(response);
+                console.log(response);
+                commentViewPopup(response);
+            }
+        })
+
+
+
+    }
+
+    async function commentViewPopup(data) {
+        const { value: formValues } = await Swal.fire({
+            title: 'Action',
+            html:
+                `<div class="container">` +
+                `<div class="row my-3 justify-content-md-center p-2 border">` +
+                `<div class="col-2 p-0 m-0">` +
+                `<img class="rounded-circle post-img-profile" style="width:64px; height: 64px" src=${profilePictureBaseLoc + data.ProfilePictureLocation} />` +
+                `</div>` +
+                `<div class="col-6 mx-1 rounded bg-grey" style="text-align:justify;">` +
+                `<span class="fw-bold">${data.Name}</span>` +
+                `<div class="fw-normal">${data.Content}</div>` +
+                `</div>` +
+                `</div>` +
+                `<a target"_blank" href="${postBaseLoc + '?PostID=' + data.PostID}" class="btn btn-primary d-flex justify-content-center">View Post</a>` +
+                `</div>` +
+                `<div class="input-group my-3">` +
+                `<input type="number" value="1" style="margin-right: 1rem;" type="number" id="amount" class="form-control">` +
+                `<select class="custom-select" id="unit">` +
+                `<option value="1" selected>Hours</option>` +
+                `<option value="2">Days</option>` +
+                `<option value="3">Years</option>` +
+                `</select>` +
+                `</div>`,
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonText: 'Ban',
+            preConfirm: () => {
+                return [
+                    document.getElementById('amount').value,
+                    document.getElementById('unit').value
+                ]
+            }
+        })
+
+        if (formValues) {
+            if (formValues[0].trim().length <= 0 || formValues[0] < 1) {
+                commentViewPopup(data);
+                return false;
+            }
+
+            //formValues[0] returns amount
+            //formValues[1] returns 1, 2, 3 where 1 = hour, 2 = day, 3 = year
+            //write your code here
+        }
+    }
+
 </script>

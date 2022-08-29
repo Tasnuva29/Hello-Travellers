@@ -140,5 +140,19 @@ namespace Hello_Travellers.Controllers
         {
             return View();
         }
+
+        [HttpGet]
+        public ActionResult GetReportInformation(int ReportID)
+        {
+            Entities db = new Entities();
+            var report = db.Reports.Where(temp => temp.ReportID == ReportID).FirstOrDefault();
+            var comment = db.Replies.Where(temp => temp.ReplyID.ToString().Contains(report.ContextID)).FirstOrDefault();
+            var jsonString = string.Format("\"Name\": \"{0}\", " +
+                "\"Username\": \"{1}\", " +
+                "\"ProfilePictureLocation\": \"{2}\", " +
+                "\"PostID\": {3}, " +
+                "\"Comment\": \"{4}\"", comment.User.Name, comment.User.Username, comment.User.DisplayPictureName, comment.PostID, comment.Content);
+            return Json('{' + jsonString + '}', JsonRequestBehavior.AllowGet);
+        }
     }
 }

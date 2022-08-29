@@ -55,6 +55,9 @@
 </div>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script type="text/javascript">
+
+    document.addEventListener("DOMContentLoaded", redirectIfNotLoggedIn('@Session["Username"]'));
+
     var imageContainer = document.getElementById("img-container");
     var imageContainerTemp = document.createElement("div");
     var imageInput = document.getElementById("postedImages");

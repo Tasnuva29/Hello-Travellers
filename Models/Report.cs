@@ -20,7 +20,6 @@ namespace Hello_Travellers.Models
         public string Reason { get; set; }
         public string ReporterUsername { get; set; }
         public string Status { get; set; }
-    
         public virtual User User { get; set; }
     }
 }

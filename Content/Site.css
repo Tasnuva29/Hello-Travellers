@@ -39,3 +39,11 @@ textarea {
     cursor: pointer;
     color: darkcyan;
 }
+
+.justify-text {
+    text-align: justify;
+}
+
+.no-dec-link {
+    text-decoration: none;
+}
