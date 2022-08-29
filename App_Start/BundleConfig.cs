@@ -21,7 +21,8 @@ namespace Hello_Travellers
 
             bundles.Add(new Bundle("~/bundles/bootstrap").Include(
                 "~/Scripts/bootstrap.js",
-                "~/Scripts/routing.js"));
+                "~/Scripts/routing.js",
+                "~/Scripts/jquery.timeago.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/bootstrap.css",

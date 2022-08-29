@@ -90,6 +90,10 @@
     <script>
         //setInterval(updateNotificationCount ,5000)
 
+        jQuery(document).ready(function () {
+            jQuery("time.timeago").timeago();
+        });
+
         document.addEventListener('DOMContentLoaded', (event) => {
             var username = '@Session["Username"]';
             var usernameCheck = username.trim().length > 0;

@@ -39,10 +39,6 @@ namespace Hello_Travellers.Controllers
             ViewBag.count = count;
             return View();
         }
-        public ActionResult Posts()
-        {
-            return View();
-        }
 
         public ActionResult Subforums()
         {
@@ -78,7 +74,7 @@ namespace Hello_Travellers.Controllers
         public ActionResult DeleteSubforum(int ForumID)
         {
             Entities db = new Entities();
-            var subForum = db.Subforums.Where(temp => temp.ForumID == ForumID).SingleOrDefault();
+            var subForum = db.Subforums.Where(temp => temp.ForumID == ForumID).FirstOrDefault();
             db.Subforums.Remove(subForum);
             db.SaveChanges();
             return Json("true", JsonRequestBehavior.AllowGet);
@@ -131,6 +127,69 @@ namespace Hello_Travellers.Controllers
             ViewBag.viewComment = viewComment;
             return View();
         }
+        [HttpPost]
+        public ActionResult Ban()
+        {
+            return Json("true", JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult Posts()
+        {
+            Entities db = new Entities();
+            var subforumList = db.Subforums.ToList();
+            ViewBag.subForumList = subforumList;
+            var postList = db.Posts.ToList();
+            ViewBag.postList = postList;
+            return View();
+        }
+        void UpdateStatus(int ReportID)
+        {
+            Entities db = new Entities();
+            var getReport = db.Reports.Where(temp => temp.ReportID == ReportID).FirstOrDefault();
+            getReport.Status = "RESOLVED";
+            db.Entry(getReport).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+        }
+        [HttpPost]
+        public ActionResult DeletePostOrComment(int ReportID, string ContextID, string Context)
+        {
+            Entities db = new Entities();
+            //var deleteContextID = Convert.ToInt32(ContextID);
+            if (Context.Equals("POST"))
+            {
+
+                var post = db.Posts.Where(temp => temp.PostID.ToString() == ContextID).FirstOrDefault();
+                foreach (var item in post.Replies.ToList())
+                {
+                    db.Replies.Remove(item);
+                }
+                foreach (var item in post.MediaItems.ToList())
+                {
+                    db.MediaItems.Remove(item);
+                }
+                foreach (var item in post.Reacts.ToList())
+                {
+                    db.Reacts.Remove(item);
+                }
+                db.Posts.Remove(post);
+                db.SaveChanges();
+                UpdateStatus(ReportID);
+                return Json("post", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var reply = db.Replies.Where(temp => temp.ReplyID.ToString() == ContextID).FirstOrDefault();
+                db.Replies.Remove(reply);
+                db.SaveChanges();
+                UpdateStatus(ReportID);
+                return Json("comment", JsonRequestBehavior.AllowGet);
+            }
+        }
+        [HttpPost]
+        public ActionResult DismissReport(int ReportID)
+        {
+            UpdateStatus(ReportID);
+            return Json("true", JsonRequestBehavior.AllowGet);
+        }
 
         public ActionResult Settings()
         {
@@ -138,6 +197,9 @@ namespace Hello_Travellers.Controllers
         }
         public ActionResult BannedUser()
         {
+            Entities db = new Entities();
+            var userList = db.Users.Where(temp => temp.Rank == "BANNED").ToList();
+            ViewBag.userList = userList;
             return View();
         }
 
@@ -151,7 +213,7 @@ namespace Hello_Travellers.Controllers
                 "\"Username\": \"{1}\", " +
                 "\"ProfilePictureLocation\": \"{2}\", " +
                 "\"PostID\": {3}, " +
-                "\"Comment\": \"{4}\"", comment.User.Name, comment.User.Username, comment.User.DisplayPictureName, comment.PostID, comment.Content);
+                "\"Content\": \"{4}\"", comment.User.Name, comment.User.Username, comment.User.DisplayPictureName, comment.PostID, comment.Content);
             return Json('{' + jsonString + '}', JsonRequestBehavior.AllowGet);
         }
     }

@@ -353,5 +353,36 @@ namespace Hello_Travellers.Controllers
                 "href=\"/UserProfile?Username={0}\">{1}</a> {2} on your " +
                 "<a class=\"notification-link\" href=\"/Post/ViewPost?PostID={3}\">post</a></p>", user.Username, user.Name, voteAction, postID);
         }
+
+        [HttpPost]
+        public ActionResult CreateReplyReport(String Reason, int ReplyID)
+        {
+            try { 
+                Report report = new Report();
+                report.ReporterUsername = (string)Session["Username"];
+                report.Status = "UNRESOLVED";
+                report.Reason = Reason;
+                report.Context = "COMMENT";
+                report.ContextID = ReplyID.ToString();
+
+
+                Entities db = new Entities();
+
+                var existingReport = db.Reports.Where(t => t.ReporterUsername == report.ReporterUsername && t.ContextID == report.ContextID && t.Context == report.Context).Count();
+                if(existingReport > 0)
+                {
+                    return Json("Exists", JsonRequestBehavior.AllowGet);
+                }
+
+                db.Reports.Add(report);
+                db.SaveChanges();
+
+                return Json("Success", JsonRequestBehavior.AllowGet);
+
+            } catch
+            {
+                return Json("Error", JsonRequestBehavior.AllowGet);
+            }
+        }
     }
 }

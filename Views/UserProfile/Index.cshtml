@@ -79,11 +79,19 @@
                                style="margin-right: 5px; color: #4abdac"></i>@ViewBag.user.Gender
                         </li>
                     </ul>
-             
-                    <a href="~/UserProfile/EditProfile"
-                       class="btn text-center d-block"
-                       style="background-color: #4abdac; color:white;">Edit Profile</a>
-                    
+
+                    @if (Session["Username"] == ViewBag.user.Username)
+                    {
+                        <a href="~/UserProfile/EditProfile"
+                           class="btn text-center d-block"
+                           style="background-color: #4abdac; color:white;">Edit Profile</a>
+                    }
+                    else
+                    {
+                        <a onclick="reportProfile('@ViewBag.user.Username')"
+                           class="btn text-center d-block"
+                           style="background-color: #4abdac; color:white;">Report</a>
+                    }
                 </div>
             </div>
         </div>
@@ -247,7 +255,52 @@
             document.getElementById(inputFieldID).type = "password";
         }
     }
-        //--crop image--//
+    //--crop image--//
 
+    //profile report
+    async function reportProfile(username) {
+        const { value: text } = await Swal.fire({
+            input: 'textarea',
+            inputLabel: 'Reason for report',
+            inputPlaceholder: 'Type your reason here...',
+            inputAttributes: {
+                'aria-label': 'Type your reason here'
+            },
+            showCancelButton: true
+        })
+
+        if (text) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("CreateUserReport", "UserProfile")',
+                data: {
+                    Reason: text,
+                    Username: username
+                },
+                success: (response) => {
+                    if (response == "Error") {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Failed!',
+                            text: 'Something went wrong!'
+                        });
+                    }
+                    if (response == "Exists") {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Already Reported!',
+                            text: 'You have already reported this profile!'
+                        });
+                    }
+                }
+            })
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid',
+                text: 'Give us a reason!'
+            });
+        }
+    }
 </script>
 
