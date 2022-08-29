@@ -124,22 +124,23 @@ namespace Hello_Travellers.Controllers
 
             System.Diagnostics.Debug.WriteLine(postedImages.ToList().Count);
 
-            if (postedImages != null)
+            if (postedImages != null && postedImages.ToList().Count > 0)
             {
-                
-                    foreach (var image in postedImages)
-                    {
-                        var ext = Path.GetExtension(image.FileName);
-                        image.SaveAs(path + existingUser.Username + ext);
-                        existingUser.DisplayPictureName = existingUser.Username + ext;
-                    }
-                
+
+                foreach (var image in postedImages)
+                {
+                    if (image == null) break;
+                    var ext = Path.GetExtension(image.FileName);
+                    image.SaveAs(path + existingUser.Username + ext);
+                    existingUser.DisplayPictureName = existingUser.Username + ext;
+                }
+
             }
             if (ModelState.IsValid)
             {
                 db.Entry(existingUser).State = EntityState.Modified;
                 db.SaveChanges();
-            }        
+            }
 
             return RedirectToAction("Index");
             //try
@@ -188,6 +189,21 @@ namespace Hello_Travellers.Controllers
             catch
             {
                 return Json("Error", JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpGet]
+        public ActionResult MatchPassword(String Password)
+        {
+            var username = (string)Session["Username"];
+            var count = db.Users.Where(t => t.Username == username && t.Password == Password).Count();
+            if(count > 0)
+            {
+                return Json("Match", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json("Mismatch", JsonRequestBehavior.AllowGet);
             }
         }
 
