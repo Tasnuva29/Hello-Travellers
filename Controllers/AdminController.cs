@@ -103,13 +103,13 @@ namespace Hello_Travellers.Controllers
         public ActionResult Reports()
         {
             Entities db = new Entities();
-            var reportCount = db.Reports.Count();
-            var postReportCount = db.Reports.Where(temp => temp.Context == "POST").Count();
-            var profileReportCount = db.Reports.Where(temp => temp.Context == "PROFILE").Count();
-            var commentReportCount = db.Reports.Where(temp => temp.Context == "COMMENT").Count();
-            var postReport = db.Reports.Where(temp => temp.Context == "POST").ToList();
-            var profileReport = db.Reports.Where(temp => temp.Context == "PROFILE").ToList();
-            var commentReport = db.Reports.Where(temp => temp.Context == "COMMENT").ToList();
+            var reportCount = db.Reports.Where(temp => temp.Status == "UNRESOLVED").Count();
+            var postReportCount = db.Reports.Where(temp => temp.Context == "POST" && temp.Status == "UNRESOLVED").Count();
+            var profileReportCount = db.Reports.Where(temp => temp.Context == "PROFILE" && temp.Status == "UNRESOLVED").Count();
+            var commentReportCount = db.Reports.Where(temp => temp.Context == "COMMENT" && temp.Status == "UNRESOLVED").Count();
+            var postReport = db.Reports.Where(temp => temp.Context == "POST" && temp.Status == "UNRESOLVED").ToList();
+            var profileReport = db.Reports.Where(temp => temp.Context == "PROFILE" && temp.Status == "UNRESOLVED").ToList();
+            var commentReport = db.Reports.Where(temp => temp.Context == "COMMENT" && temp.Status == "UNRESOLVED").ToList();
             ViewBag.reportCount = reportCount;
             ViewBag.postReportCount = postReportCount;
             ViewBag.profileReportCount = profileReportCount;
@@ -190,7 +190,57 @@ namespace Hello_Travellers.Controllers
             UpdateStatus(ReportID);
             return Json("true", JsonRequestBehavior.AllowGet);
         }
-
+        [HttpPost]
+        public ActionResult BanUser(int ReportID, string ContextID, string Context, int Banvalue, string Banduration)
+        {
+            var currentTime = DateTime.Now;
+            switch (Banduration)
+            {
+                case "1":
+                    currentTime = currentTime.AddHours(Banvalue);
+                    break;
+                case "2":
+                    currentTime = currentTime.AddDays(Banvalue);
+                    break;
+                case "3":
+                    currentTime = currentTime.AddMonths(Banvalue);
+                    break;
+                case "4":
+                    currentTime = currentTime.AddYears(Banvalue);
+                    break;
+                default:
+                    break;
+            }
+            Entities db = new Entities();
+            if (Context == "PROFILE")
+            {
+                var setRank = db.Users.Where(temp => temp.Username == ContextID).FirstOrDefault();
+                setRank.Rank = "BANNED," + currentTime.ToString() + "," + Context;
+                db.Entry(setRank).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+                UpdateStatus(ReportID);
+            }
+            else if (Context == "POST")
+            {
+                var getPost = db.Posts.Where(temp => temp.PostID.ToString() == ContextID).FirstOrDefault();
+                var setRank = getPost.User;
+                setRank.ConfirmPassword = setRank.Password;
+                setRank.Rank = "BANNED," + currentTime.ToString() + "," + Context;
+                db.Entry(setRank).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+                UpdateStatus(ReportID);
+            }
+            else if (Context == "COMMENT")
+            {
+                var getComment = db.Replies.Where(temp => temp.ReplyID.ToString() == ContextID).FirstOrDefault();
+                var setRank = getComment.User;
+                setRank.Rank = "BANNED," + currentTime.ToString() + "," + Context;
+                db.Entry(setRank).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
+                UpdateStatus(ReportID);
+            }
+            return Json(currentTime, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult Settings()
         {
             return View();
@@ -198,10 +248,23 @@ namespace Hello_Travellers.Controllers
         public ActionResult BannedUser()
         {
             Entities db = new Entities();
-            var userList = db.Users.Where(temp => temp.Rank == "BANNED").ToList();
-            ViewBag.userList = userList;
+            var userList = db.Users.Where(temp => temp.Rank.Contains("BANNED"));
+            var bannedUser = userList.Where(temp => DateTime.Parse(temp.Rank.Split(',')[1]) < DateTime.Now);
+            ViewBag.bannedUser = userList;
             return View();
         }
+        [HttpPost]
+        public ActionResult RemoveUserBan(string Username)
+        {
+            Entities db = new Entities();
+            var getUser = db.Users.Where(temp => temp.Username == Username).FirstOrDefault();
+            getUser.Rank = "USER";
+            getUser.ConfirmPassword = getUser.Password;
+            db.Entry(getUser).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+            return Json("true", JsonRequestBehavior.AllowGet);
+        }
+
 
         [HttpGet]
         public ActionResult GetReportInformation(int ReportID)

@@ -3,6 +3,77 @@
     ViewBag.Title = "BannedUser";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<style>
+    .page-header {
+        color: #787A91;
+        font-weight: 600;
+        font-size: 25px;
+    }
+
+    .tab-header {
+        color: #787A91;
+        font-weight: 600;
+        font-size: 20px;
+    }
+
+    .table-container {
+        box-shadow: 0 0 10px 1px rgba(217,217,217,1);
+        padding: 20px;
+    }
+
+    .overview-card {
+        border: none;
+        box-shadow: 7px 10px 7px -1px rgba(217,217,217,1);
+        padding: 20px;
+        border-left: 4px solid #05445E;
+    }
+
+    .report-btn-1 {
+        background-color: #21BCA8;
+        color: white;
+        transition: 0.3s ease;
+        outline: none;
+    }
+
+        .report-btn-1:hover {
+            background-color: #066163;
+            color: white;
+            outline: none;
+        }
+
+    .report-btn-2 {
+        background-color: #189AB4;
+        color: white;
+        transition: 0.3s ease;
+        outline: none;
+    }
+
+        .report-btn-2:hover {
+            background-color: #05445E;
+            color: white;
+            outline: none;
+        }
+
+    .reported-link {
+        color: #189AB4;
+    }
+
+        .reported-link:hover {
+            color: #05445E;
+        }
+
+    .comment-card {
+        border: none;
+        box-shadow: 7px 10px 7px -1px rgba(217,217,217,1);
+        padding: 20px;
+    }
+
+    .comment-img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+</style>
 
 <p class="mb-4 mt-3 page-header">Users</p>
 <div class="container-fluid table-container">
@@ -11,27 +82,57 @@
         <div class="fw-bold page-header ms-1">@ViewBag.count</div>
     </div>
     <div class="row mt-2">
-        <table class="table table-hover mt-2" id="user-table">
+        <table class="table table-hover mt-2" id="banned-user">
             <thead class="bg-dark text-white">
                 <tr>
-                    <th>User Name</th>                                     
-                    <th>Total Posts</th>
+                    <th>User Name</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
-            @foreach (var item in ViewBag.userList)
+            @foreach (var item in ViewBag.bannedUser)
             {
                 <tr>
                     <td>@item.Username</td>
-                    <td>@item.Name</td>
-                    <td>@item.Email</td>
-                    <td>@item.PhoneNumber</td>
-                    <td>@item.Gender</td>
-                    <td>@item.About</td>
-                    <td>@item.Posts.Count</td>
+                    <td>
+                        <button type="button" class="btn report-btn-2" onclick="RemoveBan(this)" user-name="@item.Username"><i class="bi-x-circle-fill me-2 c-white"></i>Remove Ban</button>
+                    </td>
                 </tr>
-
             }
         </table>
     </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js" integrity="sha512-efUTj3HdSPwWJ9gjfGR71X9cvsrthIA78/Fvd/IN+fttQVy7XWkOAXb295j8B3cmm/kFKVxjiNYzKw9IQJHIuQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#banned-user').DataTable();
+    });
+    function RemoveBan(element) {
+        var username = element.getAttribute("user-name");
+         $.ajax({
+            type: 'POST',
+            url: '@Url.Action("RemoveUserBan", "Admin")',
+            data: {
+                Username: username,
+            },
+            success: (response) => {
+               // location.reload();
+                $.notify(
+                    "Bann Removed",
+                    {
+                        globalPosition: "top center",
+                        className: "success"
+                    }
+                );
+                location.reload();
+
+            }
+        })
+    }
+
+</script>
 
