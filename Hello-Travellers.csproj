@@ -131,6 +131,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PostController.cs" />
     <Compile Include="Controllers\SendEmail.cs" />
+    <Compile Include="Controllers\StoryController.cs" />
     <Compile Include="Controllers\UserAuthController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Global.asax.cs">
@@ -307,7 +308,6 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\routing.js" />
-    <Content Include="Views\UserAuth\Login.cshtml" />
     <Content Include="Views\UserProfile\Index.cshtml" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -344,6 +344,12 @@
     <Content Include="Views\Shared\_MessageBulk.cshtml" />
     <Content Include="Views\Shared\_NotificationBlock.cshtml" />
     <Content Include="Views\Admin\BannedUser.cshtml" />
+    <Content Include="Views\UserAuth\ForgotPassword.cshtml" />
+    <Content Include="Views\UserAuth\Login.cshtml" />
+    <Content Include="Views\UserAuth\SearchResult.cshtml" />
+    <Content Include="Views\Story\Story.cshtml" />
+    <Content Include="Views\UserAuth\SendMailForPass.cshtml" />
+    <Content Include="Views\UserAuth\InputNewPass.cshtml" />
     <Content Include="Views\Shared\_HomePageBottom.cshtml" />
   </ItemGroup>
   <ItemGroup>

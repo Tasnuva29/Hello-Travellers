@@ -321,7 +321,7 @@ namespace Hello_Travellers.Controllers
         {
 
             var fetch = db.Posts.Where(m => m.ForumID == forumID).ToList();
-            //var fetch = db.Posts.ToList();
+           
             return View(fetch);
         }
 
