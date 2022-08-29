@@ -8,7 +8,7 @@ namespace Hello_Travellers.Controllers
 {
     public class UserAuthController : Controller
     {
-      
+
 
         static int number = new Random().Next(1000, 9999);
         static User newUser;
@@ -30,32 +30,42 @@ namespace Hello_Travellers.Controllers
             Entities db = new Entities();
             var email = form["Email"];
             var password = form["Password"];
-          
+
             List<User> users = db.Users.Where(x => x.Email.Equals(email) && x.Password.Equals(password)).ToList();
-            if(users.Count > 0)
+            if (users.Count > 0)
             {
                 Session["Username"] = users[0].Username;
-                Response.Redirect("~/Home/Index");
+                Session["Rank"] = users[0].Rank;
+                if (Session["Rank"].ToString().Contains("BANNED"))
+                {
+                    var rank = Session["Rank"].ToString();
+                    if (DateTime.Parse(rank.Split(',')[1]) < DateTime.Now)
+                    {
+
+                    }
+                }
+                else
+                {
+                    Response.Redirect("~/Home/Index");
+                }
             }
             return View();
         }
 
         public ActionResult SignUp()
-
         {
-          
             return View();
         }
 
         [HttpPost]
         public ActionResult SignUp(User user)
         {
-            
+
             var name = user.Name;
             var username = user.Username;
             var email = user.Email;
-            var password= user.Password;
-            var confirmpassword= user.ConfirmPassword;
+            var password = user.Password;
+            var confirmpassword = user.ConfirmPassword;
 
             if (ModelState.IsValid)
             {
@@ -70,14 +80,14 @@ namespace Hello_Travellers.Controllers
                     sendEmail.sendmail(email, number.ToString());
                     newUser = user;
                     Response.Redirect("~/UserAuth/SendEmail");
-                   
+
                     return View(user);
 
                 }
-          
+
 
             }
-     
+
             return View(user);
 
         }
@@ -132,21 +142,21 @@ namespace Hello_Travellers.Controllers
         {
 
             Entities db = new Entities();
-        
+
             var result = db.Users.Where(t => t.Email.ToLower().Contains(email.ToLower())).ToList();
             if (result.Count > 0)
             {
                 //updateData();
             }
-            
+
             db.Dispose();
             return View();
         }
 
-    
+
 
 
     }
 
- 
+
 }

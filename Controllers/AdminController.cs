@@ -18,42 +18,103 @@ namespace Hello_Travellers.Controllers
         }
         public ActionResult Dashboard()
         {
-            return View();
+            if (Session["Username"] == null)
+            {
+                return RedirectToAction("Login", "UserAuth");
+            }
+            else
+            {
+                if (Session["Rank"].Equals("ADMIN"))
+                {
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
         }
 
         public ActionResult Users()
         {
-            Entities db = new Entities();
-            var count = db.Users.Where(temp => temp.Rank == "USER").Count();
-            var userList = db.Users.Where(temp => temp.Rank == "USER").ToList();
-            ViewBag.count = count;
-            ViewBag.userList = userList;
-            return View();
+            if (Session["Username"] == null)
+            {
+                return RedirectToAction("Login", "UserAuth");
+            }
+            else
+            {
+                if (Session["Rank"].Equals("ADMIN"))
+                {
+                    Entities db = new Entities();
+                    var count = db.Users.Where(temp => temp.Rank == "USER").Count();
+                    var userList = db.Users.Where(temp => temp.Rank == "USER").ToList();
+                    ViewBag.count = count;
+                    ViewBag.userList = userList;
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
         }
         public ActionResult Admins()
         {
-            Entities db = new Entities();
-            var adminList = db.Users.Where(temp => temp.Rank == "ADMIN").ToList();
-            ViewBag.adminList = adminList;
-            var count = db.Users.Where(temp => temp.Rank == "ADMIN").Count();
-            ViewBag.count = count;
-            return View();
+            if (Session["Username"] == null)
+            {
+                return RedirectToAction("Login", "UserAuth");
+            }
+            else
+            {
+                if (Session["Rank"].Equals("ADMIN"))
+                {
+                    Entities db = new Entities();
+                    var adminList = db.Users.Where(temp => temp.Rank == "ADMIN").ToList();
+                    ViewBag.adminList = adminList;
+                    var count = db.Users.Where(temp => temp.Rank == "ADMIN").Count();
+                    ViewBag.count = count;
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
         }
 
         public ActionResult Subforums()
         {
-            Entities db = new Entities();
-            var subForums = db.Subforums.ToList();
-            ViewBag.subForum = subForums;
-            var count = db.Subforums.Count();
-            ViewBag.count = count;
-            return View();
+            if (Session["Username"] == null)
+            {
+                return RedirectToAction("Login", "UserAuth");
+            }
+            else
+            {
+                if (Session["Rank"].Equals("ADMIN"))
+                {
+                    Entities db = new Entities();
+                    var subForums = db.Subforums.ToList();
+                    ViewBag.subForum = subForums;
+                    var count = db.Subforums.Count();
+                    ViewBag.count = count;
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
         }
 
 
         [HttpPost]
         public ActionResult CreateSubforum(string ForumName)
         {
+
             Entities db = new Entities();
             var subForum = new Subforum();
             var count = db.Subforums.Where(temp => temp.ForumName == ForumName).Count();
@@ -102,30 +163,44 @@ namespace Hello_Travellers.Controllers
 
         public ActionResult Reports()
         {
-            Entities db = new Entities();
-            var reportCount = db.Reports.Where(temp => temp.Status == "UNRESOLVED").Count();
-            var postReportCount = db.Reports.Where(temp => temp.Context == "POST" && temp.Status == "UNRESOLVED").Count();
-            var profileReportCount = db.Reports.Where(temp => temp.Context == "PROFILE" && temp.Status == "UNRESOLVED").Count();
-            var commentReportCount = db.Reports.Where(temp => temp.Context == "COMMENT" && temp.Status == "UNRESOLVED").Count();
-            var postReport = db.Reports.Where(temp => temp.Context == "POST" && temp.Status == "UNRESOLVED").ToList();
-            var profileReport = db.Reports.Where(temp => temp.Context == "PROFILE" && temp.Status == "UNRESOLVED").ToList();
-            var commentReport = db.Reports.Where(temp => temp.Context == "COMMENT" && temp.Status == "UNRESOLVED").ToList();
-            ViewBag.reportCount = reportCount;
-            ViewBag.postReportCount = postReportCount;
-            ViewBag.profileReportCount = profileReportCount;
-            ViewBag.commentReportCount = commentReportCount;
-            ViewBag.postReport = postReport;
-            ViewBag.profileReport = profileReport;
-            ViewBag.commentReport = commentReport;
-            var viewComment = new Reply[commentReport.Count];
-            for (int i = 0; i < commentReport.Count; i++)
+            if (Session["Username"] == null)
             {
-                var commentID = commentReport[i].ContextID;
-                var contextID = Convert.ToInt32(commentID);
-                viewComment[i] = db.Replies.Where(temp => temp.ReplyID == contextID).FirstOrDefault();
+                return RedirectToAction("Login", "UserAuth");
             }
-            ViewBag.viewComment = viewComment;
-            return View();
+            else
+            {
+                if (Session["Rank"].Equals("ADMIN"))
+                {
+                    Entities db = new Entities();
+                    var reportCount = db.Reports.Where(temp => temp.Status == "UNRESOLVED").Count();
+                    var postReportCount = db.Reports.Where(temp => temp.Context == "POST" && temp.Status == "UNRESOLVED").Count();
+                    var profileReportCount = db.Reports.Where(temp => temp.Context == "PROFILE" && temp.Status == "UNRESOLVED").Count();
+                    var commentReportCount = db.Reports.Where(temp => temp.Context == "COMMENT" && temp.Status == "UNRESOLVED").Count();
+                    var postReport = db.Reports.Where(temp => temp.Context == "POST" && temp.Status == "UNRESOLVED").ToList();
+                    var profileReport = db.Reports.Where(temp => temp.Context == "PROFILE" && temp.Status == "UNRESOLVED").ToList();
+                    var commentReport = db.Reports.Where(temp => temp.Context == "COMMENT" && temp.Status == "UNRESOLVED").ToList();
+                    ViewBag.reportCount = reportCount;
+                    ViewBag.postReportCount = postReportCount;
+                    ViewBag.profileReportCount = profileReportCount;
+                    ViewBag.commentReportCount = commentReportCount;
+                    ViewBag.postReport = postReport;
+                    ViewBag.profileReport = profileReport;
+                    ViewBag.commentReport = commentReport;
+                    var viewComment = new Reply[commentReport.Count];
+                    for (int i = 0; i < commentReport.Count; i++)
+                    {
+                        var commentID = commentReport[i].ContextID;
+                        var contextID = Convert.ToInt32(commentID);
+                        viewComment[i] = db.Replies.Where(temp => temp.ReplyID == contextID).FirstOrDefault();
+                    }
+                    ViewBag.viewComment = viewComment;
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
         }
         [HttpPost]
         public ActionResult Ban()
@@ -134,12 +209,27 @@ namespace Hello_Travellers.Controllers
         }
         public ActionResult Posts()
         {
-            Entities db = new Entities();
-            var subforumList = db.Subforums.ToList();
-            ViewBag.subForumList = subforumList;
-            var postList = db.Posts.ToList();
-            ViewBag.postList = postList;
-            return View();
+            if (Session["Username"] == null)
+            {
+                return RedirectToAction("Login", "UserAuth");
+            }
+            else
+            {
+                if (Session["Rank"].Equals("ADMIN"))
+                {
+                    Entities db = new Entities();
+                    var subforumList = db.Subforums.ToList();
+                    ViewBag.subForumList = subforumList;
+                    var postList = db.Posts.ToList();
+                    ViewBag.postList = postList;
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
         }
         void UpdateStatus(int ReportID)
         {
@@ -243,15 +333,45 @@ namespace Hello_Travellers.Controllers
         }
         public ActionResult Settings()
         {
-            return View();
+            if (Session["Username"] == null)
+            {
+                return RedirectToAction("Login", "UserAuth");
+            }
+            else
+            {
+                if (Session["Rank"].Equals("ADMIN"))
+                {
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
         }
         public ActionResult BannedUser()
         {
-            Entities db = new Entities();
-            var userList = db.Users.Where(temp => temp.Rank.Contains("BANNED"));
-            var bannedUser = userList.Where(temp => DateTime.Parse(temp.Rank.Split(',')[1]) < DateTime.Now);
-            ViewBag.bannedUser = userList;
-            return View();
+            if (Session["Username"] == null)
+            {
+                return RedirectToAction("Login", "UserAuth");
+            }
+            else
+            {
+                if (Session["Rank"].Equals("ADMIN"))
+                {
+                    Entities db = new Entities();
+                    var userList = db.Users.Where(temp => temp.Rank.Contains("BANNED"));
+                    var bannedUser = userList.Where(temp => DateTime.Parse(temp.Rank.Split(',')[1]) < DateTime.Now);
+                    ViewBag.bannedUser = userList;
+                    return View();
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
         }
         [HttpPost]
         public ActionResult RemoveUserBan(string Username)
@@ -264,8 +384,6 @@ namespace Hello_Travellers.Controllers
             db.SaveChanges();
             return Json("true", JsonRequestBehavior.AllowGet);
         }
-
-
         [HttpGet]
         public ActionResult GetReportInformation(int ReportID)
         {

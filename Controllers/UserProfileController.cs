@@ -111,15 +111,17 @@ namespace Hello_Travellers.Controllers
                 existingUser.Password = user.Password;
                 existingUser.ConfirmPassword = existingUser.Password;
             }
-            db.Entry(existingUser).State = EntityState.Modified;
-
-            db.SaveChanges();
+            if (ModelState.IsValid)
+            {
+                db.Entry(existingUser).State = EntityState.Modified;
+                db.SaveChanges();
+            }
             return RedirectToAction("Index");
             //try
             //{
             //    if (ModelState.IsValid)
             //    {
-                    
+
             //    }
             //    else
             //    {
@@ -157,7 +159,8 @@ namespace Hello_Travellers.Controllers
                 db.SaveChanges();
 
                 return Json("Success", JsonRequestBehavior.AllowGet);
-            } catch
+            }
+            catch
             {
                 return Json("Error", JsonRequestBehavior.AllowGet);
             }
