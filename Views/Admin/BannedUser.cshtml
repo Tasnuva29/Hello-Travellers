@@ -4,5 +4,34 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
-<h2>BannedUser</h2>
+<p class="mb-4 mt-3 page-header">Users</p>
+<div class="container-fluid table-container">
+    <div class="d-flex  flex-row">
+        <div class="page-header">Total Users : </div>
+        <div class="fw-bold page-header ms-1">@ViewBag.count</div>
+    </div>
+    <div class="row mt-2">
+        <table class="table table-hover mt-2" id="user-table">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th>User Name</th>                                     
+                    <th>Total Posts</th>
+                </tr>
+            </thead>
+            @foreach (var item in ViewBag.userList)
+            {
+                <tr>
+                    <td>@item.Username</td>
+                    <td>@item.Name</td>
+                    <td>@item.Email</td>
+                    <td>@item.PhoneNumber</td>
+                    <td>@item.Gender</td>
+                    <td>@item.About</td>
+                    <td>@item.Posts.Count</td>
+                </tr>
+
+            }
+        </table>
+    </div>
+</div>
 

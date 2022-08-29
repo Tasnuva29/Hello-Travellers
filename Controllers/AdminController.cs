@@ -39,10 +39,6 @@ namespace Hello_Travellers.Controllers
             ViewBag.count = count;
             return View();
         }
-        public ActionResult Posts()
-        {
-            return View();
-        }
 
         public ActionResult Subforums()
         {
@@ -131,13 +127,59 @@ namespace Hello_Travellers.Controllers
             ViewBag.viewComment = viewComment;
             return View();
         }
-
+        [HttpPost]
+        public ActionResult Ban()
+        {
+            return Json("true", JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult Posts()
+        {
+            Entities db = new Entities();
+            var subforumList = db.Subforums.ToList();
+            ViewBag.subForumList = subforumList;
+            var postList = db.Posts.ToList();
+            ViewBag.postList = postList;
+            return View();
+        }
+        void UpdateStatus(int ReportID)
+        {
+            Entities db = new Entities();
+            var reports = new Report();
+            reports.Status = "RESOLVED";
+            reports.ReportID = ReportID;
+            db.Entry(reports).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+        }
+        public ActionResult DeletePostOrComment(int ReportID, string ContextID, string Context)
+        {
+            Entities db = new Entities();
+            var deleteContextID = Convert.ToInt32(ContextID);
+            if (Context.Equals("POST"))
+            {
+                var post = db.Posts.Where(temp => temp.PostID == deleteContextID).SingleOrDefault();
+                db.Posts.Remove(post);                                        
+                db.SaveChanges();
+                UpdateStatus(ReportID);
+                return Json("post", JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                var reply = db.Replies.Where(temp => temp.ReplyID == deleteContextID).SingleOrDefault();
+                db.Replies.Remove(reply);
+                db.SaveChanges();
+                UpdateStatus(ReportID);
+                return Json("comment", JsonRequestBehavior.AllowGet);
+            }
+        }
         public ActionResult Settings()
         {
             return View();
         }
         public ActionResult BannedUser()
         {
+            Entities db = new Entities();
+            var userList = db.Users.Where(temp => temp.Rank == "BANNED").ToList();
+            ViewBag.userList = userList;
             return View();
         }
 

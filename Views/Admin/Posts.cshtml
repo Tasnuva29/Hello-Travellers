@@ -3,6 +3,97 @@
     ViewBag.Title = "Posts";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<style>
+    .page-header {
+        color: #787A91;
+        font-weight: 600;
+        font-size: 25px;
+    }
 
-<h2>Posts</h2>
+    .tab-header {
+        color: #787A91;
+        font-weight: 600;
+        font-size: 20px;
+    }
 
+    .table-container {
+        box-shadow: 0 0 10px 1px rgba(217,217,217,1);
+        padding: 20px;
+    }
+
+    .overview-card {
+        border: none;
+        box-shadow: 7px 10px 7px -1px rgba(217,217,217,1);
+        padding: 20px;
+        border-left: 4px solid #05445E;
+    }
+</style>
+<p class="mb-4 mt-2 page-header">Posts</p>
+<div class="container-fluid table-container">
+    <!--drop down content-->
+    <div class="d-flex align-content-center justify-content-end mb-2">
+    <select name="ForumID" class="custom-select btn-dark p-2" id="forumSelection">
+        @foreach (var subforum in ViewBag.subForumList)
+        {
+            <option value=@subforum.ForumID>@subforum.ForumName</option>
+        }
+    </select>
+        </div>
+    <div class="row mt-2">
+        <table class="table table-hover mt-2" id="posts-table">
+            <thead class="bg-dark text-white">
+                <tr>
+                    <th>Post ID</th>
+                    <th>Forum ID</th>
+                    <th>Forum Name</th>
+                    <th>Title</th>                   
+                    <th>Creator Username</th>
+                    <th>CreationTime</th>
+                    <th>View</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in ViewBag.postList)
+                {
+                    <tr>
+                        <td>@item.PostID</td>
+                        <td>@item.ForumID</td>
+                        <td>@item.Subforum.ForumName</td>
+                        <td>@item.Title</td>                        
+                        <td>@item.CreatorUsername</td>
+                        <td>@item.CreationTime</td>                       
+                        <td><a href=@Url.Action("ViewPost", "Post", new { PostID = item.PostID })>View</a></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function () {
+             $('#posts-table').DataTable({
+
+            });
+        });
+        
+        $('#forumSelection').on('change', function () {
+            console.log(this.value);
+            var datatable = $('#posts-table').DataTable();
+            var filterdata = datatable.column(1).data().filter(function (value, index) {
+                return value == this.value; 
+            });
+            console.log(filterdata);
+            datatable.value = filterdata;
+            
+        })
+
+    </script>
