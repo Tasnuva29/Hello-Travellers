@@ -1,4 +1,4 @@
-﻿
+﻿@model Hello_Travellers.Models.User
 
 <style>
     .hq-input {
@@ -36,28 +36,33 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-8">
-                <!-- Account details card-->
-                <div class="card mb-4">
-                    <div class="card-header">Account Details</div>
-                    <div class="card-body">
 
+        </div>
+        <div class="col-xl-8">
+            <!-- Account details card-->
+            <div class="card mb-4">
+                <div class="card-header">Account Details</div>
+                <div class="card-body">
+                  
+                   
                         <!--info change-->
                         <div class="mb-2">
                             <label for="inputName" class="small mb-1 ms-2">Name</label>
-                            <input type="text" class="form-control hq-input" id="inputName" placeholder="your name" name="Name" value="@ViewBag.user.Name" required>
+                            <input type="text" class="form-control hq-input" id="inputName" placeholder="your name" name="Name" value="@ViewBag.user.Name" pattern="[A-Za-z ]*" title="only A-z,a-z,Space is allowed" minLength = "3">
                         </div>
                         <div class="mb-2">
                             <label for="inputPhoneNum" class="small mb-1 ms-2">Phone Number</label>
-                            <input type="text" class="form-control hq-input" id="inputPhoneNum" placeholder="01765432890" name="PhoneNumber" value="@ViewBag.user.PhoneNumber" required>
+                            <input type="text" class="form-control hq-input" id="inputPhoneNum" placeholder="your phone number" name="PhoneNumber" value="@ViewBag.user.PhoneNumber" pattern="^\+?\d+$" maxlength="14" minlength="11" title="only letters and plus sign is allowed with proper length">
+                            @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
                         </div>
                         <div class="mb-2">
                             <label for="inputUserEmail" class="small mb-1 ms-2">Email address</label>
-                            <input type="text" class="form-control hq-input" id="inputUserEmail" placeholder="name@example.com" name="Email" value="@ViewBag.user.Email" required>
+                            <input type="email" class="form-control hq-input" id="inputUserEmail" placeholder="name@example.com" name="Email" value="@ViewBag.user.Email">
                         </div>
                         <div class="mb-2">
                             <label for="inputUserAbout" class="small mb-1 ms-2">About</label>
-                            <textarea class="form-control hq-input" id="inputUserAbout" maxlength="250" name="About" required>@ViewBag.user.About</textarea>
+                            <textarea class="form-control hq-input" id="inputUserAbout" maxlength="250" name="About">@ViewBag.user.About</textarea>
+
                             <span id="char_count"></span>
                         </div>
 
@@ -66,16 +71,16 @@
                         <label for="inputOldPassword" class="small mb-1 ms-2">Old Password</label>
                         <div class="input-group mb-2">
                             <input type="password" class="form-control hq-input" id="inputOldPassword">
-                            <i class="input-group-text bi bi-eye-slash" id="togglePassword1" onclick="showPassword(this.id, 'inputOldPassword')"></i>
+
+                            <i class="input-group-text bi bi-eye-slash" id="togglePassword1" pattern="(?=.\d)(?=.[a-z])(?=.*[A-Z]).{6,}" title="Must be 6 digit with A-Z,a-z,digit" onclick="showPassword(this.id, 'inputOldPassword')"></i>
                         </div>
                         <label for="inputNewPassword" class="small mb-1 ms-2">New Password</label>
                         <div class="input-group mb-2">
-                            <input type="password" class="form-control hq-input" id="inputNewPassword">
-                            <i class="input-group-text bi bi-eye-slash" id="togglePassword2" onclick="showPassword(this.id, 'inputNewPassword')"></i>
+                            <input type="password" class="form-control hq-input" id="inputNewPassword" pattern="(?=.\d)(?=.[a-z])(?=.*[A-Z]).{6,}"  title="Must be 6 digit with A-Z,a-z,digit">
                         </div>
                         <label for="inputConfirmPassword" class="small mb-1 ms-2">Confirm Password</label>
                         <div class="input-group mb-2 border-0 shadow-sm">
-                            <input type="password" class="form-control hq-input" id="inputConfirmPassword">
+                            <input type="password" class="form-control hq-input" id="inputConfirmPassword" pattern="(?=.\d)(?=.[a-z])(?=.*[A-Z]).{6,}" title="Must be 6 digit with A-Z,a-z,digit">
                             <i class="input-group-text bi bi-eye-slash" id="togglePassword3" onclick="showPassword(this.id, 'inputConfirmPassword')"></i>
 
                         </div>
@@ -85,10 +90,11 @@
 
 
                     </div>
+
                 </div>
             </div>
         </div>
-    </div>
+  
 }
 
 <script>
@@ -96,11 +102,23 @@
 
     document.addEventListener("DOMContentLoaded", redirectIfNotLoggedIn('@Session["Username"]'));
 
+
+    let password = document.getElementById("inputNewPassword").value;
+    let confirmPassword = document.getElementById("inputConfirmPassword");
+    confirmPassword.addEventListener("keydown", validatePassword);
+    function validatePassword(e) {
+        if (password != confirmPassword.value) {
+            console.log(password);
+            console.log(confirmPassword.value);
+        }
+        }
+
     //Image Upload
     var imageInput = document.getElementById("postedImages");
     imageInput.onchange = event => {
         $('#DisplayPicture').attr("src", URL.createObjectURL(imageInput.files[0]));
     }
+
 
 
     //---textArea character count---//

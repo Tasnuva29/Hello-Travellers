@@ -12,6 +12,7 @@ namespace Hello_Travellers.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public partial class User
     {
@@ -27,7 +28,7 @@ namespace Hello_Travellers.Models
             this.Reports = new HashSet<Report>();
             this.Notifications = new HashSet<Notification>();
         }
-        
+
         [Required(ErrorMessage = "Username is required")]
         public string Username { get; set; }
 
@@ -36,6 +37,8 @@ namespace Hello_Travellers.Models
 
         [Required(ErrorMessage = "Email is required")]
         public string Email { get; set; }
+        [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^\+?\d+$", ErrorMessage = "Not a valid phone number")]
         public string PhoneNumber { get; set; }
         public string Gender { get; set; }
         public string Password { get; set; }
@@ -43,6 +46,7 @@ namespace Hello_Travellers.Models
         public string DisplayPictureName { get; set; }
         public string Rank { get; set; }
 
+        [NotMapped]
         [Compare("Password")]
         public string ConfirmPassword { get; set; }
 
