@@ -44,6 +44,10 @@ namespace Hello_Travellers.Controllers
 
                     }
                 }
+                else if (Session["Rank"].ToString().Equals("ADMIN"))
+                {
+                    Response.Redirect("~/Admin/Users");
+                }
                 else
                 {
                     Response.Redirect("~/Home/Index");
