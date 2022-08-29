@@ -166,6 +166,10 @@ namespace Hello_Travellers.Controllers
                 {
                     db.MediaItems.Remove(item);
                 }
+                foreach (var item in post.Reacts.ToList())
+                {
+                    db.Reacts.Remove(item);
+                }
                 db.Posts.Remove(post);
                 db.SaveChanges();
                 UpdateStatus(ReportID);
@@ -209,7 +213,7 @@ namespace Hello_Travellers.Controllers
                 "\"Username\": \"{1}\", " +
                 "\"ProfilePictureLocation\": \"{2}\", " +
                 "\"PostID\": {3}, " +
-                "\"Comment\": \"{4}\"", comment.User.Name, comment.User.Username, comment.User.DisplayPictureName, comment.PostID, comment.Content);
+                "\"Content\": \"{4}\"", comment.User.Name, comment.User.Username, comment.User.DisplayPictureName, comment.PostID, comment.Content);
             return Json('{' + jsonString + '}', JsonRequestBehavior.AllowGet);
         }
     }

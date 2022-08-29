@@ -137,15 +137,24 @@
                         }
                     </div>
                 </div>
-                @for (int i = 0; i < ViewBag.Replies.Length; ++i)
+                @foreach (var item in ViewBag.Post.Replies)
                 {
                     <div class="row my-3">
                         <div class="col-2 p-0 m-0">
-                            <img class="rounded-circle post-img-profile" src=@Url.Content("~/Images/ProfilePicture/" + ViewBag.Users[i].DisplayPictureName) />
+                            <img class="rounded-circle post-img-profile" src=@Url.Content("~/Images/ProfilePicture/" + item.User.DisplayPictureName) />
                         </div>
                         <div class="col-9 mx-1 rounded bg-grey">
-                            <span class="fw-bold">@ViewBag.Users[i].Name</span>
-                            <div class="fw-normal">@ViewBag.Replies[i].Content</div>
+                            <div class="d-flex flex-row justify-content-between py-1">
+                                <div class="d-flex flex-row">
+                                    <span class="fw-bold">@item.User.Name</span>
+                                    <time class="loaded timeago border align-self-center mx-2" datetime="@item.CreationTime" style="font-size: 0.8rem;"></time>
+                                </div>
+                                @if (Session["Username"] != null)
+                                {
+                                    <i class="bi bi-flag" onclick="btnReportReply(@item.ReplyID)"></i>
+                                }
+                            </div>
+                            <div class="fw-lighter">@item.Content</div>
                         </div>
                     </div>
                 }
@@ -228,7 +237,7 @@
                         title: 'Report Pending',
                         text: 'Seems like you have a pending report on this post!'
                     });
-                
+
                 }
                 if (jsonData.Status == "Reported") {
                     Swal.fire({
@@ -239,5 +248,51 @@
                 }
             }
         })
+    }
+
+    async function btnReportReply(replyID) {
+        const { value: text } = await Swal.fire({
+            input: 'textarea',
+            inputLabel: 'Reason for report',
+            inputPlaceholder: 'Type your reason here...',
+            inputAttributes: {
+                'aria-label': 'Type your reason here'
+            },
+            showCancelButton: true
+        })
+
+        if (text) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("CreateReplyReport", "Post")',
+                data: {
+                    Reason: text,
+                    ReplyID: replyID
+                },
+                success: (response) => {
+                    if (response == "Error") {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Failed!',
+                            text: 'Something went wrong!'
+                        });
+                    }
+                    if (response == "Exists") {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Already Reported!',
+                            text: 'You have already reported this comment!'
+                        });
+                    }
+                }
+            })
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Invalid',
+                text: 'Give us a reason!'
+            });
+        }
+
     }
 </script>
