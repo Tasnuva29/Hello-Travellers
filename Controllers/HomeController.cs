@@ -18,7 +18,7 @@ namespace Hello_Travellers.Controllers
             for (int i = 0; i < topPosts.Length; i++)
             {
                 var currWriter = topPosts[i].CreatorUsername;
-                topWriters[i] = db.Users.Where(temp => temp.Username == currWriter).Single();
+                topWriters[i] = db.Users.Where(temp => temp.Username == currWriter).FirstOrDefault();
             }
             var topMedias = new MediaItem[topPosts.Length];
             for (int i = 0; i < topPosts.Length; i++)

@@ -28,7 +28,7 @@
                 }
             }
         </div>
-        <div class="carousel-inner">
+        @*<div class="carousel-inner">
             @for (int i = 0; i < ViewBag.TopMedias.Length; ++i)
             {
                 <div id=@String.Format("slideInner{0}", i) class="carousel-item index-carousal-fitter">
@@ -38,8 +38,9 @@
                         <p class="index-post-writer">@String.Format("by {0}", ViewBag.TopWriters[i].Name)</p>
                     </div>
                 </div>
-            }
+            }*@
         </div>
+      <div>
         <button class="carousel-control-prev" type="button" data-bs-target="#indexCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
@@ -61,13 +62,13 @@
         <div class="btn-group mx-2" role="group" aria-label="Forum Group">
             <button type="button" class="btn btn-secondary" name="submit" value="Experiences" onclick="@("window.location.href='"+Url.Content("~/Post/Forum?forumID=1")+"'"); ">Experiences</button>
             <button type="button" class="btn btn-secondary" name="submit" value="Travel Plans" onclick="@("window.location.href='"+Url.Content("~/Post/Forum?forumID=2")+"'");">Travel Plans</button>
-            <button type="button" class="btn btn-secondary" name="submit" value="Short Stories" onclick="@("window.location.href='"+Url.Content("~/Post/Forum?forumID=3")+"'");">Short Stories</button>
+            <button type="button" class="btn btn-secondary" name="submit" value="Short Stories" onclick="@("window.location.href='"+Url.Content("~/Story/Story?forumID=3")+"'");">Short Stories</button>
         </div>
     </div>
 
     <div class="row">
 
-        @for (int i = 0; i < ViewBag.selectedPost.Length; ++i)
+        @*@for (int i = 0; i < ViewBag.selectedPost.Length; ++i)
         {
             <div class="col-sm-12 col-md-4 my-3" onclick="@("window.location.href='"+Url.Content("~/Post/ViewPost?PostID=" + ViewBag.selectedPost[i].PostID)+"'")">
                 <div class="card mx-2">
@@ -79,7 +80,39 @@
                     </div>
                 </div>
             </div>
+<<<<<<< Updated upstream
         }
+=======
+        }*@
+        @*<div class="col-sm-12 col-md-4">
+            <div class="card mx-2">
+                <img class="card-img-top" src="~/Images/img1.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <div class="card mx-2">
+                <img class="card-img-top" src="~/Images/img1.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-4">
+            <div class="card mx-2">
+                <img class="card-img-top" src="~/Images/img1.jpg" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">Card title</h5>
+                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                </div>
+            </div>
+        </div>*@
+
+
     </div>
 </div>
 

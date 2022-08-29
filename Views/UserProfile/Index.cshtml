@@ -32,11 +32,22 @@
     .post-card-footer i {
         color: #4abdac;
     }
+
     .commentLink {
         text-decoration: none;
     }
 </style>
+<<<<<<< Updated upstream
 <div class="container-xl px-4 mt-4">
+=======
+
+
+
+
+
+
+<div class="container-lg container-md mt-2">
+>>>>>>> Stashed changes
     <div class="row">
         <!--Profile Card Start-->
         <div class="col-xl-4 col-lg-4 col-md-5" id="profile-info">
@@ -45,6 +56,7 @@
                      class="card-img-top"
                      alt="..." />
                 <div class="card-body">
+                    <h5 class="card-title text-muted"><b>Title:</b>@ViewBag.Title</h5>
                     <h5 class="card-title text-center"> @ViewBag.user.Username</h5>
                     <p class="card-text text-center text-wrap">
                         @ViewBag.user.About
@@ -79,54 +91,54 @@
         <!--Profile Content Start-->
         <div class="col-xl-8 col-lg-8 col-md-7" id="profile-content">
             <!-- <div class="container border-1 shadow-sm" id="profile-content-info">
-        <div class="row p-2">
-            <div class="col text-center border-dark">
-                <div class="card text-dark bg-light shadow-sm border-0 profile-content-count"
-                     style="max-width: 18rem">
-                    <div class="card-body">
-                        <h5 class="card-title">Posts</h5>
-                        <p class="card-text">2</p>
+                <div class="row p-2">
+                    <div class="col text-center border-dark">
+                        <div class="card text-dark bg-light shadow-sm border-0 profile-content-count"
+                             style="max-width: 18rem">
+                            <div class="card-body">
+                                <h5 class="card-title">Posts</h5>
+                                <p class="card-text">2</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col text-center">
+                        <div class="card text-dark bg-light shadow-sm border-0"
+                             style="max-width: 18rem">
+                            <div class="card-body">
+                                <h5 class="card-title">Search</h5>
+                                <p class="card-text">2</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col text-center">
+                        <div class="card text-dark bg-light shadow-sm border-0"
+                             style="max-width: 18rem">
+                            <div class="card-body">
+                                <h5 class="card-title">Stories</h5>
+                                <p class="card-text">2</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col text-center">
-                <div class="card text-dark bg-light shadow-sm border-0"
-                     style="max-width: 18rem">
-                    <div class="card-body">
-                        <h5 class="card-title">Search</h5>
-                        <p class="card-text">2</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col text-center">
-                <div class="card text-dark bg-light shadow-sm border-0"
-                     style="max-width: 18rem">
-                    <div class="card-body">
-                        <h5 class="card-title">Stories</h5>
-                        <p class="card-text">2</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <nav class="nav nav-pills nav-fill">
-        <a class="nav-link active countNavs" aria-current="page" href="~/UserProfile/EditProfile">
-            <h4 class="m-0">Posts</h4>
-            <small>counts</small>
-        </a>
-        <a class="nav-link" aria-current="page">
-            <h4 class="m-0">Posts</h4>
-            <small>counts</small>
-        </a>
-        <a class="nav-link" aria-current="page">
-            <h4 class="m-0">Posts</h4>
-            <small>counts</small>
-        </a>
-    </nav>
-         -->
+            <nav class="nav nav-pills nav-fill">
+                <a class="nav-link active countNavs" aria-current="page" href="~/UserProfile/EditProfile">
+                    <h4 class="m-0">Posts</h4>
+                    <small>counts</small>
+                </a>
+                <a class="nav-link" aria-current="page">
+                    <h4 class="m-0">Posts</h4>
+                    <small>counts</small>
+                </a>
+                <a class="nav-link" aria-current="page">
+                    <h4 class="m-0">Posts</h4>
+                    <small>counts</small>
+                </a>
+            </nav>
+                 -->
             <!--Load Posts-->
 
             @for (int i = 0; i < ViewBag.posts.Length; i++)
@@ -162,7 +174,11 @@
                                         Likes
                                         <i class="bi bi-hand-thumbs-down mx-2" data-bs-toggle="tooltip" data-bs-placement="top" title="Dislike"></i>
                                     </div>
+<<<<<<< Updated upstream
                                     <div class="post-card-footer" onclick="@("window.location.href='"+Url.Content("~/Post/ViewPost?PostID=" + ViewBag.posts[i].PostID)+"'")"><i class="bi bi-chat mx-2"></i>Comments</div>
+=======
+                                    <div class="post-card-footer"><i class="bi bi-chat mx-2"></i><a href=@Url.Content("~/Post/ViewPost?PostID = " + ViewBag.posts[i].PostID) class="commentLink">Comments</a></div>
+>>>>>>> Stashed changes
                                     <div class="post-card-footer ms-auto"><i class="bi bi-flag mx-2"></i>Report</div>
                                 </div>
                             </div>
@@ -170,9 +186,9 @@
                     </div>
                 </div>
 
-            <!--Load Posts-->
-         
-            
+                <!--Load Posts-->
+
+
             }
         </div>
         <!--Profile Content End-->
