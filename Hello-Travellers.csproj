@@ -264,6 +264,8 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\ban.jpg" />
+    <Content Include="Images\contact.jpg" />
     <Content Include="Images\img1.jpg" />
     <EntityDeploy Include="Models\Model1.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
@@ -352,6 +354,7 @@
     <Content Include="Views\UserAuth\InputNewPass.cshtml" />
     <Content Include="Views\Shared\_HomePageBottom.cshtml" />
     <Content Include="Views\Home\Error.cshtml" />
+    <Content Include="Views\UserAuth\BannedLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\UserProfile\EditProfile.cshtml" />

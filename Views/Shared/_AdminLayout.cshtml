@@ -69,10 +69,10 @@
                 </div>
             </div>
             <div class="col content-wrapper">
-                <div class="top-bar d-flex flex-row-reverse">
-                    <div class="me-3"><h5 class="text-black">Hello @Session["Username"]</h5></div>
+                <div class="top-bar d-flex flex-row-reverse align-content-center">
+                    <div class="me-3"><h5 class="text-black ">Hello @Session["Username"]!</h5></div>
                     <div class="mx-3">
-                        <a href="@Url.Action("Index", "Home")">User Mode</a>
+                        <a href="@Url.Action("Index", "Home")" >User Mode</a>
                     </div>
                 </div>
                 @RenderBody()
