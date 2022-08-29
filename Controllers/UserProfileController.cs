@@ -121,6 +121,7 @@ namespace Hello_Travellers.Controllers
                 existingUser.Password = Password;
                 existingUser.ConfirmPassword = existingUser.Password;
             }
+
             System.Diagnostics.Debug.WriteLine(postedImages.ToList().Count);
 
             if (postedImages != null && postedImages.ToList().Count > 0)
@@ -140,7 +141,6 @@ namespace Hello_Travellers.Controllers
                 db.Entry(existingUser).State = EntityState.Modified;
                 db.SaveChanges();
             }
-
 
             return RedirectToAction("Index");
             //try

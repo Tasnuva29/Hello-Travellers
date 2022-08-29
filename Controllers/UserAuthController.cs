@@ -118,6 +118,7 @@ namespace Hello_Travellers.Controllers
         public ActionResult SignOut()
         {
             Session["Username"] = null;
+            Session["Rank"] = null;
             Response.Redirect("~/Home/Index");
             return View();
         }
