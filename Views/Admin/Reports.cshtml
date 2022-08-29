@@ -145,7 +145,8 @@
                                     <td>@item.Reason</td>
                                     <td><a href=@Url.Action("ViewPost", "Post", new { PostID = item.ContextID }) class="reported-link">View</a></td>
                                     <td>
-                                        <button type="button" class="btn report-btn-1" onclick="ban()"><i class="bi-slash-circle-fill me-2 c-white"></i>Ban</button>
+                                        <button type="button" class="btn bg-primary text-white"  onclick="Delete(this)" report-id="@item.ReportID" context-id="@item.ContextID" context="@item.Context"><i class="bi-slash-circle-fill me-2 c-white"></i>Delete</button>
+                                        <button type="button" class="btn report-btn-1" onclick="Ban(this)" report-id="@item.ReportID" context-id="@item.ContextID" context="@item.Context"><i class="bi-slash-circle-fill me-2 c-white"></i>Actions</button>
                                         <button type="button" class="btn report-btn-2"><i class="bi-x-circle-fill me-2 c-white"></i>Dismiss</button>
                                     </td>
                                 </tr>
@@ -176,7 +177,7 @@
                                     <td>@item.ReportID</td>
                                     <td>@item.Reason</td>
                                     <td><a href=@Url.Action("Index", "UserProfile", new { Username = item.ContextID }) class="reported-link">View</a></td>
-                                    <td>
+                                    <td>                                        
                                         <button type="button" class="btn report-btn-1"><i class="bi-slash-circle-fill me-2 c-white"></i>Ban</button>
                                         <button type="button" class="btn report-btn-2"><i class="bi-x-circle-fill me-2 c-white"></i>Dismiss</button>
                                     </td>
@@ -196,8 +197,7 @@
                             <tr>
                                 <th>Report ID</th>
                                 <th>Reason</th>
-                                <th>View Comment</th>
-                                <th>Action</th>
+                                <th>View Comment</th>                                
                             </tr>
                         </thead>
                         <tbody>
@@ -208,6 +208,7 @@
                                     <td>@item.Reason</td>
                                     <td>
                                         <button type="button" onclick="btnActionClicked('@item.ReportID')" class="btn report-btn-1"><i class="bi-slash-circle-fill me-2 c-white"></i>Action</button>
+
                                         <button type="button" class="btn report-btn-2"><i class="bi-x-circle-fill me-2 c-white"></i>Dismiss</button>
                                     </td>
                                 </tr>
@@ -264,7 +265,7 @@
     </div>
 </div>
 
-
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
@@ -274,16 +275,88 @@
         $('#post-table').DataTable();
         $('#profile-table').DataTable();
         $('#comment-table').DataTable();
-        function ban() {
-
-        }
-
-
-        $('viewComment').on('show.bs.modal', function (event) {
-            let bookId = $(event.relatedTarget).data('bookid')
-            $(this).find('.modal-body input').val(bookId)
-        })
     });
+    async function Delete(element) {
+        var contextID = element.getAttribute("context-id");
+        var reportID = element.getAttribute("report-id");
+        var context = element.getAttribute("context");
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("DeletePostOrComment", "Admin")',
+                    data: {
+                        ReportID: reportID,
+                        ContextID: contextID,
+                        Context: context
+                    }
+                });
+                Swal.fire(
+                    'Deleted!',
+                    'Post has been deleted',
+                    'success'
+                )
+               // $('#forum-table').DataTable().row($(this).parents('tr')).remove().draw();
+                location.reload();
+                //$('#forum-table').DataTable().ajax.reload();
+            }
+        })
+    }
+    async function Ban(element) {
+        var contextID = element.getAttribute("context-id");
+        var reportID = element.getAttribute("report-id");
+        var context = element.getAttribute("context");
+        const { value: formValues } = await Swal.fire({
+            title: 'Ban',
+            html:
+                `<div class="container">` +
+                `<div class="row my-3 justify-content-md-center p-2 border">` +
+                `<div class="col-12 mx-1 rounded bg-grey" style="text-align:justify;">` +
+                `<div class="input-group my-3">` +
+                `<input type="number" value="0" style="margin-right: 1rem;" id="amount" class="form-control">` +
+                `<select class="custom-select btn bg-dark text-white" id="unit">` +
+                `<option value="1" selected>Hours</option>` +
+                `<option value="2">Days</option>` +
+                `<option value="3">Months</option>` +
+                `<option value="4">Years</option>` +
+                `</select>` +
+                `</div>` +
+                `</div>` +
+                `</div>` +
+                `</div>`,
+            focusConfirm: false,
+            showCancelButton: true,
+            confirmButtonColor: '#21BCA8',
+            confirmButtonText: 'Ban',
+            preConfirm: () => {
+                return [
+                    document.getElementById('amount').value,
+                    document.getElementById('unit').value
+                ]
+            }
+        })
+        if (formValues) {
+            if (formValues[0].trim().length <= 0 || formValues[0] < 1) {
+               Ban(element);
+               // Swal.showValidationMessage('Input a number');
+                return false;
+
+            }
+
+
+            //formValues[0] returns amount
+            //formValues[1] returns 1, 2, 3 where 1 = hour, 2 = day, 3 = year
+            //write your code here
+        }
+    }
 
     var profilePictureBaseLoc = '@Url.Content("~/Images/ProfilePicture/")';
     var postBaseLoc = '@Url.Content("~/Post/ViewPost")';
@@ -328,7 +401,8 @@
                 `<select class="custom-select" id="unit">` +
                 `<option value="1" selected>Hours</option>` +
                 `<option value="2">Days</option>` +
-                `<option value="3">Years</option>` +
+                `<option value="3">Months</option>` +
+                `<option value="4">Years</option>` +
                 `</select>` +
                 `</div>`,
             focusConfirm: false,
@@ -353,5 +427,6 @@
             //write your code here
         }
     }
+
 
 </script>
