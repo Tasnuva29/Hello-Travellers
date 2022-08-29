@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -52,10 +53,11 @@ namespace Hello_Travellers.Controllers
             {
                 return RedirectToAction("Login", "UserAuth");
             }
+
             var currUser = Username.ToString();
-            List<User> user = db.Users.Where(temp => temp.Username == currUser).ToList();
-            ViewBag.user = user[0];
-            var posts = db.Posts.Where(temp => temp.CreatorUsername == currUser).ToArray();
+            var user = db.Users.Where(temp => temp.Username == currUser).FirstOrDefault();
+            ViewBag.user = user;
+            var posts = user.Posts.ToArray();
             ViewBag.posts = posts;
             var mediaItems = new MediaItem[posts.Length];
             for (int i = 0; i < posts.Length; i++)
@@ -82,40 +84,63 @@ namespace Hello_Travellers.Controllers
             }
 
         }
+
         [HttpPost]
-        public ActionResult EditProfile(User user)
+        public ActionResult EditProfile(String Name, String Email, String PhoneNumber, String About, String Password, String ConfirmPassword, IEnumerable<HttpPostedFileBase> postedImages)
         {
+
+            string path = Server.MapPath("~/Images/ProfilePicture/");
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
+
             Entities db = new Entities();
             var currUser = Session["Username"].ToString();
             User existingUser = db.Users.Where(temp => temp.Username == currUser).FirstOrDefault();
             existingUser.ConfirmPassword = existingUser.Password;
             ViewBag.user = existingUser;
-            if (!String.IsNullOrEmpty(user.Name))
+            if (!String.IsNullOrEmpty(Name))
             {
-                existingUser.Name = user.Name;
+                existingUser.Name = Name;
             }
-            if (!String.IsNullOrEmpty(user.Email))
+            if (!String.IsNullOrEmpty(Email))
             {
-                existingUser.Email = user.Email;
+                existingUser.Email = Email;
             }
-            if (!String.IsNullOrEmpty(user.PhoneNumber))
+            if (!String.IsNullOrEmpty(PhoneNumber))
             {
-                existingUser.PhoneNumber = user.PhoneNumber;
+                existingUser.PhoneNumber = PhoneNumber;
             }
-            if (!String.IsNullOrEmpty(user.About))
+            if (!String.IsNullOrEmpty(About))
             {
-                existingUser.About = user.About;
+                existingUser.About = About;
             }
-            if (!String.IsNullOrEmpty(user.Password))
+            if (!String.IsNullOrEmpty(Password))
             {
-                existingUser.Password = user.Password;
+                existingUser.Password = Password;
                 existingUser.ConfirmPassword = existingUser.Password;
+            }
+            System.Diagnostics.Debug.WriteLine(postedImages.ToList().Count);
+
+            if (postedImages != null)
+            {
+                
+                    foreach (var image in postedImages)
+                    {
+                        var ext = Path.GetExtension(image.FileName);
+                        image.SaveAs(path + existingUser.Username + ext);
+                        existingUser.DisplayPictureName = existingUser.Username + ext;
+                    }
+                
             }
             if (ModelState.IsValid)
             {
                 db.Entry(existingUser).State = EntityState.Modified;
                 db.SaveChanges();
-            }
+            }        
+
+
             return RedirectToAction("Index");
             //try
             //{

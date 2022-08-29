@@ -39,9 +39,10 @@
 <div class="container-xl px-4 mt-4">
     <div class="row">
         <!--Profile Card Start-->
+        @{var url = Url.Content("~/Images/ProfilePicture/" + ViewBag.user.DisplayPictureName); }
         <div class="col-xl-4 col-lg-4 col-md-5" id="profile-info">
             <div class="card-body rounded shadow">
-                <img src="~/Images/default.jpg"
+                <img src="@url"
                      class="card-img-top"
                      alt="..." />
                 <div class="card-body">
@@ -68,7 +69,7 @@
                         </li>
                     </ul>
 
-                    @if (Session["Username"] == ViewBag.user.Username)
+                    @if (ViewBag.user.Username.Equals((string)Session["Username"]))
                     {
                         <a href="~/UserProfile/EditProfile"
                            class="btn text-center d-block"
@@ -87,54 +88,54 @@
         <!--Profile Content Start-->
         <div class="col-xl-8 col-lg-8 col-md-7" id="profile-content">
             <!-- <div class="container border-1 shadow-sm" id="profile-content-info">
-        <div class="row p-2">
-            <div class="col text-center border-dark">
-                <div class="card text-dark bg-light shadow-sm border-0 profile-content-count"
-                     style="max-width: 18rem">
-                    <div class="card-body">
-                        <h5 class="card-title">Posts</h5>
-                        <p class="card-text">2</p>
+            <div class="row p-2">
+                <div class="col text-center border-dark">
+                    <div class="card text-dark bg-light shadow-sm border-0 profile-content-count"
+                         style="max-width: 18rem">
+                        <div class="card-body">
+                            <h5 class="card-title">Posts</h5>
+                            <p class="card-text">2</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col text-center">
-                <div class="card text-dark bg-light shadow-sm border-0"
-                     style="max-width: 18rem">
-                    <div class="card-body">
-                        <h5 class="card-title">Search</h5>
-                        <p class="card-text">2</p>
+                <div class="col text-center">
+                    <div class="card text-dark bg-light shadow-sm border-0"
+                         style="max-width: 18rem">
+                        <div class="card-body">
+                            <h5 class="card-title">Search</h5>
+                            <p class="card-text">2</p>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col text-center">
-                <div class="card text-dark bg-light shadow-sm border-0"
-                     style="max-width: 18rem">
-                    <div class="card-body">
-                        <h5 class="card-title">Stories</h5>
-                        <p class="card-text">2</p>
+                <div class="col text-center">
+                    <div class="card text-dark bg-light shadow-sm border-0"
+                         style="max-width: 18rem">
+                        <div class="card-body">
+                            <h5 class="card-title">Stories</h5>
+                            <p class="card-text">2</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <nav class="nav nav-pills nav-fill">
-        <a class="nav-link active countNavs" aria-current="page" href="~/UserProfile/EditProfile">
-            <h4 class="m-0">Posts</h4>
-            <small>counts</small>
-        </a>
-        <a class="nav-link" aria-current="page">
-            <h4 class="m-0">Posts</h4>
-            <small>counts</small>
-        </a>
-        <a class="nav-link" aria-current="page">
-            <h4 class="m-0">Posts</h4>
-            <small>counts</small>
-        </a>
-    </nav>
-         -->
+        <nav class="nav nav-pills nav-fill">
+            <a class="nav-link active countNavs" aria-current="page" href="~/UserProfile/EditProfile">
+                <h4 class="m-0">Posts</h4>
+                <small>counts</small>
+            </a>
+            <a class="nav-link" aria-current="page">
+                <h4 class="m-0">Posts</h4>
+                <small>counts</small>
+            </a>
+            <a class="nav-link" aria-current="page">
+                <h4 class="m-0">Posts</h4>
+                <small>counts</small>
+            </a>
+        </nav>
+             -->
             <!--Load Posts-->
 
             @for (int i = 0; i < ViewBag.posts.Length; i++)
@@ -146,7 +147,7 @@
                             <div class="card-header shadow-sm">
                                 <div class="hstack gap-3">
                                     <div class="post-card-img">
-                                        <img src="~/Images/img1.jpg" alt="profileImage">
+                                        <img src="@url" alt="profileImage">
                                     </div>
                                     <div class="vstack">
                                         <div>
@@ -178,9 +179,9 @@
                     </div>
                 </div>
 
-            <!--Load Posts-->
-         
-            
+                <!--Load Posts-->
+
+
             }
         </div>
         <!--Profile Content End-->
