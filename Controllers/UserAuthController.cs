@@ -42,7 +42,19 @@ namespace Hello_Travellers.Controllers
             if (users.Count > 0)
             {
                 Session["Username"] = users[0].Username;
-                Response.Redirect("~/Home/Index");
+                Session["Rank"] = users[0].Rank;
+                if (Session["Rank"].ToString().Contains("BANNED"))
+                {
+                    var rank = Session["Rank"].ToString();
+                    if (DateTime.Parse(rank.Split(',')[1]) < DateTime.Now)
+                    {
+
+                    }
+                }
+                else
+                {
+                    Response.Redirect("~/Home/Index");
+                }
             }
             else
             {
@@ -60,21 +72,19 @@ namespace Hello_Travellers.Controllers
         
 
         public ActionResult SignUp()
-
         {
-          
             return View();
         }
 
         [HttpPost]
         public ActionResult SignUp(User user)
         {
-            
+
             var name = user.Name;
             var username = user.Username;
             var email = user.Email;
-            var password= user.Password;
-            var confirmpassword= user.ConfirmPassword;
+            var password = user.Password;
+            var confirmpassword = user.ConfirmPassword;
 
             if (ModelState.IsValid)
             {
@@ -164,6 +174,10 @@ namespace Hello_Travellers.Controllers
 
 
             if (number_forPass.ToString().Contains(code))
+            Entities db = new Entities();
+
+            var result = db.Users.Where(t => t.Email.ToLower().Contains(email.ToLower())).ToList();
+            if (result.Count > 0)
             {
                
                 Response.Redirect("~/UserAuth/InputNewPass");
@@ -292,5 +306,5 @@ namespace Hello_Travellers.Controllers
 
     }
 
- 
+
 }

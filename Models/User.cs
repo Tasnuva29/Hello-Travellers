@@ -12,6 +12,7 @@ namespace Hello_Travellers.Models
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
 
     public partial class User
     {
@@ -36,6 +37,8 @@ namespace Hello_Travellers.Models
 
         [Required(ErrorMessage = "Enter Email")]
         public string Email { get; set; }
+        [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^\+?\d+$", ErrorMessage = "Not a valid phone number")]
         public string PhoneNumber { get; set; }
         [Required(ErrorMessage = "Select Gender")]
         public string Gender { get; set; }
@@ -50,8 +53,9 @@ namespace Hello_Travellers.Models
         public string DisplayPictureName { get; set; }
         public string Rank { get; set; }
 
-        
-       
+        [NotMapped]
+        [Compare("Password")]
+        public string ConfirmPassword { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MediaItem> MediaItems { get; set; }

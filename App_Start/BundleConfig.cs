@@ -22,13 +22,15 @@ namespace Hello_Travellers
             bundles.Add(new Bundle("~/bundles/bootstrap").Include(
                 "~/Scripts/bootstrap.js",
                 "~/Scripts/routing.js",
-                "~/Scripts/jquery.timeago.js"));
+                "~/Scripts/jquery.timeago.js",
+                "~/Scripts/splide.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/bootstrap.css",
                 "~/Content/Site.css",
                 "~/Content/index.css",
-                "~/Content/signup_signin.css"));
+                "~/Content/signup_signin.css",
+                "~/Content/splide.min.css"));
         }
     }
 }

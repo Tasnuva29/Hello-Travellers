@@ -350,6 +350,7 @@
     <Content Include="Views\Story\Story.cshtml" />
     <Content Include="Views\UserAuth\SendMailForPass.cshtml" />
     <Content Include="Views\UserAuth\InputNewPass.cshtml" />
+    <Content Include="Views\Shared\_HomePageBottom.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\UserProfile\EditProfile.cshtml" />
