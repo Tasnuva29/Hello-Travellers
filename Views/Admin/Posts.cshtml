@@ -32,13 +32,13 @@
 <div class="container-fluid table-container">
     <!--drop down content-->
     <div class="d-flex align-content-center justify-content-end mb-2">
-    <select name="ForumID" class="custom-select btn-dark p-2" id="forumSelection">
-        @foreach (var subforum in ViewBag.subForumList)
-        {
-            <option value=@subforum.ForumID>@subforum.ForumName</option>
-        }
-    </select>
-        </div>
+        <select name="ForumID" class="custom-select btn-dark p-2" id="forumSelection">
+            @foreach (var subforum in ViewBag.subForumList)
+            {
+                <option value=@subforum.ForumID>@subforum.ForumName</option>
+            }
+        </select>
+    </div>
     <div class="row mt-2">
         <table class="table table-hover mt-2" id="posts-table">
             <thead class="bg-dark text-white">
@@ -46,7 +46,7 @@
                     <th>Post ID</th>
                     <th>Forum ID</th>
                     <th>Forum Name</th>
-                    <th>Title</th>                   
+                    <th>Title</th>
                     <th>Creator Username</th>
                     <th>CreationTime</th>
                     <th>View</th>
@@ -59,9 +59,9 @@
                         <td>@item.PostID</td>
                         <td>@item.ForumID</td>
                         <td>@item.Subforum.ForumName</td>
-                        <td>@item.Title</td>                        
+                        <td>@item.Title</td>
                         <td>@item.CreatorUsername</td>
-                        <td>@item.CreationTime</td>                       
+                        <td>@item.CreationTime</td>
                         <td><a href=@Url.Action("ViewPost", "Post", new { PostID = item.PostID })>View</a></td>
                     </tr>
                 }
@@ -74,26 +74,21 @@
 
 
 
-    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-    <script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-    <script>
-        $(document).ready(function () {
-             $('#posts-table').DataTable({
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script>
 
-            });
-        });
-        
+        @*$(document).ready(function () {
+             $('#posts-table').DataTable();
+        });*@
+
+        var table = $('#posts-table').DataTable();
+
         $('#forumSelection').on('change', function () {
             console.log(this.value);
-            var datatable = $('#posts-table').DataTable();
-            var filterdata = datatable.column(1).data().filter(function (value, index) {
-                return value == this.value; 
-            });
-            console.log(filterdata);
-            datatable.value = filterdata;
-            
+            table.column(1).search(this.value).draw();
         })
 
-    </script>
+</script>

@@ -12,61 +12,60 @@ namespace Hello_Travellers.Controllers
     {
         // GET: UserProfile
         Entities db = new Entities();
-        public ActionResult Index()
-        {
-
-            if (Session["Username"] != null)
-            {
-
-                var currUser = Session["Username"].ToString();
-                List<User> user = db.Users.Where(temp => temp.Username == currUser).ToList();
-                ViewBag.user = user[0];
-                var posts = db.Posts.Where(temp => temp.CreatorUsername == currUser).ToArray();
-                ViewBag.posts = posts;
-                var mediaItems = new MediaItem[posts.Length];
-                for (int i = 0; i < posts.Length; i++)
-                {
-                    var currentID = posts[i].PostID;
-                    mediaItems[i] = db.MediaItems.Where(temp => temp.PostID == currentID).FirstOrDefault();
-                }
-                ViewBag.mediaItems = mediaItems;
-                return View();
-            }
-            else
-            {
-                return RedirectToAction("Login", "UserAuth");
-            }
-
-        }
-        //[HttpGet]
-        //public ActionResult Index(string username)
+        //public ActionResult Index()
         //{
 
-
-        //    if (username == null && Session["Username"] != null)
+        //    if (Session["Username"] != null)
         //    {
-        //        username = (string)Session["Username"];
+
+        //        var currUser = Session["Username"].ToString();
+        //        List<User> user = db.Users.Where(temp => temp.Username == currUser).ToList();
+        //        ViewBag.user = user[0];
+        //        var posts = db.Posts.Where(temp => temp.CreatorUsername == currUser).ToArray();
+        //        ViewBag.posts = posts;
+        //        var mediaItems = new MediaItem[posts.Length];
+        //        for (int i = 0; i < posts.Length; i++)
+        //        {
+        //            var currentID = posts[i].PostID;
+        //            mediaItems[i] = db.MediaItems.Where(temp => temp.PostID == currentID).FirstOrDefault();
+        //        }
+        //        ViewBag.mediaItems = mediaItems;
+        //        return View();
         //    }
-        //    if (username == null && Session["Username"] == null)
+        //    else
         //    {
         //        return RedirectToAction("Login", "UserAuth");
         //    }
-        //    var currUser = username.ToString();
-        //    List<User> user = db.Users.Where(temp => temp.Username == currUser).ToList();
-        //    ViewBag.user = user[0];
-        //    var posts = db.Posts.Where(temp => temp.CreatorUsername == currUser).ToArray();
-        //    ViewBag.posts = posts;
-        //    var mediaItems = new MediaItem[posts.Length];
-        //    for (int i = 0; i < posts.Length; i++)
-        //    {
-        //        var currentID = posts[i].PostID;
-        //        mediaItems[i] = db.MediaItems.Where(temp => temp.PostID == currentID).FirstOrDefault();
-        //    }
-        //    ViewBag.mediaItems = mediaItems;
-        //    return View();
-
 
         //}
+
+        [HttpGet]
+        public ActionResult Index(string Username)
+        {
+
+
+            if (Username == null && Session["Username"] != null)
+            {
+                Username = (string)Session["Username"];
+            }
+            if (Username == null && Session["Username"] == null)
+            {
+                return RedirectToAction("Login", "UserAuth");
+            }
+            var currUser = Username.ToString();
+            List<User> user = db.Users.Where(temp => temp.Username == currUser).ToList();
+            ViewBag.user = user[0];
+            var posts = db.Posts.Where(temp => temp.CreatorUsername == currUser).ToArray();
+            ViewBag.posts = posts;
+            var mediaItems = new MediaItem[posts.Length];
+            for (int i = 0; i < posts.Length; i++)
+            {
+                var currentID = posts[i].PostID;
+                mediaItems[i] = db.MediaItems.Where(temp => temp.PostID == currentID).FirstOrDefault();
+            }
+            ViewBag.mediaItems = mediaItems;
+            return View();
+        }
 
         public ActionResult EditProfile()
         {
@@ -134,6 +133,34 @@ namespace Hello_Travellers.Controllers
             //}
 
 
+        }
+
+        [HttpPost]
+        public ActionResult CreateUserReport(String Reason, String Username)
+        {
+            try
+            {
+                Report report = new Report();
+                report.ReporterUsername = (string)Session["Username"];
+                report.Status = "UNRESOLVED";
+                report.Reason = Reason;
+                report.Context = "PROFILE";
+                report.ContextID = Username;
+
+                var existingReport = db.Reports.Where(t => t.ReporterUsername == report.ReporterUsername && t.ContextID == report.ContextID && t.Context == report.Context).Count();
+                if (existingReport > 0)
+                {
+                    return Json("Exists", JsonRequestBehavior.AllowGet);
+                }
+
+                db.Reports.Add(report);
+                db.SaveChanges();
+
+                return Json("Success", JsonRequestBehavior.AllowGet);
+            } catch
+            {
+                return Json("Error", JsonRequestBehavior.AllowGet);
+            }
         }
 
     }
