@@ -16,8 +16,8 @@
         border-radius: 10px;
     }
 </style>
-@using (Html.BeginForm("EditProfile", "UserProfile", FormMethod.Post, new { id = "postForm", enctype = "multipart/form-data" }))
-{ 
+@using (Html.BeginForm("EditProfile", "UserProfile", FormMethod.Post, new { id = "editProfileForm", enctype = "multipart/form-data" }))
+{
     var url = Url.Content("~/Images/ProfilePicture/" + ViewBag.user.DisplayPictureName);
     <div class="container-xl px-4 mt-4">
         <div class="row">
@@ -37,18 +37,18 @@
                 </div>
             </div>
 
-        </div>
-        <div class="col-xl-8">
-            <!-- Account details card-->
-            <div class="card mb-4">
-                <div class="card-header">Account Details</div>
-                <div class="card-body">
-                  
-                   
+
+            <div class="col-xl-8">
+                <!-- Account details card-->
+                <div class="card mb-4">
+                    <div class="card-header">Account Details</div>
+                    <div class="card-body">
+
+
                         <!--info change-->
                         <div class="mb-2">
                             <label for="inputName" class="small mb-1 ms-2">Name</label>
-                            <input type="text" class="form-control hq-input" id="inputName" placeholder="your name" name="Name" value="@ViewBag.user.Name" pattern="[A-Za-z ]*" title="only A-z,a-z,Space is allowed" minLength = "3">
+                            <input type="text" class="form-control hq-input" id="inputName" placeholder="your name" name="Name" value="@ViewBag.user.Name" pattern="[A-Za-z ]*" title="only A-z,a-z,Space is allowed" minLength="3">
                         </div>
                         <div class="mb-2">
                             <label for="inputPhoneNum" class="small mb-1 ms-2">Phone Number</label>
@@ -68,33 +68,36 @@
 
                         <hr class="mt-4 mb-4">
                         <!--Password-->
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input" id="changePassCheck">
+                            <label class="form-check-label" for="changePassCheck">Change Password</label>
+                        </div>
+
                         <label for="inputOldPassword" class="small mb-1 ms-2">Old Password</label>
                         <div class="input-group mb-2">
-                            <input type="password" class="form-control hq-input" id="inputOldPassword">
-
+                            <input type="password" class="form-control hq-input" id="inputOldPassword" disabled>
                             <i class="input-group-text bi bi-eye-slash" id="togglePassword1" pattern="(?=.\d)(?=.[a-z])(?=.*[A-Z]).{6,}" title="Must be 6 digit with A-Z,a-z,digit" onclick="showPassword(this.id, 'inputOldPassword')"></i>
                         </div>
                         <label for="inputNewPassword" class="small mb-1 ms-2">New Password</label>
                         <div class="input-group mb-2">
-                            <input type="password" class="form-control hq-input" id="inputNewPassword" pattern="(?=.\d)(?=.[a-z])(?=.*[A-Z]).{6,}"  title="Must be 6 digit with A-Z,a-z,digit">
+                            <input name="Password" type="password" class="form-control hq-input" id="inputNewPassword" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" title="Must be 6 digit with A-Z,a-z,digit" disabled>
                         </div>
                         <label for="inputConfirmPassword" class="small mb-1 ms-2">Confirm Password</label>
                         <div class="input-group mb-2 border-0 shadow-sm">
-                            <input type="password" class="form-control hq-input" id="inputConfirmPassword" pattern="(?=.\d)(?=.[a-z])(?=.*[A-Z]).{6,}" title="Must be 6 digit with A-Z,a-z,digit">
+                            <input name="ConfirmPassword" type="password" class="form-control hq-input" id="inputConfirmPassword" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}" title="Must be 6 digit with A-Z,a-z,digit" disabled>
                             <i class="input-group-text bi bi-eye-slash" id="togglePassword3" onclick="showPassword(this.id, 'inputConfirmPassword')"></i>
-
                         </div>
                         <!-- Save changes button-->
-                        <button class="btn" type="submit" style="background-color: #4abdac; color:white;">Save changes</button>
+                        <button class="btn" type="button" onclick="editProfileSubmit()" style="background-color: #4abdac; color:white;">Save changes</button>
                         <button class="btn" type="button" id="btnCancel" style="background-color: #4abdac; color:white;">Cancel</button>
-
+                        <button type="submit" style="display: none" id="btnSubmit"></button>
 
                     </div>
 
                 </div>
             </div>
         </div>
-  
+    </div>
 }
 
 <script>
@@ -103,15 +106,59 @@
     document.addEventListener("DOMContentLoaded", redirectIfNotLoggedIn('@Session["Username"]'));
 
 
-    let password = document.getElementById("inputNewPassword").value;
-    let confirmPassword = document.getElementById("inputConfirmPassword");
-    confirmPassword.addEventListener("keydown", validatePassword);
-    function validatePassword(e) {
-        if (password != confirmPassword.value) {
-            console.log(password);
-            console.log(confirmPassword.value);
+    $('#inputConfirmPassword').on('keyup', () => {
+        if ($('#inputNewPassword').val() == $('#inputConfirmPassword').val()) {
+            $("#alertPasswordMatch").css("display", "none");
+        } else {
+            $("#alertPasswordMatch").css("display", "inline");
         }
+    });
+
+
+    $('#changePassCheck').on('change', () => {
+        if ($('#changePassCheck').is(":checked")) {
+            $('#inputOldPassword').attr("disabled", false);
+            $('#inputNewPassword').attr("disabled", false);
+            $('#inputConfirmPassword').attr("disabled", false);
         }
+        else {
+            $('#inputOldPassword').attr("disabled", true);
+            $('#inputNewPassword').attr("disabled", true);
+            $('#inputConfirmPassword').attr("disabled", true);
+        }
+    })
+
+    async function editProfileSubmit() {
+        if ($('#changePassCheck').is(":checked")) {
+            if ($('#inputNewPassword').val() != $('#inputConfirmPassword').val()) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Password Mismatch!',
+                    text: 'Please make sure both password field matches!'
+                });
+                return;
+            }
+        }
+
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("MatchPassword", "UserProfile")',
+            data: {
+                Password: $('#inputOldPassword').val()
+            },
+            success: (data) => {
+                if (data == "Mismatch") {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Password Mismatch!',
+                        text: 'Make sure you have entered the old password correctly!'
+                    });
+                    return;
+                }
+                $('#btnSubmit').click();
+            }
+        })
+    }
 
     //Image Upload
     var imageInput = document.getElementById("postedImages");
