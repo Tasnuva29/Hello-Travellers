@@ -145,9 +145,16 @@
                                     <td>@item.Reason</td>
                                     <td><a href=@Url.Action("ViewPost", "Post", new { PostID = item.ContextID }) class="reported-link">View</a></td>
                                     <td>
+                                        @{
+                                            string disable = "";
+                                            if (item.User.Rank.Contains("ADMIN"))
+                                            {
+                                                disable = "disabled";
+                                            }
+                                        }
                                         <button type="button" class="btn bg-primary text-white" onclick="Delete(this)" report-id="@item.ReportID" context-id="@item.ContextID" context="@item.Context"><i class="bi-slash-circle-fill me-2 c-white"></i>Delete</button>
-                                        <button type="button" class="btn report-btn-1" onclick="Ban(this)" report-id="@item.ReportID" context-id="@item.ContextID" context="@item.Context"><i class="bi-slash-circle-fill me-2 c-white"></i>Actions</button>
-                                        <button type="button" class="btn report-btn-2"  onclick="Dismiss(this)" report-id="@item.ReportID"><i class="bi-x-circle-fill me-2 c-white"></i>Dismiss</button>
+                                        <button type="button" class="btn report-btn-1" onclick="Ban(this)" report-id="@item.ReportID" context-id="@item.ContextID" context="@item.Context" @disable><i class="bi-slash-circle-fill me-2 c-white"></i>Actions</button>
+                                        <button type="button" class="btn report-btn-2" onclick="Dismiss(this)" report-id="@item.ReportID"><i class="bi-x-circle-fill me-2 c-white"></i>Dismiss</button>
                                     </td>
                                 </tr>
                             }
@@ -173,12 +180,17 @@
                         <tbody>
                             @foreach (var item in ViewBag.profileReport)
                             {
+                                string disable = "";
+                                if (item.User.Rank.Contains("ADMIN"))
+                                {
+                                    disable = "disabled";
+                                }
                                 <tr>
                                     <td>@item.ReportID</td>
                                     <td>@item.Reason</td>
                                     <td><a href=@Url.Action("Index", "UserProfile", new { Username = item.ContextID }) class="reported-link">View</a></td>
                                     <td>
-                                        <button type="button" class="btn report-btn-1"><i class="bi-slash-circle-fill me-2 c-white"></i>Ban</button>
+                                        <button type="button" class="btn report-btn-1" @disable><i class="bi-slash-circle-fill me-2 c-white"></i>Ban</button>
                                         <button type="button" class="btn report-btn-2" onclick="Dismiss(this)" report-id="@item.ReportID"><i class="bi-x-circle-fill me-2 c-white"></i>Dismiss</button>
                                     </td>
                                 </tr>
@@ -203,12 +215,17 @@
                         <tbody>
                             @foreach (var item in ViewBag.commentReport)
                             {
+                                string disable = "";
+                                if (item.User.Rank.Contains("ADMIN"))
+                                {
+                                    disable = "disabled";
+                                }
                                 <tr>
                                     <td>@item.ReportID</td>
                                     <td>@item.Reason</td>
                                     <td>
                                         <button type="button" class="btn bg-primary text-white" onclick="Delete(this)" report-id="@item.ReportID" context-id="@item.ContextID" context="@item.Context"><i class="bi-slash-circle-fill me-2 c-white"></i>Delete</button>
-                                        <button type="button" onclick="btnActionClicked('@item.ReportID')" class="btn report-btn-1"><i class="bi-slash-circle-fill me-2 c-white"></i>Action</button>
+                                        <button type="button" onclick="btnActionClicked('@item.ReportID')" class="btn report-btn-1" @disable><i class="bi-slash-circle-fill me-2 c-white"></i>Action</button>
                                         <button type="button" class="btn report-btn-2" onclick="Dismiss(this)" report-id="@item.ReportID"><i class="bi-x-circle-fill me-2 c-white"></i>Dismiss</button>
                                     </td>
                                 </tr>
@@ -335,7 +352,7 @@
             },
             success: (response) => {
                 location.reload();
-               
+
             }
         })
 
@@ -398,10 +415,10 @@
                         ContextID: contextID,
                         Context: context,
                         Banvalue: formValues[0].trim(),
-                        BanDuration: formValues[1],                      
+                        BanDuration: formValues[1],
                     },
                     success: (response) => {
-                          
+
 
                     }
 
@@ -412,7 +429,7 @@
                     'This user has been banned',
                     'success'
                 )
-                
+
                // $('#forum-table').DataTable().row($(this).parents('tr')).remove().draw();
                 //location.reload();
                 //$('#forum-table').DataTable().ajax.reload();

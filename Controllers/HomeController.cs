@@ -92,6 +92,11 @@ namespace Hello_Travellers.Controllers
             return View();
         }
 
+        public ActionResult Error()
+        {
+            return View();
+        }
+
         [HttpGet]
         public ActionResult GetNotificationCount()
         {

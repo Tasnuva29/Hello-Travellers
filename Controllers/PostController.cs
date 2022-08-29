@@ -18,8 +18,7 @@ namespace Hello_Travellers.Controllers
         {
             if (Session["Username"] == null)
             {
-                Response.Redirect("~/UserAuth/Login");
-                return null;
+                return Redirect("~/UserAuth/Login");
             }
             Entities db = new Entities();
             ViewBag.Subforums = db.Subforums.ToList();
@@ -105,6 +104,7 @@ namespace Hello_Travellers.Controllers
                 report.Context = Context;
                 report.ContextID = ContextID;
                 report.Reason = Reason;
+                report.Status = "UNRESOLVED";
                 db.Reports.Add(report);
                 db.SaveChanges();
 
@@ -197,14 +197,22 @@ namespace Hello_Travellers.Controllers
         }
 
         [HttpGet]
-        public ActionResult ViewPost(int PostID)
+        public ActionResult ViewPost(int? PostID)
         {
+            if(PostID == default)
+            {
+                return Redirect("~/Home/Error");
+            }
             TempData["PostID"] = PostID;
             try
             {
                 Entities db = new Entities();
 
                 var post = db.Posts.Where(t => t.PostID == PostID).FirstOrDefault();
+                if (post == null)
+                {
+                    return Redirect("~/Home/Error");
+                }
                 var replies = post.Replies.ToArray();
                 var users = new User[replies.Length];
                 for (int i = 0; i < replies.Length; i++)

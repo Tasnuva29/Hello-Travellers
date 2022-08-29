@@ -27,28 +27,27 @@
 
 
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
-
-
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        redirectIfSet('@Session["Username"]');
+    });
+</script>
 
 @{
+    
     if (ViewBag.flag != null)
     {
-
-
         <script>
-
             swal("", "Email is already registered", "error");
-
         </script>
-
+    }
+    if (ViewBag.chkuse != null)
+    {
+        <script>
+            swal("", "Username is already registered", "error");
+        </script>
     }
 }
-
-
-
-
-
 
 
 <div class="signup-container">
@@ -62,7 +61,7 @@
         <div>
             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
         </div>
-           
+
 
 
         <div class="signup-input-group">
@@ -71,25 +70,25 @@
         <div>
             @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
         </div>
-            
-       
+
+
         <div class="signup-input-group">
             <input type="email" placeholder="Email" name="Email" required>
         </div>
         <div>
             @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
         </div>
-           
 
-   
+
+
         <div class="input-group">
             <input type="password" placeholder="Password" name="Password" id="myInput1" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}"
                    title="Must be 6 digit with A-Z,a-z,digit"
                    class="form-control hq-input"
                    required>
             <i class="input-group-text bi bi-eye-slash" id="togglePassword1" onclick="showPass(); showPassword(this.id, 'inputNewPassword')"></i>
-           
-           </div>
+
+        </div>
         <div>
             @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
         </div>
@@ -130,7 +129,7 @@
 </div>
 <script>
 
-    document.addEventListener("DOMContentLoaded", redirectLoggedIn('@Session["Username"]'));
+    document.addEventListener("DOMContentLoaded", redirectIfLoggedIn('@Session["Username"]'));
 
     function showPass() {
         var x = document.getElementById("myInput1");

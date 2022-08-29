@@ -35,17 +35,20 @@
     .commentLink {
         text-decoration: none;
     }
+
     .overview-card {
         border: none;
         box-shadow: 7px 10px 7px -1px rgba(217,217,217,1);
         padding: 20px;
         background-color: rgba(232,238,255,1);
     }
+
     .page-header {
         color: #787A91;
         font-weight: 600;
         font-size: 20px;
     }
+
     .post-sidebar {
         box-shadow: -11px 4px 15px -6px rgba(232,238,255,1);
     }
@@ -73,10 +76,13 @@
                             <i class="bi bi-envelope-fill"
                                style="margin-right: 5px; color: #4abdac"></i><a href="mailto:'@ViewBag.user.Email'">@ViewBag.user.Email</a>
                         </li>
-                        <li class="list-group-item phoneNum">
-                            <i class="bi bi-telephone-fill"
-                               style="margin-right: 5px; color: #4abdac"></i>@ViewBag.user.PhoneNumber
-                        </li>
+                        @if (ViewBag.user.PhoneNumber != null)
+                        {
+                            <li class="list-group-item phoneNum">
+                                <i class="bi bi-telephone-fill"
+                                   style="margin-right: 5px; color: #4abdac"></i>@ViewBag.user.PhoneNumber
+                            </li>
+                        }
                         <li class="list-group-item gender">
                             <i class="bi bi-info-circle"
                                style="margin-right: 5px; color: #4abdac"></i>@ViewBag.user.Gender
@@ -100,11 +106,12 @@
         </div>
         <!--Profile Card End-->
         <!--Profile Content Start-->
-        <div class="col-xl-8 col-lg-8 col-md-7 post-sidebar" id="profile-content">            
+        <div class="col-xl-8 col-lg-8 col-md-7 post-sidebar" id="profile-content">
             @if (ViewBag.posts.Length == 0)
             {
-                <div class = "row">
-                    <img src= "~/Images/nopost.jpg">
+                var nopostUrl = Url.Content("~/Images/nopost.jpg");
+                <div class="row">
+                    <img src="@nopostUrl">
                 </div>
             }
             else

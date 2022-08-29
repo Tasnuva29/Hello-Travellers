@@ -45,16 +45,13 @@ namespace Hello_Travellers.Models
 
         [Required(ErrorMessage = "Enter Password")]
         public string Password { get; set; }
-
-        [Compare("Password", ErrorMessage = "Doesn't Matched")]
-        public string ConfirmPassword { get; set; }
    
         public string About { get; set; }
         public string DisplayPictureName { get; set; }
         public string Rank { get; set; }
 
         [NotMapped]
-        [Compare("Password")]
+        [Compare("Password", ErrorMessage = "Doesn't Matched")]
         public string ConfirmPassword { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

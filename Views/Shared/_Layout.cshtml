@@ -53,7 +53,7 @@
                             @Html.ActionLink("My Profile", "Index", "UserProfile", new { area = "" }, new { @class = "nav-link" })
                         </li>
                         <li class="nav-item">
-                            @Html.ActionLink("Sign Out", "SignOut", "UserAuth", new { area = "" }, new { @class = "nav-link" })
+                            @Html.ActionLink("Chats", "Index", "Chat", new { area = "" }, new { @class = "nav-link" })
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" onclick="loadNotification()" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -63,6 +63,9 @@
                                 <li><div id="notification-container"></div></li>
                                 <li><a class="dropdown-item" href="#">See All Notifications</a></li>
                             </ul>
+                        </li>
+                        <li class="nav-item">
+                            @Html.ActionLink("Sign Out", "SignOut", "UserAuth", new { area = "" }, new { @class = "nav-link" })
                         </li>
                     }
                 </ul>
@@ -93,6 +96,14 @@
         jQuery(document).ready(function () {
             jQuery("time.timeago").timeago();
         });
+
+
+        function redirectIfSet(keyword) {
+            console.log(keyword);
+            if (keyword.trim().length > 0) {
+                location.replace('@Url.Content("~/Home/Index")')
+            }
+        }
 
         document.addEventListener('DOMContentLoaded', (event) => {
             var username = '@Session["Username"]';
