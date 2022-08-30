@@ -26,8 +26,10 @@
     <tbody>
         @foreach (var item in ViewBag.userData)
         {
+            var url = Url.Content("~/UserProfile/Index?Username="+item.Username);
             <tr>
-                <td>
+
+                <td onclick="location.href='@url'">
                         @item.Name
                    
                 </td>

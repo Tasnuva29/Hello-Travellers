@@ -412,29 +412,28 @@ namespace Hello_Travellers.Controllers
         [HttpPost]
         public ActionResult DeletePost(int PostID)
         {
-            try
+
+            Entities db = new Entities();
+            var post = db.Posts.Where(t => t.PostID == PostID).FirstOrDefault();
+            var replies = post.Replies.ToArray();
+            for (int i = 0; i < replies.Length; ++i)
             {
-                Entities db = new Entities();
-                var post = db.Posts.Where(t => t.PostID == PostID).FirstOrDefault();
-                foreach (var replies in post.Replies)
-                {
-                    db.Replies.Remove(replies);
-                }
-                foreach (var media in post.MediaItems)
-                {
-                    db.MediaItems.Remove(media);
-                }
-                foreach (var react in post.Reacts)
-                {
-                    db.Reacts.Remove(react);
-                }
-                db.Posts.Remove(post);
-                db.SaveChanges();
-                return Json("Success", JsonRequestBehavior.AllowGet);
-            } catch (Exception ex)
-            {
-                return Json("Error", JsonRequestBehavior.AllowGet);
+                db.Replies.Remove(replies[i]);
             }
+            var mediaItems = post.MediaItems.ToArray();
+            for (int i = 0; i < mediaItems.Length; ++i)
+            {
+                db.MediaItems.Remove(mediaItems[i]);
+            }
+            var reacts = post.Reacts.ToArray();
+            for (int i = 0; i < reacts.Length; ++i)
+            {
+                db.Reacts.Remove(reacts[i]);
+            }
+            db.Posts.Remove(post);
+            db.SaveChanges();
+            return Json("Success", JsonRequestBehavior.AllowGet);
+
         }
     }
 }

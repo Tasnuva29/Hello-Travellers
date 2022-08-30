@@ -69,8 +69,8 @@
                     }
                     else
                     {
-                        <i class="bi bi-pencil-square mx-2" data-bs-toggle="modal" onclick="btnEditClicked()">Edit</i>
-                        <i class="bi bi-trash3 mx-2" data-bs-toggle="modal" onclick="btnDeleteClicked()">Delete</i>
+                        <i class="bi bi-pencil-square mx-2" onclick="btnEditClicked()">Edit</i>
+                        <i class="bi bi-trash3 mx-2" onclick="btnDeleteClicked()">Delete</i>
                         renderEditBox = true;
                     }
 
@@ -361,6 +361,7 @@
     function btnDeleteClicked() {
         const params = new URLSearchParams(window.location.search);
         var postID = params.get('PostID');
+        console.log("Here" + postID);
         $.ajax({
             type: 'POST',
             url: '@Url.Action("DeletePost", "Post")',

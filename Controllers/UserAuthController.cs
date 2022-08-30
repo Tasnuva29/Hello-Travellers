@@ -51,6 +51,7 @@ namespace Hello_Travellers.Controllers
                     else
                     {
                         users[0].Rank = "USER";
+                        users[0].ConfirmPassword = users[0].Password;
                         db.Entry(users[0]).State = EntityState.Modified;
                         db.SaveChanges();
                     }
@@ -81,7 +82,7 @@ namespace Hello_Travellers.Controllers
             var email = user.Email;
             var password = user.Password;
             var confirmpassword = user.ConfirmPassword;
-
+            
             if (ModelState.IsValid)
             {
                 Entities db = new Entities();
@@ -157,6 +158,9 @@ namespace Hello_Travellers.Controllers
             if (number.ToString().Contains(code))
             {
                 Entities db = new Entities();
+                newUser.Rank = "USER";
+                newUser.DisplayPictureName = "default.jpg";
+                Session["RANK"] = newUser.Rank;
                 db.Users.Add(newUser);
                 db.SaveChanges();
                 db.Dispose();
@@ -174,7 +178,6 @@ namespace Hello_Travellers.Controllers
             return View();
         }
 
-        [HttpPost]
         public ActionResult SendMailForPass()
         {
             return View();
@@ -184,20 +187,21 @@ namespace Hello_Travellers.Controllers
 
         public ActionResult SendMailForPass(string code)
         {
+
+
             if (number_forPass.ToString().Contains(code))
             {
 
                 Response.Redirect("~/UserAuth/InputNewPass");
 
             }
+
             else
             {
                 ViewBag.correct = "no";
             }
             return View();
         }
-
-
         public ActionResult InputNewPass()
         {
             return View();
@@ -226,7 +230,6 @@ namespace Hello_Travellers.Controllers
             }
             return View();
         }
-
 
 
         public ActionResult SearchUser()

@@ -45,9 +45,9 @@
             var url = Url.Content("~/Post/ViewPost?PostID=" + post.PostID);
             <div class="col-md-4">
                 <div class="card" onclick="location.href='@url'">
-                    <img src="@imgLoc" class="card-img-top" alt="...">
+                    <img src="@imgLoc" class="card-img-top" style="height:14rem" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">@post.Title</h5>
+                        <h5 class="card-title" style="min-height:48px">@post.Title</h5>
                         <h6 class="card-subtitle mb-2 text-muted">by @post.User.Name</h6>
                         <p class="card-text" style="text-align: justify;">
                             @content

@@ -97,9 +97,14 @@
                     }
                     else
                     {
+                        var msgurl = Url.Content("~/Chat/Index?Username=" + ViewBag.user.Username);
                         <a onclick="reportProfile('@ViewBag.user.Username')"
                            class="btn text-center d-block"
                            style="background-color: #4abdac; color:white;">Report</a>
+                        <a onclick="location.href='@msgurl'"
+                           class="btn text-center d-block my-2"
+                           style="background-color: #4abdac; color:white;">Chat</a>
+
                     }
                 </div>
             </div>
@@ -139,7 +144,7 @@
     addEventListener('DOMContentLoaded', () => {
         const params = new URLSearchParams(window.location.search);
         var username = params.get('Username');
-        if (username.trim().length <= 0) {
+        if (username == null) {
             username = '@Session["Username"]'
         }
         $.ajax({
