@@ -1,4 +1,6 @@
-
+@{
+    var renderEditBox = false;
+}
 <style>
     .post-img {
         width: 100%;
@@ -34,11 +36,16 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-9 col-sm-12 post-view-height overflow-auto p-3">
-            <p class="text-center fs-1 fw-bold font-monospace">@ViewBag.Post.Title</p>
-            <p class="text-center fw-bold font-monospace">Written By @ViewBag.Writer.Name, Posted on @ViewBag.Post.CreationTime</p>
+            <p class="text-center fs-1 fw-bold">@ViewBag.Post.Title</p>
+            @{
+                var profUrl = Url.Content("~/UserProfile/Index?Username=" + ViewBag.Writer.Username);
+                Hello_Travellers.Models.Post post = ViewBag.Post;
+                var count = post.Reacts.Sum(t => t.ReactStatus);
+            }
+        <p class="text-center fw-light">Written By <span onclick="location.href = '@profUrl'">@ViewBag.Writer.Name</span>, @count Votes, Posted on @ViewBag.Post.CreationTime</p>
             @if (Session["Username"] != null)
             {
-                <p class="text-center fw-bold font-monospace">
+                <p class="text-center fw-bold font-monospace">  
                     @if (ViewBag.currentReact.ReactStatus == 1)
                     {
                         <i class="bi bi-hand-thumbs-up-fill mx-2" onclick="btnVoteClicked(0)">Upvote</i>
@@ -56,9 +63,15 @@
                         <i class="bi bi-hand-thumbs-down mx-2" onclick="btnVoteClicked(-1)">Downvote</i>
                     }
                     <!--Report Button to trigger modal starts here-->
-                    @if (Session["Username"].ToString().CompareTo(ViewBag.Writer.Username) != 0)
+                    @if (Session["Username"].ToString().CompareTo(ViewBag.Writer.Username) != 0 && !ViewBag.Writer.Rank.Contains("ADMIN"))
                     {
                         <i class="bi bi-flag mx-2" data-bs-toggle="modal" data-bs-target="#reportModal">Report</i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-pencil-square mx-2" data-bs-toggle="modal" onclick="btnEditClicked()">Edit</i>
+                        <i class="bi bi-trash3 mx-2" data-bs-toggle="modal" onclick="btnDeleteClicked()">Delete</i>
+                        renderEditBox = true;
                     }
 
                 </p>
@@ -90,10 +103,20 @@
                     </button>
                 </div>
             }
-
-            <p class="text-start font-monospace my-3">
+            <p id="content" class="text-start my-3" style="text-align: justify">
                 @ViewBag.Post.Content
             </p>
+            @if (renderEditBox == true)
+            {
+                <div id="editBox" style="display: none">
+                    <div class="form-group my-2">
+                        <textarea class="form-control" id="editedTexts" rows="6">@ViewBag.Post.Content</textarea>
+                    </div>
+                    <button class="btn btn-primary" onclick="btnSaveClicked()">Save</button>
+                    <button class="btn btn-secondary" onclick="btnCancelClicked()">Cancel</button>
+
+                </div>
+            }
             <!--Report Modal Begins here-->
             <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalArea" aria-hidden="true">
                 <div class="modal-dialog">
@@ -149,7 +172,7 @@
                                     <span class="fw-bold">@item.User.Name</span>
                                     <time class="loaded timeago border align-self-center mx-2" datetime="@item.CreationTime" style="font-size: 0.8rem;"></time>
                                 </div>
-                                @if (Session["Username"] != null)
+                                @if (Session["Username"] != null && !Session["Username"].ToString().Equals(item.User.Username) && !item.User.Rank.Contains("ADMIN"))
                                 {
                                     <i class="bi bi-flag" onclick="btnReportReply(@item.ReplyID)"></i>
                                 }
@@ -293,6 +316,69 @@
                 text: 'Give us a reason!'
             });
         }
-
+    }
+    function btnEditClicked() {
+        $('#content').css('display', 'none');
+        $('#editBox').css('display', 'block');
+    }
+    function btnCancelClicked() {
+        $('#content').css('display', 'block');
+        $('#editBox').css('display', 'none');
+    }
+    function btnSaveClicked() {
+        const params = new URLSearchParams(window.location.search);
+        var postID = params.get('PostID');
+        var newContent = $('#editedTexts').val();
+        if (newContent.trim().length <= 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Your post cannot be empty!'
+            });
+            return;
+        }
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("UpdatePost", "Post")',
+            data: {
+                PostID: postID,
+                Content: newContent
+            },
+            success: () => {
+                location.reload();
+            },
+            error: (response) => {
+                console.log(response);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!'
+                });
+                btnCancelClicked();
+            }
+        })
+    }
+    function btnDeleteClicked() {
+        const params = new URLSearchParams(window.location.search);
+        var postID = params.get('PostID');
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("DeletePost", "Post")',
+            data: {
+                PostID: postID
+            },
+            success: () => {
+                location.replace('@Url.Content("~/Home/Index")');
+            },
+            error: (response) => {
+                console.log(response);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!'
+                });
+                btnCancelClicked();
+            }
+        })
     }
 </script>

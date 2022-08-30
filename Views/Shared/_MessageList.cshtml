@@ -5,13 +5,16 @@
     {
         var Username = item.SenderUsername == (string)Session["Username"] ? item.ReceiverUsername : item.SenderUsername;
         var User = item.SenderUsername == (string)Session["Username"] ? item.Receiver : item.Sender;
+        var imgUrl = Url.Content("~/Images/ProfilePicture/" + User.DisplayPictureName);
+        var unseenText = item.SenderUsername != (string)Session["Username"] && item.SeenStatus == "SENT" ? "font-weight: bold;" : "";
+        var senderAddon = item.SenderUsername == (string)Session["Username"] ? "You:" : "";
         <a href="?Username=@Username" class="list-group-item list-group-item-action border-0">
             <div class="d-flex align-items-start">
-                <img src="https://bootdey.com/img/Content/avatar/avatar2.png" class="rounded-circle mx-3" style="align-self: center"
+                <img src="@imgUrl" class="rounded-circle mx-3" style="align-self: center"
                      alt="William Harris" width="40" height="40">
                 <div class="flex-grow-1 ml-3" style="align-self: center">
                     <p style="font-size: 0.85rem; font-weight: bold; margin-bottom: 0">@User.Name</p>
-                    <p style="font-size: 0.85rem; margin-bottom: 0">@item.Content</p>
+                    <p style="font-size: 0.85rem; margin-bottom: 0; @unseenText">@senderAddon @item.Content</p>
                 </div>
             </div>
         </a>

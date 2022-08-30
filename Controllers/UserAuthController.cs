@@ -40,28 +40,28 @@ namespace Hello_Travellers.Controllers
             List<User> users = db.Users.Where(x => x.Email.Equals(email) && x.Password.Equals(password)).ToList();
             if (users.Count > 0)
             {
-                Session["Username"] = users[0].Username;
-                Session["Rank"] = users[0].Rank;
-                if (Session["Rank"].ToString().Contains("BANNED"))
+                if (users[0].Rank.ToString().Contains("BANNED"))
                 {
-                    var rank = Session["Rank"].ToString();
-                    if (DateTime.Parse(rank.Split(',')[1]) < DateTime.Now)
+                    var rank = users[0].Rank.ToString();
+                    System.Diagnostics.Debug.WriteLine(DateTime.Parse(rank.Split(',')[1]) < DateTime.Now);
+                    if (DateTime.Parse(rank.Split(',')[1]) > DateTime.Now)
                     {
-
+                        return Redirect("~/UserAuth/BannedLogin");
+                    }
+                    else
+                    {
+                        users[0].Rank = "USER";
+                        db.Entry(users[0]).State = EntityState.Modified;
+                        db.SaveChanges();
                     }
                 }
-                else if (Session["Rank"].ToString().Equals("ADMIN"))
-                {
-                    Response.Redirect("~/Admin/Users");
-                }
-                else
-                {
-                    Response.Redirect("~/Home/Index");
-                }
+                Session["Username"] = users[0].Username;
+                Session["Rank"] = users[0].Rank;
+                Response.Redirect("~/Home/Index");
             }
             else
             {
-                ViewBag.ValidID = "This Email address has been already registerd !";
+                ViewBag.ValidID = "Invalid Login Credentials!";
 
             }
             return View();
@@ -135,7 +135,10 @@ namespace Hello_Travellers.Controllers
 
 
 
-
+        public ActionResult BannedLogin()
+        {
+            return View();
+        }
 
 
         public ActionResult SendEmail()

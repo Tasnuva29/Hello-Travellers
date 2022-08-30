@@ -242,6 +242,7 @@ namespace Hello_Travellers.Controllers
             db.Entry(getReport).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
         }
+
         [HttpPost]
         public ActionResult DeletePostOrComment(int ReportID, string ContextID, string Context)
         {
@@ -251,6 +252,7 @@ namespace Hello_Travellers.Controllers
             {
 
                 var post = db.Posts.Where(temp => temp.PostID.ToString() == ContextID).FirstOrDefault();
+                GenerateNotificationForDelete(post.CreatorUsername, post.Title);
                 foreach (var item in post.Replies.ToList())
                 {
                     db.Replies.Remove(item);
@@ -271,18 +273,45 @@ namespace Hello_Travellers.Controllers
             else
             {
                 var reply = db.Replies.Where(temp => temp.ReplyID.ToString() == ContextID).FirstOrDefault();
+                GenerateNotificationForDelete(reply.CreatorUsername, "");
                 db.Replies.Remove(reply);
                 db.SaveChanges();
                 UpdateStatus(ReportID);
                 return Json("comment", JsonRequestBehavior.AllowGet);
             }
         }
+
+        private void GenerateNotificationForDelete(string Username, string PostTitle)
+        {
+            Entities db = new Entities();
+            //var user = db.Users.Where((t) => t.Username == Username).FirstOrDefault();
+            Notification notif = new Notification();
+            notif.CreationTime = DateTime.Now;
+            notif.SeenStatus = "SENT";
+            notif.ForUsername = Username;
+            if (PostTitle.Length > 0)
+            {
+                notif.HtmlContent = string.Format("<p class=\"notification-text\">" +
+                    "Your post ({0}) was deleted by  " +
+                    "the Admin for a report!</p>", PostTitle);
+            }
+            else
+            {
+                notif.HtmlContent = string.Format("<p class=\"notification-text\">" +
+                    "Your comment was deleted by  " +
+                    "the Admin for a report!</p>");
+            }
+            db.Notifications.Add(notif);
+            db.SaveChanges();
+        }
+
         [HttpPost]
         public ActionResult DismissReport(int ReportID)
         {
             UpdateStatus(ReportID);
             return Json("true", JsonRequestBehavior.AllowGet);
         }
+
         [HttpPost]
         public ActionResult BanUser(int ReportID, string ContextID, string Context, int Banvalue, string Banduration)
         {
@@ -445,6 +474,8 @@ namespace Hello_Travellers.Controllers
             }
 
         }
+
+        
 
     }
 }

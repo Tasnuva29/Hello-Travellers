@@ -355,6 +355,7 @@
     <Content Include="Views\Shared\_HomePageBottom.cshtml" />
     <Content Include="Views\Home\Error.cshtml" />
     <Content Include="Views\UserAuth\BannedLogin.cshtml" />
+    <Content Include="Views\Shared\_ForumPost.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\UserProfile\EditProfile.cshtml" />

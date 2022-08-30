@@ -328,10 +328,26 @@ namespace Hello_Travellers.Controllers
         public ActionResult Forum(int forumID)
         {
 
-            var fetch = db.Posts.Where(m => m.ForumID == forumID).ToList();
+            //var fetch = db.Posts.Where(m => m.ForumID == forumID).ToList();
            
-            return View(fetch);
+            return View();
         }
+
+        [HttpPost]
+        public ActionResult GetForumPost(int forumID)
+        {
+            var fetch = db.Posts.Where(m => m.ForumID == forumID).ToList();
+            return PartialView("_ForumPost", fetch);
+        }
+
+        [HttpPost]
+        public ActionResult GetUserPost(string Username)
+        {
+            var fetch = db.Users.Where(m => m.Username == Username).FirstOrDefault().Posts.ToList();
+            return PartialView("_ForumPost", fetch);
+        }
+
+        
 
         private string GenerateHTMLForComment(string Username, int postID)
         {
@@ -388,6 +404,34 @@ namespace Hello_Travellers.Controllers
                 return Json("Success", JsonRequestBehavior.AllowGet);
 
             } catch
+            {
+                return Json("Error", JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult DeletePost(int PostID)
+        {
+            try
+            {
+                Entities db = new Entities();
+                var post = db.Posts.Where(t => t.PostID == PostID).FirstOrDefault();
+                foreach (var replies in post.Replies)
+                {
+                    db.Replies.Remove(replies);
+                }
+                foreach (var media in post.MediaItems)
+                {
+                    db.MediaItems.Remove(media);
+                }
+                foreach (var react in post.Reacts)
+                {
+                    db.Reacts.Remove(react);
+                }
+                db.Posts.Remove(post);
+                db.SaveChanges();
+                return Json("Success", JsonRequestBehavior.AllowGet);
+            } catch (Exception ex)
             {
                 return Json("Error", JsonRequestBehavior.AllowGet);
             }

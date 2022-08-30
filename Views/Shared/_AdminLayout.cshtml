@@ -22,14 +22,7 @@
                         <span class="fs-5 d-none d-sm-inline spanTitle">Hello Travellers!</span>
                         <hr class="bg-white" style="color:white" />
                     </a>
-
-
                     <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start admin-sidebar-content" id="menu">
-                        <li class="admin-sidebar-item">
-                            <a href="@Url.Action("Dashboard", "Admin")" class="nav-link align-middle px-0 admin-sidebar-link">
-                                <i class="fs-4 bi-grid"></i> <span class="ms-3 d-none d-sm-inline">Dashboard</span>
-                            </a>
-                        </li>
                         <li class="admin-sidebar-item">
                             <a href="@Url.Action("Users", "Admin")" class="nav-link px-0 align-middle admin-sidebar-link">
                                 <i class="fs-4 bi-people"></i> <span class="ms-3 d-none d-sm-inline">Users</span>
@@ -59,7 +52,12 @@
                             <a href="@Url.Action("BannedUser", "Admin")" class="nav-link px-0 align-middle admin-sidebar-link">
                                 <i class="fs-4 bi-slash-circle-fill"></i> <span class="ms-3 d-none d-sm-inline">Banned User</span>
                             </a>
-                        </li>                       
+                        </li>
+                        <li class="admin-sidebar-item">
+                            <a href="@Url.Action("Index", "Home")" class="nav-link px-0 align-middle admin-sidebar-link">
+                                <i class="fs-4 bi-slash-circle-fill"></i> <span class="ms-3 d-none d-sm-inline">User Mode</span>
+                            </a>
+                        </li>
                         <li class="admin-sidebar-item">
                             <a href="@Url.Action("SignOut", "UserAuth")" class="nav-link px-0 align-middle admin-sidebar-link">
                                 <i class="fs-4 bi-box-arrow-left"></i> <span class="ms-3 d-none d-sm-inline">Logout</span>
@@ -69,12 +67,6 @@
                 </div>
             </div>
             <div class="col content-wrapper">
-                <div class="top-bar d-flex flex-row-reverse align-content-center">
-                    <div class="me-3"><h5 class="text-black ">Hello @Session["Username"]!</h5></div>
-                    <div class="mx-3">
-                        <a href="@Url.Action("Index", "Home")" >User Mode</a>
-                    </div>
-                </div>
                 @RenderBody()
             </div>
         </div>

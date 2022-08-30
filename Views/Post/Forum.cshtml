@@ -1,1 +1,26 @@
-﻿
+﻿@model List<Hello_Travellers.Models.Post>
+
+<div id="post-container" class="container">
+    
+</div>
+
+
+
+<script>
+    addEventListener('DOMContentLoaded', () => {
+        const params = new URLSearchParams(window.location.search);
+        var forumID = params.get('forumID');
+        
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetForumPost", "Post")',
+            data: {
+                forumID: forumID,
+            },
+            success: (data) => {
+                $('#post-container').html(data);
+            }
+        })
+    });
+
+</script>

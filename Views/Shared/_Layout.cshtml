@@ -64,15 +64,15 @@
                                 <li><a class="dropdown-item" href="#">See All Notifications</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item">
-                            @Html.ActionLink("Sign Out", "SignOut", "UserAuth", new { area = "" }, new { @class = "nav-link" })
-                        </li>
                         if (Session["RANK"].Equals("ADMIN"))
                         {
                             <li class="nav-item">
                                 @Html.ActionLink("Admin Panel", "Users", "Admin", new { area = "" }, new { @class = "nav-link" })
                             </li>
                         }
+                        <li class="nav-item">
+                            @Html.ActionLink("Sign Out", "SignOut", "UserAuth", new { area = "" }, new { @class = "nav-link" })
+                        </li>
                     }
                 </ul>
 
@@ -81,10 +81,9 @@
                     <form class="d-flex">
                         <input type="text" placeholder="Search.." name="tf_username">
                         <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-                        </form>
-                        }
-                   
-                </div>
+                    </form>
+                }
+            </div>
         </div>
     </nav>
 
@@ -93,7 +92,7 @@
         @RenderBody()
         <hr style="margin-top:0px" />
         <footer>
-            <p>&copy; @DateTime.Now.2022 - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.2022 - Hello Travellers!</p>
         </footer>
     </div>
     <script>

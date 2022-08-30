@@ -73,17 +73,18 @@
 </style>
 <div class="container p-0" style="min-height: 80vh;">
     <div class="row g-0">
-        <div id="chatListBox" class="col-12 col-lg-5 col-xl-3 border-right border-left side-shadow" style="height: 100vh">
+        <div id="chatListBox" class="col-12 col-lg-5 col-xl-3 border-right border-left side-shadow" style="height: 95vh">
 
 
         </div>
         <div class="col-12 col-lg-7 col-xl-9 border-left border-right">
             @if (ViewBag.Load == true)
             {
+                var imgUrl = Url.Content("~/Images/DisplayPicture/" + ViewBag.Receiver.DisplayPictureName);
                 <div class="py-2 px-4 border-bottom d-none d-lg-block bot-shadow">
                     <div class="d-flex align-items-center py-1">
                         <div class="position-relative">
-                            <img src="https://bootdey.com/img/Content/avatar/avatar3.png"
+                            <img src="@imgUrl"
                                  class="rounded-circle mx-3" alt="Sharon Lessman" width="40" height="40">
                         </div>
                         <div class="flex-grow-1 pl-3">
@@ -139,7 +140,7 @@
     document.addEventListener("DOMContentLoaded", updateChatList);
     document.addEventListener("DOMContentLoaded", initialLoad);
 
-    var delay = 100;
+    var delay = 2000;
     var currentCount = 0;
 
     const params = new URLSearchParams(window.location.search);

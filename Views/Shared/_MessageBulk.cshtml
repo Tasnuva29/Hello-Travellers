@@ -3,14 +3,17 @@
 @{
     foreach (var item in Model)
     {
+        var imgUrl = Url.Content("~/Images/ProfilePicture/" + item.Sender.DisplayPictureName);
         if (item.SenderUsername == (string)Session["Username"])
         {
             var Seen = item.SeenStatus == "SEEN" ? "Seen" : "Sent";
+
             <div>
-                <div class="text-muted small text-nowrap mt-2 chat-message-right chat-count">@item.SentTime</div>
+                <time class="loaded timeago text-muted small text-nowrap mt-2 chat-message-right chat-count" datetime="@item.SentTime" style="font-size: 0.8rem;"></time>
                 <div class="chat-message-right mb-4">
                     <div class="d-flex">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png"
+
+                        <img src="@imgUrl"
                              class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
                     </div>
                     <div class="flex-shrink-1 rounded py-2 px-3 mx-3 bg-primary text-white" data-toggle="tooltip" data-placement="left" title="@Seen">
@@ -22,10 +25,10 @@
         else
         {
             <div>
-                <div class="text-muted small text-nowrap mt-2 chat-count">@item.SentTime</div>
+                <time class="loaded timeago text-muted small text-nowrap mt-2 chat-message-left chat-count" datetime="@item.SentTime" style="font-size: 0.8rem;"></time>
                 <div class="chat-message-left mb-4">
                     <div class="d-flex">
-                        <img src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                        <img src="@imgUrl"
                              class="rounded-circle mr-1" alt="Chris Wood" width="40" height="40">
                     </div>
                     <div class="flex-shrink-1 bg-light rounded py-2 px-3 mx-3">
@@ -37,4 +40,9 @@
         }
 
     }
+    <script>
+        jQuery(document).ready(function () {
+            jQuery("time.timeago").timeago();
+        });
+    </script>
 }
