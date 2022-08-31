@@ -16,3 +16,7 @@
 >> Tasnuva Binte Rahman\
 >> Samir Sarker Rohit
 
+#Installation
+> Make sure to structure the database like the sql file (HelloTravellersDB.sql) given in the repo
+> Update the connection string in web.config
+> Update the EmailAddress and Pass entry in web.config
