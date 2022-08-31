@@ -9,10 +9,10 @@
 >> User Authentication\
 >> Email Verification\
 >> User Profile\
->> Admin System\
+>> Admin System
 
 # Made by:
 >> Kazi Toufique Elahi\
 >> Tasnuva Binte Rahman\
->> Samir Sarker Rohit\
+>> Samir Sarker Rohit
 
