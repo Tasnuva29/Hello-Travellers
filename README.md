@@ -11,7 +11,7 @@
 >> User Profile\
 >> Admin System
 
-# Made by:
+# Made by
 >> Kazi Toufique Elahi\
 >> Tasnuva Binte Rahman\
 >> Samir Sarker Rohit
